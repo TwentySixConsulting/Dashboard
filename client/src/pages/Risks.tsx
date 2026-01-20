@@ -1,11 +1,11 @@
 import { Card } from "@/components/ui/card";
-import { benchmarkData, getPositioning } from "@/lib/data";
+import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { AlertTriangle, CheckCircle2, TrendingUp, TrendingDown, Shield, Target } from "lucide-react";
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts";
 
 export function Risks() {
-  const rolesByPosition = benchmarkData.reduce((acc, role) => {
+  const rolesByPosition = marketData.reduce((acc, role) => {
     const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
     if (!acc[pos.position]) acc[pos.position] = [];
     acc[pos.position].push({ ...role, positioning: pos });
@@ -22,9 +22,9 @@ export function Risks() {
     { name: "Above Median", value: strengths.filter(r => r.positioning.position === "upper").length + above.length, color: "hsl(200, 85%, 55%)" },
   ];
 
-  const alignedPercentage = Math.round(((rolesByPosition.median?.length || 0) / benchmarkData.length) * 100);
-  const abovePercentage = Math.round((((rolesByPosition.upper?.length || 0) + above.length) / benchmarkData.length) * 100);
-  const belowPercentage = Math.round((risks.length / benchmarkData.length) * 100);
+  const alignedPercentage = Math.round(((rolesByPosition.median?.length || 0) / marketData.length) * 100);
+  const abovePercentage = Math.round((((rolesByPosition.upper?.length || 0) + above.length) / marketData.length) * 100);
+  const belowPercentage = Math.round((risks.length / marketData.length) * 100);
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">

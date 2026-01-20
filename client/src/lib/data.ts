@@ -1,4 +1,4 @@
-export interface BenchmarkRole {
+export interface MarketDataRole {
   id: string;
   role: string;
   currentSalary: number;
@@ -18,7 +18,7 @@ export const companyInfo = {
   reportDate: "January 2026",
 };
 
-export const benchmarkData: BenchmarkRole[] = [
+export const marketData: MarketDataRole[] = [
   {
     id: "1",
     role: "Technical Manager",

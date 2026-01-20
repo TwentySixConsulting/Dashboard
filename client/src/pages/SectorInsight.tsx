@@ -38,7 +38,7 @@ export function SectorInsight() {
           Sector Insight
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Specific trends and benchmarks for the Housing Association sector.
+          Specific trends and pay data for the Housing Association sector.
         </p>
       </div>
 

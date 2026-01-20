@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { benchmarkData, getPositioning, distributionData } from "@/lib/data";
+import { marketData, getPositioning, distributionData } from "@/lib/data";
 import {
   BarChart,
   Bar,
@@ -16,7 +16,7 @@ import {
 import { cn } from "@/lib/utils";
 
 export function Benchmarking() {
-  const chartData = benchmarkData.map((role) => {
+  const chartData = marketData.map((role) => {
     const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
     return {
       name: role.role.length > 20 ? role.role.substring(0, 20) + "..." : role.role,
@@ -45,16 +45,16 @@ export function Benchmarking() {
           Salary Analysis
         </p>
         <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Role Benchmarking Results
+          Market Data Results
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Overview of all benchmarked roles with market positioning indicators.
+          Overview of all roles with market positioning indicators from our salary survey data.
         </p>
       </div>
 
       <Card className="p-6 bg-white border-0 shadow-md">
         <h3 className="font-display font-bold text-xl mb-2">Salary Comparison Overview</h3>
-        <p className="text-sm text-muted-foreground mb-6">Current salary vs market quartiles</p>
+        <p className="text-sm text-muted-foreground mb-6">Current salary vs market ranges</p>
         <div className="h-[420px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} layout="vertical" margin={{ left: 20 }}>
@@ -127,7 +127,7 @@ export function Benchmarking() {
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-6">
         <Card className="p-6 bg-white border-0 shadow-md lg:col-span-1">
           <h3 className="font-display font-bold text-xl mb-2">Position Distribution</h3>
-          <p className="text-sm text-muted-foreground mb-4">How roles are distributed across quartiles</p>
+          <p className="text-sm text-muted-foreground mb-4">How roles are distributed across pay ranges</p>
           <div className="h-64">
             <ResponsiveContainer width="100%" height="100%">
               <PieChart>
@@ -177,7 +177,7 @@ export function Benchmarking() {
                 </tr>
               </thead>
               <tbody>
-                {benchmarkData.map((role, i) => {
+                {marketData.map((role, i) => {
                   const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
                   return (
                     <tr key={role.id} className={cn("border-b", i % 2 === 0 ? "bg-muted/30" : "")}>

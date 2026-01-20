@@ -1,9 +1,9 @@
 import { Card } from "@/components/ui/card";
-import { companyInfo, benchmarkData, getPositioning } from "@/lib/data";
+import { companyInfo, marketData, getPositioning } from "@/lib/data";
 import { Building2, MapPin, Calendar, Users, TrendingUp, Target, CheckCircle2 } from "lucide-react";
 
 export function ExecutiveSummary() {
-  const positioningSummary = benchmarkData.reduce(
+  const positioningSummary = marketData.reduce(
     (acc, role) => {
       const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
       acc[pos.position] = (acc[pos.position] || 0) + 1;
@@ -22,7 +22,7 @@ export function ExecutiveSummary() {
           Executive Summary
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          A comprehensive analysis of your organisation's pay positioning against current market benchmarks.
+          A comprehensive analysis of your organisation's pay positioning against current market data.
         </p>
       </div>
 
@@ -70,10 +70,10 @@ export function ExecutiveSummary() {
           </div>
           <div>
             <h2 className="text-2xl font-display font-bold mb-2">
-              {benchmarkData.length} Roles Benchmarked
+              {marketData.length} Roles Analysed
             </h2>
             <p className="text-white/80 mb-4">
-              We have analysed your submitted roles against current market data for the {companyInfo.industry} sector in {companyInfo.location}.
+              We have analysed your submitted roles against current salary survey data for the {companyInfo.industry} sector in {companyInfo.location}.
             </p>
             <div className="flex flex-wrap gap-6 mt-6">
               <div className="bg-white/10 rounded-lg px-4 py-3">
@@ -100,7 +100,7 @@ export function ExecutiveSummary() {
             Who We Are
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            TwentySix is a specialist reward consultancy, working across a large number of sectors in the UK. Our team consists of senior reward consultants, supported by specially trained analysts who bring deep expertise in compensation benchmarking and market analysis.
+            TwentySix is a specialist reward consultancy, working across a large number of sectors in the UK. Our team consists of senior reward consultants, supported by specially trained analysts who bring deep expertise in compensation and market analysis.
           </p>
         </Card>
 
@@ -110,7 +110,7 @@ export function ExecutiveSummary() {
             Our Methodology
           </h3>
           <p className="text-muted-foreground leading-relaxed">
-            We utilise proprietary data sources combined with validated market surveys to provide accurate benchmarking. Each role is carefully matched against comparable positions considering industry, location, organisation size, and scope of responsibilities.
+            We utilise proprietary data sources combined with validated salary surveys to provide accurate pay data. Each role is carefully matched against comparable positions considering industry, location, organisation size, and scope of responsibilities.
           </p>
         </Card>
       </div>
@@ -119,7 +119,7 @@ export function ExecutiveSummary() {
         <h3 className="font-display font-bold text-xl mb-6">How to Use This Report</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           {[
-            { useCase: "Pay Review", help: "Provides market-aligned ranges for annual salary reviews" },
+            { useCase: "Pay Review", help: "Provides market-aligned pay ranges for annual salary reviews" },
             { useCase: "New Roles", help: "Sense-checks proposed salaries for new positions" },
             { useCase: "Prioritisation", help: "Highlights roles needing deeper review or adjustment" },
           ].map((item, i) => (

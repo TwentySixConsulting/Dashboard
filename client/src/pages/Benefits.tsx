@@ -96,9 +96,9 @@ export function Benefits() {
             <Shield className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-display font-bold mb-2">Note on Benefits Benchmarking</h2>
+            <h2 className="text-xl font-display font-bold mb-2">Note on Benefits Data</h2>
             <p className="text-white/80">
-              This section provides an overview of typical benefits in the Housing Association sector. Benefits have not been specifically benchmarked for your organisation. For bespoke benefits analysis, please contact our team.
+              This section provides an overview of typical benefits in the Housing Association sector. Benefits have not been specifically analysed for your organisation. For bespoke benefits analysis, please contact our team.
             </p>
           </div>
         </div>

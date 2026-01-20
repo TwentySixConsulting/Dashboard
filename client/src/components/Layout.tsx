@@ -16,7 +16,7 @@ const navItems = [
   { path: "/", label: "Executive Summary", icon: FileText },
   { path: "/market-overview", label: "Market Overview", icon: TrendingUp },
   { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
-  { path: "/benchmarking", label: "Role Benchmarking", icon: BarChart3 },
+  { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
   { path: "/role-details", label: "Role Details", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
   { path: "/benefits", label: "Benefits Overview", icon: Gift },

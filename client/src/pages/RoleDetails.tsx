@@ -1,5 +1,5 @@
 import { Card } from "@/components/ui/card";
-import { benchmarkData, getPositioning } from "@/lib/data";
+import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { MapPin, Briefcase, TrendingUp, TrendingDown, Minus, Info } from "lucide-react";
 
@@ -88,12 +88,12 @@ export function RoleDetails() {
           Role Details
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Detailed breakdown of each benchmarked role with market positioning context.
+          Detailed breakdown of each role with market positioning context from our salary survey data.
         </p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        {benchmarkData.map((role, index) => {
+        {marketData.map((role, index) => {
           const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
           const diff = role.currentSalary - role.median;
           const diffPercent = ((diff / role.median) * 100).toFixed(1);

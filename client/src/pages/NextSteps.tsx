@@ -16,7 +16,7 @@ const steps = [
   {
     number: "01",
     title: "Review Your Positioning",
-    description: "Use the role cards to understand where each position sits against market benchmarks. Focus on roles at or below lower quartile as priority.",
+    description: "Use the role cards to understand where each position sits against market data. Focus on roles at or below lower quartile as priority.",
   },
   {
     number: "02",
@@ -89,7 +89,7 @@ export function NextSteps() {
             <Lightbulb className="w-8 h-8" />
           </div>
           <div>
-            <h2 className="text-2xl font-display font-bold mb-3">How to Interpret Salary Ranges</h2>
+            <h2 className="text-2xl font-display font-bold mb-3">How to Interpret Pay Ranges</h2>
             <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
               <div className="bg-white/10 rounded-lg p-4">
                 <p className="font-semibold mb-1">Lower Quartile</p>
@@ -154,7 +154,7 @@ export function NextSteps() {
           </div>
           <ul className="space-y-3">
             {[
-              "You have complex or hybrid roles to benchmark",
+              "You have complex or hybrid roles to analyse",
               "You need a comprehensive pay structure review",
               "You're facing significant recruitment challenges",
               "You want detailed recommendations and implementation support",
@@ -177,7 +177,7 @@ export function NextSteps() {
               <tr className="border-b">
                 <th className="text-left py-3 px-4 font-semibold">Feature</th>
                 <th className="text-center py-3 px-4 font-semibold bg-muted/30">Targeted Report</th>
-                <th className="text-center py-3 px-4 font-semibold bg-accent/10">Bespoke Benchmarking</th>
+                <th className="text-center py-3 px-4 font-semibold bg-accent/10">Bespoke Analysis</th>
               </tr>
             </thead>
             <tbody>

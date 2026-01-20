@@ -21,7 +21,7 @@ function Router() {
         <Route path="/" component={ExecutiveSummary} />
         <Route path="/market-overview" component={MarketOverview} />
         <Route path="/sector-insight" component={SectorInsight} />
-        <Route path="/benchmarking" component={Benchmarking} />
+        <Route path="/market-data" component={Benchmarking} />
         <Route path="/role-details" component={RoleDetails} />
         <Route path="/risks" component={Risks} />
         <Route path="/benefits" component={Benefits} />
