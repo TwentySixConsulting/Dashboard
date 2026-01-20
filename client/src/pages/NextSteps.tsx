@@ -150,7 +150,7 @@ export function NextSteps() {
         <Card className="p-6 bg-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <BookOpen className="w-5 h-5 text-purple-500" />
-            <h3 className="font-display font-bold text-xl">When to Consider Bespoke</h3>
+            <h3 className="font-display font-bold text-xl">When to Consider Bespoke Benchmarking</h3>
           </div>
           <ul className="space-y-3">
             {[

@@ -88,7 +88,7 @@ export function RoleDetails() {
           Role Details
         </h1>
         <p className="text-lg text-muted-foreground max-w-2xl">
-          Detailed breakdown of each role with market positioning context from our salary survey data.
+          Detailed breakdown of each role with market positioning context from our market data.
         </p>
       </div>
 
