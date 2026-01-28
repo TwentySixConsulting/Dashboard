@@ -4,15 +4,17 @@ import {
   Heart,
   Calendar,
   Wallet,
-  Home,
   Baby,
-  Bike,
   GraduationCap,
   Shield,
   Clock,
-  Sparkles,
+  Car,
+  Stethoscope,
+  Users,
+  Gift,
 } from "lucide-react";
 import { RadarChart, PolarGrid, PolarAngleAxis, PolarRadiusAxis, Radar, ResponsiveContainer, Tooltip } from "recharts";
+import logoImage from "@/assets/twentysix-logo.png";
 
 const benefitsRadarData = [
   { benefit: "Pension", current: 85, market: 75 },
@@ -25,23 +27,36 @@ const benefitsRadarData = [
 
 const benefitsCategories = [
   {
-    title: "Financial Wellbeing",
+    title: "Pension & Financial",
     icon: Wallet,
     color: "bg-green-500",
     benefits: [
-      { name: "Defined Contribution Pension", typical: "6-8% employer contribution" },
-      { name: "Life Assurance", typical: "3-4x salary" },
-      { name: "Income Protection", typical: "Available in 60% of HAs" },
+      { name: "Defined Contribution Pension", typical: "6-8% employer contribution", prevalence: "98%" },
+      { name: "Life Assurance", typical: "3-4x salary", prevalence: "92%" },
+      { name: "Income Protection", typical: "50-75% of salary", prevalence: "60%" },
+      { name: "Critical Illness", typical: "1-2x salary", prevalence: "35%" },
     ],
   },
   {
-    title: "Work-Life Balance",
-    icon: Clock,
+    title: "Leave & Time Off",
+    icon: Calendar,
     color: "bg-blue-500",
     benefits: [
-      { name: "Annual Leave", typical: "25-30 days + bank holidays" },
-      { name: "Flexible Working", typical: "Hybrid arrangements common" },
-      { name: "Compressed Hours", typical: "Available in many organisations" },
+      { name: "Annual Leave", typical: "25-30 days + bank holidays", prevalence: "100%" },
+      { name: "Sick Pay", typical: "Enhanced beyond SSP", prevalence: "95%" },
+      { name: "Compassionate Leave", typical: "5-10 days paid", prevalence: "90%" },
+      { name: "Study Leave", typical: "5 days per year", prevalence: "70%" },
+    ],
+  },
+  {
+    title: "Flexible Working",
+    icon: Clock,
+    color: "bg-purple-500",
+    benefits: [
+      { name: "Hybrid Working", typical: "2-3 days office", prevalence: "87%" },
+      { name: "Flexible Hours", typical: "Core hours model", prevalence: "80%" },
+      { name: "Compressed Hours", typical: "9-day fortnight", prevalence: "45%" },
+      { name: "Remote Working", typical: "Fully remote options", prevalence: "25%" },
     ],
   },
   {
@@ -49,45 +64,61 @@ const benefitsCategories = [
     icon: Heart,
     color: "bg-red-500",
     benefits: [
-      { name: "EAP", typical: "Employee Assistance Programme" },
-      { name: "Mental Health Support", typical: "Counselling & resources" },
-      { name: "Health Cash Plans", typical: "Offered by 45% of HAs" },
+      { name: "EAP", typical: "24/7 support line", prevalence: "95%" },
+      { name: "Mental Health Support", typical: "Counselling sessions", prevalence: "85%" },
+      { name: "Health Cash Plan", typical: "£50-100/year cover", prevalence: "45%" },
+      { name: "Private Medical", typical: "For senior roles", prevalence: "30%" },
     ],
   },
   {
     title: "Family Support",
     icon: Baby,
-    color: "bg-purple-500",
+    color: "bg-pink-500",
     benefits: [
-      { name: "Enhanced Maternity", typical: "Up to 26 weeks full pay" },
-      { name: "Enhanced Paternity", typical: "2-4 weeks full pay" },
-      { name: "Carers Leave", typical: "5-10 days paid leave" },
+      { name: "Maternity Leave", typical: "Up to 26 weeks full pay", prevalence: "75%" },
+      { name: "Paternity Leave", typical: "2-4 weeks full pay", prevalence: "70%" },
+      { name: "Shared Parental Leave", typical: "Enhanced beyond statutory", prevalence: "60%" },
+      { name: "Carers Leave", typical: "5-10 days paid", prevalence: "55%" },
+    ],
+  },
+  {
+    title: "Development",
+    icon: GraduationCap,
+    color: "bg-amber-500",
+    benefits: [
+      { name: "Professional Subscriptions", typical: "Paid annually", prevalence: "85%" },
+      { name: "Training Budget", typical: "£500-2000/year", prevalence: "75%" },
+      { name: "Qualification Support", typical: "Fees + study time", prevalence: "70%" },
+      { name: "Mentoring Programmes", typical: "Internal schemes", prevalence: "50%" },
     ],
   },
 ];
 
-const emergingBenefits = [
-  { name: "Menopause Support", icon: Heart, adoption: "Growing rapidly" },
-  { name: "Cycle to Work", icon: Bike, adoption: "85% offer" },
-  { name: "Learning Budgets", icon: GraduationCap, adoption: "Increasing" },
-  { name: "Volunteer Days", icon: Sparkles, adoption: "2-5 days common" },
-  { name: "Home Office Setup", icon: Home, adoption: "Post-COVID standard" },
-  { name: "Sabbaticals", icon: Calendar, adoption: "Emerging benefit" },
+const additionalBenefits = [
+  { name: "Cycle to Work", icon: Car, prevalence: "85%" },
+  { name: "Electric Vehicle Scheme", icon: Car, prevalence: "45%" },
+  { name: "Eye Care Vouchers", icon: Stethoscope, prevalence: "90%" },
+  { name: "Staff Discounts", icon: Gift, prevalence: "75%" },
+  { name: "Social Events", icon: Users, prevalence: "80%" },
+  { name: "Volunteer Days", icon: Heart, prevalence: "65%" },
 ];
 
 export function Benefits() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="mb-12">
-        <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-          Total Reward Analysis
-        </p>
-        <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Benefits Overview
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          Sector-typical benefits and emerging trends in the Housing Association market.
-        </p>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
+            Total Reward Analysis
+          </p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
+            Benefits
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Comprehensive overview of typical benefits in the Housing Association sector.
+          </p>
+        </div>
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
 
       <Card className="p-6 bg-gradient-to-br from-primary to-primary/80 text-white border-0 shadow-xl">
@@ -98,7 +129,7 @@ export function Benefits() {
           <div>
             <h2 className="text-xl font-display font-bold mb-2">Note on Benefits Data</h2>
             <p className="text-white/80">
-              This section provides an overview of typical benefits in the Housing Association sector. Benefits have not been specifically analysed for your organisation. For bespoke benefits analysis, please contact our team.
+              This section provides an overview of typical benefits in the Housing Association sector based on our survey data. Benefits have not been specifically analysed for your organisation. For bespoke benefits analysis, please contact our team.
             </p>
           </div>
         </div>
@@ -169,7 +200,7 @@ export function Benefits() {
         </Card>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
         {benefitsCategories.map((category, i) => (
           <Card key={i} className="p-6 bg-white border-0 shadow-md">
             <div className="flex items-center gap-3 mb-4">
@@ -180,9 +211,12 @@ export function Benefits() {
             </div>
             <div className="space-y-3">
               {category.benefits.map((benefit, j) => (
-                <div key={j} className="flex justify-between items-start py-2 border-b last:border-0">
-                  <span className="font-medium text-sm">{benefit.name}</span>
-                  <span className="text-xs text-muted-foreground text-right max-w-[50%]">{benefit.typical}</span>
+                <div key={j} className="py-2 border-b last:border-0">
+                  <div className="flex justify-between items-start mb-1">
+                    <span className="font-medium text-sm">{benefit.name}</span>
+                    <span className="text-xs bg-green-100 text-green-700 px-2 py-0.5 rounded-full">{benefit.prevalence}</span>
+                  </div>
+                  <span className="text-xs text-muted-foreground">{benefit.typical}</span>
                 </div>
               ))}
             </div>
@@ -191,36 +225,17 @@ export function Benefits() {
       </div>
 
       <Card className="p-6 bg-white border-0 shadow-md">
-        <h3 className="font-display font-bold text-xl mb-4">Emerging Benefits Trends</h3>
-        <p className="text-sm text-muted-foreground mb-6">New and growing benefits gaining traction in the sector</p>
+        <h3 className="font-display font-bold text-xl mb-6">Additional Benefits</h3>
         <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-6 gap-4">
-          {emergingBenefits.map((benefit, i) => (
-            <div key={i} className="text-center p-4 bg-muted/30 rounded-xl hover:bg-muted/50 transition-colors">
+          {additionalBenefits.map((benefit, i) => (
+            <div key={i} className="text-center p-4 bg-muted/30 rounded-xl">
               <div className="w-12 h-12 rounded-full bg-accent/10 flex items-center justify-center mx-auto mb-3">
                 <benefit.icon className="w-5 h-5 text-accent" />
               </div>
               <p className="font-medium text-sm mb-1">{benefit.name}</p>
-              <p className="text-xs text-muted-foreground">{benefit.adoption}</p>
+              <p className="text-xs text-green-600 font-medium">{benefit.prevalence} offer</p>
             </div>
           ))}
-        </div>
-      </Card>
-
-      <Card className="p-6 bg-white border-0 shadow-md">
-        <h3 className="font-display font-bold text-xl mb-4">Enhancing Reward Without Increasing Base Pay</h3>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="p-4 bg-green-50 rounded-lg">
-            <h4 className="font-semibold text-green-800 mb-2">Recognition Programmes</h4>
-            <p className="text-sm text-green-700">Peer recognition, service awards, and instant recognition schemes boost engagement at low cost.</p>
-          </div>
-          <div className="p-4 bg-blue-50 rounded-lg">
-            <h4 className="font-semibold text-blue-800 mb-2">Flexibility Options</h4>
-            <p className="text-sm text-blue-700">Enhanced flexible working, compressed hours, and additional leave purchase schemes are highly valued.</p>
-          </div>
-          <div className="p-4 bg-purple-50 rounded-lg">
-            <h4 className="font-semibold text-purple-800 mb-2">Development Investment</h4>
-            <p className="text-sm text-purple-700">Professional development budgets, mentoring programmes, and career pathways add significant value.</p>
-          </div>
         </div>
       </Card>
     </div>

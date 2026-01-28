@@ -3,7 +3,9 @@ export interface MarketDataRole {
   role: string;
   currentSalary: number;
   lowerQuartile: number;
+  lowerMid: number;
   median: number;
+  upperMid: number;
   upperQuartile: number;
   function: string;
   jobLevel: number;
@@ -24,7 +26,9 @@ export const marketData: MarketDataRole[] = [
     role: "Technical Manager",
     currentSalary: 65000,
     lowerQuartile: 65000,
+    lowerMid: 66500,
     median: 68000,
+    upperMid: 70000,
     upperQuartile: 72000,
     function: "Technical",
     jobLevel: 3,
@@ -35,7 +39,9 @@ export const marketData: MarketDataRole[] = [
     role: "Learning & Development Manager",
     currentSalary: 45000,
     lowerQuartile: 42000,
+    lowerMid: 43500,
     median: 45000,
+    upperMid: 46500,
     upperQuartile: 48000,
     function: "HR",
     jobLevel: 3,
@@ -47,7 +53,9 @@ export const marketData: MarketDataRole[] = [
     role: "Learning & Development Officer",
     currentSalary: 26000,
     lowerQuartile: 26000,
+    lowerMid: 27000,
     median: 28000,
+    upperMid: 28750,
     upperQuartile: 29500,
     function: "HR",
     jobLevel: 6,
@@ -58,7 +66,9 @@ export const marketData: MarketDataRole[] = [
     role: "People Business Partner",
     currentSalary: 65000,
     lowerQuartile: 56000,
+    lowerMid: 58500,
     median: 61000,
+    upperMid: 62500,
     upperQuartile: 64000,
     function: "HR",
     jobLevel: 3,
@@ -70,7 +80,9 @@ export const marketData: MarketDataRole[] = [
     role: "Data Protection Officer",
     currentSalary: 44000,
     lowerQuartile: 38000,
+    lowerMid: 39500,
     median: 41000,
+    upperMid: 42500,
     upperQuartile: 44000,
     function: "Governance",
     jobLevel: 4,
@@ -81,7 +93,9 @@ export const marketData: MarketDataRole[] = [
     role: "Governance Officer",
     currentSalary: 30000,
     lowerQuartile: 29000,
+    lowerMid: 30000,
     median: 31000,
+    upperMid: 32000,
     upperQuartile: 33000,
     function: "Governance",
     jobLevel: 5,
@@ -93,7 +107,9 @@ export const marketData: MarketDataRole[] = [
     role: "Head of Electrical Services",
     currentSalary: 66000,
     lowerQuartile: 62000,
+    lowerMid: 64000,
     median: 66000,
+    upperMid: 67500,
     upperQuartile: 69000,
     function: "Technical",
     jobLevel: 1,
@@ -104,7 +120,9 @@ export const marketData: MarketDataRole[] = [
     role: "Maintenance Delivery Manager",
     currentSalary: 46000,
     lowerQuartile: 41000,
+    lowerMid: 43000,
     median: 45000,
+    upperMid: 46500,
     upperQuartile: 48000,
     function: "Technical",
     jobLevel: 3,
@@ -115,7 +133,9 @@ export const marketData: MarketDataRole[] = [
     role: "Independent Living Manager",
     currentSalary: 42000,
     lowerQuartile: 38000,
+    lowerMid: 40000,
     median: 42000,
+    upperMid: 43500,
     upperQuartile: 45000,
     function: "Operations",
     jobLevel: 3,
@@ -130,6 +150,8 @@ export const marketTrends = {
   londonLivingWage: 13.85,
   unemploymentRate: 4.7,
   minimumSalary37_5: 23809,
+  averageWeeklyEarnings: 682,
+  payRisePrediction: 3.5,
 };
 
 export const sectorInsights = {
@@ -140,20 +162,26 @@ export const sectorInsights = {
 };
 
 export function getPositioning(currentSalary: number, lq: number, median: number, uq: number): {
-  position: "below" | "lower" | "median" | "upper" | "above";
+  position: "below" | "lower" | "lowerMid" | "median" | "upperMid" | "upper" | "above";
   label: string;
   color: string;
   percentage: number;
 } {
   const range = uq - lq;
   const position = ((currentSalary - lq) / range) * 100;
+  const lowerMid = lq + (median - lq) / 2;
+  const upperMid = median + (uq - median) / 2;
   
   if (currentSalary < lq) {
     return { position: "below", label: "Below Market", color: "hsl(0, 72%, 51%)", percentage: Math.max(0, position) };
-  } else if (currentSalary < median - (range * 0.1)) {
+  } else if (currentSalary < lowerMid) {
     return { position: "lower", label: "Lower Quartile", color: "hsl(35, 90%, 55%)", percentage: position };
-  } else if (currentSalary <= median + (range * 0.1)) {
+  } else if (currentSalary < median - (range * 0.05)) {
+    return { position: "lowerMid", label: "Lower-Mid", color: "hsl(45, 85%, 50%)", percentage: position };
+  } else if (currentSalary <= median + (range * 0.05)) {
     return { position: "median", label: "At Median", color: "hsl(160, 70%, 45%)", percentage: position };
+  } else if (currentSalary < upperMid) {
+    return { position: "upperMid", label: "Upper-Mid", color: "hsl(180, 70%, 45%)", percentage: position };
   } else if (currentSalary <= uq) {
     return { position: "upper", label: "Upper Quartile", color: "hsl(200, 85%, 55%)", percentage: position };
   } else {
@@ -182,8 +210,20 @@ export const cpiTrendData = [
 
 export const distributionData = [
   { name: "Below Market", value: 0, color: "hsl(0, 72%, 51%)" },
-  { name: "Lower Quartile", value: 2, color: "hsl(35, 90%, 55%)" },
+  { name: "Lower Quartile", value: 1, color: "hsl(35, 90%, 55%)" },
+  { name: "Lower-Mid", value: 1, color: "hsl(45, 85%, 50%)" },
   { name: "At Median", value: 4, color: "hsl(160, 70%, 45%)" },
-  { name: "Upper Quartile", value: 2, color: "hsl(200, 85%, 55%)" },
+  { name: "Upper-Mid", value: 1, color: "hsl(180, 70%, 45%)" },
+  { name: "Upper Quartile", value: 1, color: "hsl(200, 85%, 55%)" },
   { name: "Above Market", value: 1, color: "hsl(280, 65%, 55%)" },
+];
+
+export const bonusData = [
+  { level: "Executive / Director", lq: 15, median: 25, uq: 40 },
+  { level: "Senior Manager / Head of", lq: 10, median: 15, uq: 25 },
+  { level: "Manager", lq: 5, median: 10, uq: 15 },
+  { level: "Senior Professional", lq: 3, median: 7, uq: 12 },
+  { level: "Professional", lq: 0, median: 5, uq: 10 },
+  { level: "Administrative / Support", lq: 0, median: 3, uq: 5 },
+  { level: "Sales Roles", lq: 20, median: 30, uq: 40 },
 ];

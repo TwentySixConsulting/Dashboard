@@ -6,11 +6,11 @@ import {
   MessageCircle,
   FileText,
   CheckCircle2,
-  Lightbulb,
   Mail,
   Phone,
   Globe,
 } from "lucide-react";
+import logoImage from "@/assets/twentysix-logo.png";
 
 const steps = [
   {
@@ -71,42 +71,20 @@ const comparison = [
 export function NextSteps() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="mb-12">
-        <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-          Taking Action
-        </p>
-        <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Conclusion & Next Steps
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          How to interpret this report and options for deeper analysis.
-        </p>
-      </div>
-
-      <Card className="p-8 bg-gradient-to-br from-primary to-primary/80 text-white border-0 shadow-xl">
-        <div className="flex items-start gap-6">
-          <div className="w-16 h-16 rounded-2xl bg-white/10 flex items-center justify-center shrink-0">
-            <Lightbulb className="w-8 h-8" />
-          </div>
-          <div>
-            <h2 className="text-2xl font-display font-bold mb-3">How to Interpret Pay Ranges</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mt-4">
-              <div className="bg-white/10 rounded-lg p-4">
-                <p className="font-semibold mb-1">Lower Quartile</p>
-                <p className="text-sm text-white/80">25% of the market pays below this level. Suitable for developing roles or those new to position.</p>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4">
-                <p className="font-semibold mb-1">Median</p>
-                <p className="text-sm text-white/80">50% pay more, 50% pay less. The typical competitive rate for fully competent performers.</p>
-              </div>
-              <div className="bg-white/10 rounded-lg p-4">
-                <p className="font-semibold mb-1">Upper Quartile</p>
-                <p className="text-sm text-white/80">Only 25% of the market pays more. Reflects high performers or scarce skills.</p>
-              </div>
-            </div>
-          </div>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
+            Taking Action
+          </p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
+            Next Steps
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Recommended actions and options for deeper analysis.
+          </p>
         </div>
-      </Card>
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+      </div>
 
       <Card className="p-6 bg-white border-0 shadow-md">
         <h3 className="font-display font-bold text-xl mb-6">Recommended Next Steps</h3>
@@ -177,7 +155,7 @@ export function NextSteps() {
               <tr className="border-b">
                 <th className="text-left py-3 px-4 font-semibold">Feature</th>
                 <th className="text-center py-3 px-4 font-semibold bg-muted/30">Targeted Report</th>
-                <th className="text-center py-3 px-4 font-semibold bg-accent/10">Bespoke Analysis</th>
+                <th className="text-center py-3 px-4 font-semibold bg-accent/10">Bespoke Benchmarking</th>
               </tr>
             </thead>
             <tbody>

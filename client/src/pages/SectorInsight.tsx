@@ -11,6 +11,7 @@ import {
   Cell,
 } from "recharts";
 import { Building2, TrendingUp, Users, Briefcase, CheckCircle2, AlertTriangle } from "lucide-react";
+import logoImage from "@/assets/twentysix-logo.png";
 
 const sectorComparisonData = [
   { sector: "Housing Associations", avgSalary: 42500, color: "hsl(220, 60%, 25%)" },
@@ -30,16 +31,19 @@ const benefitsData = [
 export function SectorInsight() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="mb-12">
-        <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-          Housing Association Analysis
-        </p>
-        <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Sector Insight
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          Specific trends and pay data for the Housing Association sector.
-        </p>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
+            Housing Association Analysis
+          </p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
+            Sector Insight
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Specific trends and pay data for the Housing Association sector.
+          </p>
+        </div>
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">

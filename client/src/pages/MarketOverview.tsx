@@ -11,65 +11,79 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { TrendingUp, TrendingDown, Percent, PoundSterling, Users, AlertCircle } from "lucide-react";
+import { TrendingUp, Percent, PoundSterling, BarChart3 } from "lucide-react";
+import logoImage from "@/assets/twentysix-logo.png";
 
 export function MarketOverview() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="mb-12">
-        <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-          UK Labour Market Analysis
-        </p>
-        <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Market Overview
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          Current trends and economic indicators shaping the employment landscape.
-        </p>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
+            UK Labour Market Analysis
+          </p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
+            Market Context
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Current economic indicators and market outlook shaping the employment landscape.
+          </p>
+        </div>
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
 
-      <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-white border-0 shadow-md hover:shadow-lg transition-all hover:-translate-y-1">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 rounded-lg bg-accent/10 flex items-center justify-center">
-              <Percent className="w-5 h-5 text-accent" />
+      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-2 gap-4">
+          <Card className="p-5 bg-gradient-to-br from-red-500 to-red-600 text-white border-0 shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <Percent className="w-5 h-5" />
+              <span className="text-sm font-medium opacity-90">CPI Inflation</span>
             </div>
-            <TrendingUp className="w-4 h-4 text-amber-500" />
-          </div>
-          <p className="text-3xl font-bold text-primary">{marketTrends.averagePayRise}%</p>
-          <p className="text-sm text-muted-foreground mt-1">Average Pay Rise</p>
-        </Card>
+            <p className="text-4xl font-bold">{marketTrends.cpi}%</p>
+            <p className="text-xs opacity-75 mt-2">August 2025 (ONS)</p>
+          </Card>
 
-        <Card className="p-5 bg-white border-0 shadow-md hover:shadow-lg transition-all hover:-translate-y-1">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 rounded-lg bg-red-500/10 flex items-center justify-center">
-              <TrendingUp className="w-5 h-5 text-red-500" />
+          <Card className="p-5 bg-gradient-to-br from-green-500 to-green-600 text-white border-0 shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <PoundSterling className="w-5 h-5" />
+              <span className="text-sm font-medium opacity-90">Avg Weekly Earnings</span>
             </div>
-            <AlertCircle className="w-4 h-4 text-red-400" />
-          </div>
-          <p className="text-3xl font-bold text-primary">{marketTrends.cpi}%</p>
-          <p className="text-sm text-muted-foreground mt-1">CPI Inflation</p>
-        </Card>
+            <p className="text-4xl font-bold">£{marketTrends.averageWeeklyEarnings}</p>
+            <p className="text-xs opacity-75 mt-2">Total pay growth 4.0%</p>
+          </Card>
 
-        <Card className="p-5 bg-white border-0 shadow-md hover:shadow-lg transition-all hover:-translate-y-1">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 rounded-lg bg-green-500/10 flex items-center justify-center">
-              <PoundSterling className="w-5 h-5 text-green-600" />
+          <Card className="p-5 bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <TrendingUp className="w-5 h-5" />
+              <span className="text-sm font-medium opacity-90">Pay Rise Prediction</span>
             </div>
-          </div>
-          <p className="text-3xl font-bold text-primary">£{marketTrends.realLivingWage}</p>
-          <p className="text-sm text-muted-foreground mt-1">Real Living Wage</p>
-        </Card>
+            <p className="text-4xl font-bold">{marketTrends.payRisePrediction}%</p>
+            <p className="text-xs opacity-75 mt-2">2026 forecast</p>
+          </Card>
 
-        <Card className="p-5 bg-white border-0 shadow-md hover:shadow-lg transition-all hover:-translate-y-1">
-          <div className="flex items-center justify-between mb-3">
-            <div className="w-10 h-10 rounded-lg bg-purple-500/10 flex items-center justify-center">
-              <Users className="w-5 h-5 text-purple-600" />
+          <Card className="p-5 bg-gradient-to-br from-purple-500 to-purple-600 text-white border-0 shadow-lg">
+            <div className="flex items-center gap-2 mb-3">
+              <BarChart3 className="w-5 h-5" />
+              <span className="text-sm font-medium opacity-90">Sector Pay Rise</span>
             </div>
-            <TrendingDown className="w-4 h-4 text-amber-500" />
+            <p className="text-4xl font-bold">{marketTrends.averagePayRise}%</p>
+            <p className="text-xs opacity-75 mt-2">Housing Association avg</p>
+          </Card>
+        </div>
+
+        <Card className="p-6 bg-white border-0 shadow-md">
+          <h3 className="font-display font-bold text-xl mb-4">Market Commentary</h3>
+          <div className="prose prose-sm text-muted-foreground">
+            <p className="mb-3">
+              The UK labour market continues to show signs of weakening, with unemployment rising to 4.7% and fewer job vacancies across most sectors. However, pay pressures remain due to persistent inflation above the Bank of England's 2% target.
+            </p>
+            <p className="mb-3">
+              For the Housing Association sector, we're seeing differential pay rises with the majority of budget going to lower-paid roles to maintain Living Wage commitments. This is creating compression between grades.
+            </p>
+            <p>
+              Looking ahead to 2026, we expect pay rises to average 3.5% across the sector, with continued pressure on technical and specialist roles where skill shortages persist.
+            </p>
           </div>
-          <p className="text-3xl font-bold text-primary">{marketTrends.unemploymentRate}%</p>
-          <p className="text-sm text-muted-foreground mt-1">Unemployment Rate</p>
         </Card>
       </div>
 
@@ -163,39 +177,33 @@ export function MarketOverview() {
 
       <Card className="p-8 bg-white border-0 shadow-md">
         <h3 className="font-display font-bold text-xl mb-6">Key Market Developments</h3>
-        <div className="space-y-6">
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center shrink-0">
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
+            <div className="w-10 h-10 rounded-full bg-amber-100 flex items-center justify-center mb-3">
               <span className="text-amber-600 font-bold">1</span>
             </div>
-            <div>
-              <h4 className="font-semibold mb-1">National Insurance Increases</h4>
-              <p className="text-muted-foreground">
-                Businesses have experienced significant increases in costs with steep rises in national insurance contributions, alongside the April 2025 increase in the National Living Wage to £12.21.
-              </p>
-            </div>
+            <h4 className="font-semibold mb-2">National Insurance Increases</h4>
+            <p className="text-sm text-muted-foreground">
+              Steep rises in NI contributions alongside the April 2025 NLW increase to £12.21 have significantly increased business costs.
+            </p>
           </div>
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center shrink-0">
+          <div className="p-4 bg-blue-50 rounded-lg border border-blue-200">
+            <div className="w-10 h-10 rounded-full bg-blue-100 flex items-center justify-center mb-3">
               <span className="text-blue-600 font-bold">2</span>
             </div>
-            <div>
-              <h4 className="font-semibold mb-1">Differential Pay Rises</h4>
-              <p className="text-muted-foreground">
-                The lion's share of increased pay budgets is going to those at the bottom of the market, resulting in manager-level salaries showing only small or no increases.
-              </p>
-            </div>
+            <h4 className="font-semibold mb-2">Differential Pay Rises</h4>
+            <p className="text-sm text-muted-foreground">
+              Most pay budget going to lower-paid roles, resulting in manager-level salaries showing minimal increases.
+            </p>
           </div>
-          <div className="flex gap-4">
-            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center shrink-0">
+          <div className="p-4 bg-purple-50 rounded-lg border border-purple-200">
+            <div className="w-10 h-10 rounded-full bg-purple-100 flex items-center justify-center mb-3">
               <span className="text-purple-600 font-bold">3</span>
             </div>
-            <div>
-              <h4 className="font-semibold mb-1">Grade Compression</h4>
-              <p className="text-muted-foreground">
-                Compression between bottom grades and those just above is causing difficulties in creating career paths, especially for supervisory roles.
-              </p>
-            </div>
+            <h4 className="font-semibold mb-2">Grade Compression</h4>
+            <p className="text-sm text-muted-foreground">
+              Compression between bottom grades is causing difficulties in creating career paths, especially for supervisory roles.
+            </p>
           </div>
         </div>
       </Card>

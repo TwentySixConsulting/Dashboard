@@ -2,6 +2,7 @@ import { Card } from "@/components/ui/card";
 import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { MapPin, Briefcase, TrendingUp, TrendingDown, Minus, Info } from "lucide-react";
+import logoImage from "@/assets/twentysix-logo.png";
 
 function SalaryRangeIndicator({ 
   current, 
@@ -65,7 +66,9 @@ export function RoleDetails() {
   const positionColors: Record<string, string> = {
     below: "bg-red-500",
     lower: "bg-amber-500",
+    lowerMid: "bg-yellow-500",
     median: "bg-green-500",
+    upperMid: "bg-teal-500",
     upper: "bg-accent",
     above: "bg-purple-500",
   };
@@ -73,23 +76,28 @@ export function RoleDetails() {
   const positionIcons: Record<string, React.ReactNode> = {
     below: <TrendingDown className="w-4 h-4" />,
     lower: <TrendingDown className="w-4 h-4" />,
+    lowerMid: <TrendingDown className="w-4 h-4" />,
     median: <Minus className="w-4 h-4" />,
+    upperMid: <TrendingUp className="w-4 h-4" />,
     upper: <TrendingUp className="w-4 h-4" />,
     above: <TrendingUp className="w-4 h-4" />,
   };
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="mb-12">
-        <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-          Individual Role Analysis
-        </p>
-        <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-          Role Details
-        </h1>
-        <p className="text-lg text-muted-foreground max-w-2xl">
-          Detailed breakdown of each role with market positioning context from our market data.
-        </p>
+      <div className="flex items-start justify-between mb-8">
+        <div>
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
+            Individual Role Analysis
+          </p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
+            Role-by-Role Detail
+          </h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">
+            Detailed breakdown of each role with market positioning context from our market data.
+          </p>
+        </div>
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -132,21 +140,21 @@ export function RoleDetails() {
                 </span>
               </div>
 
-              <div className="grid grid-cols-4 gap-3 mb-4">
-                <div className="text-center p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">Lower Q</p>
+              <div className="grid grid-cols-4 gap-2 mb-4">
+                <div className="text-center p-2 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-0.5">LQ</p>
                   <p className="font-semibold text-sm">£{role.lowerQuartile.toLocaleString()}</p>
                 </div>
-                <div className="text-center p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">Median</p>
+                <div className="text-center p-2 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-0.5">Median</p>
                   <p className="font-semibold text-sm">£{role.median.toLocaleString()}</p>
                 </div>
-                <div className="text-center p-3 bg-muted/50 rounded-lg">
-                  <p className="text-xs text-muted-foreground mb-1">Upper Q</p>
+                <div className="text-center p-2 bg-muted/50 rounded-lg">
+                  <p className="text-xs text-muted-foreground mb-0.5">UQ</p>
                   <p className="font-semibold text-sm">£{role.upperQuartile.toLocaleString()}</p>
                 </div>
-                <div className="text-center p-3 bg-primary/10 rounded-lg border border-primary/20">
-                  <p className="text-xs text-primary mb-1">Current</p>
+                <div className="text-center p-2 bg-primary/10 rounded-lg border border-primary/20">
+                  <p className="text-xs text-primary mb-0.5">Current</p>
                   <p className="font-bold text-sm text-primary">£{role.currentSalary.toLocaleString()}</p>
                 </div>
               </div>

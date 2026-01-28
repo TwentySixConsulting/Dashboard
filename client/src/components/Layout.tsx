@@ -10,17 +10,24 @@ import {
   Gift,
   ArrowRight,
   ChevronRight,
+  Lightbulb,
+  Percent,
+  Database,
 } from "lucide-react";
+import logoImage from "@/assets/twentysix-logo.png";
 
 const navItems = [
-  { path: "/", label: "Executive Summary", icon: FileText },
-  { path: "/market-overview", label: "Market Overview", icon: TrendingUp },
-  { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
+  { path: "/", label: "How to Use This Report", icon: FileText },
   { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
-  { path: "/role-details", label: "Role Details", icon: Users },
+  { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
-  { path: "/benefits", label: "Benefits Overview", icon: Gift },
+  { path: "/market-context", label: "Market Context", icon: TrendingUp },
+  { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
+  { path: "/bonus", label: "Bonus Potential", icon: Percent },
+  { path: "/benefits", label: "Benefits", icon: Gift },
+  { path: "/benefits-trends", label: "Benefits Trends & Ideas", icon: Lightbulb },
   { path: "/next-steps", label: "Next Steps", icon: ArrowRight },
+  { path: "/data-sources", label: "Data Sources", icon: Database },
 ];
 
 export function Layout({ children }: { children: React.ReactNode }) {
@@ -29,23 +36,19 @@ export function Layout({ children }: { children: React.ReactNode }) {
   return (
     <div className="flex min-h-screen">
       <aside className="w-72 bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto">
-        <div className="p-6 border-b border-sidebar-border">
-          <div className="flex items-center gap-3">
-            <div className="w-10 h-10 rounded-lg bg-sidebar-primary flex items-center justify-center">
-              <span className="text-white font-bold text-lg">26</span>
-            </div>
-            <div>
-              <h1 className="font-display font-bold text-lg">TwentySix</h1>
-              <p className="text-xs text-sidebar-foreground/60">Reward Consultancy</p>
-            </div>
-          </div>
+        <div className="p-5 border-b border-sidebar-border">
+          <img 
+            src={logoImage} 
+            alt="TwentySix" 
+            className="h-10 w-auto brightness-0 invert"
+          />
         </div>
 
         <div className="p-4">
           <p className="text-xs uppercase tracking-wider text-sidebar-foreground/40 mb-3 px-3">
             Report Sections
           </p>
-          <nav className="space-y-1">
+          <nav className="space-y-0.5">
             {navItems.map((item) => {
               const isActive = location === item.path;
               return (
@@ -53,17 +56,17 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div
                     data-testid={`nav-${item.path.replace("/", "") || "home"}`}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer group",
+                      "flex items-center gap-3 px-3 py-2 rounded-lg transition-all duration-200 cursor-pointer group",
                       isActive
                         ? "bg-sidebar-primary text-white"
                         : "text-sidebar-foreground/70 hover:bg-sidebar-accent hover:text-sidebar-foreground"
                     )}
                   >
-                    <item.icon className="w-4 h-4" />
-                    <span className="text-sm font-medium flex-1">{item.label}</span>
+                    <item.icon className="w-4 h-4 shrink-0" />
+                    <span className="text-sm font-medium flex-1 leading-tight">{item.label}</span>
                     <ChevronRight
                       className={cn(
-                        "w-4 h-4 opacity-0 transition-all",
+                        "w-4 h-4 opacity-0 transition-all shrink-0",
                         isActive ? "opacity-100" : "group-hover:opacity-50"
                       )}
                     />
@@ -75,7 +78,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-sidebar-border bg-sidebar">
-          <div className="glass-card bg-sidebar-accent/50 rounded-lg p-4">
+          <div className="bg-sidebar-accent/50 rounded-lg p-4">
             <p className="text-xs text-sidebar-foreground/60 mb-1">Prepared for</p>
             <p className="font-semibold text-sm">Saffron Housing</p>
             <p className="text-xs text-sidebar-foreground/60 mt-1">January 2026</p>
