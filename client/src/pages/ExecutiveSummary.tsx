@@ -23,6 +23,20 @@ import {
 
 const sections = [
   {
+    path: "/market-context",
+    title: "Market Context",
+    description: "Economic indicators and commentary.",
+    icon: TrendingUp,
+    color: "bg-green-500",
+  },
+  {
+    path: "/sector-insight",
+    title: "Sector Insight",
+    description: "Housing Association trends.",
+    icon: Building2,
+    color: "bg-indigo-500",
+  },
+  {
     path: "/market-data",
     title: "Market Data Results",
     description: "Overview of all roles with market ranges.",
@@ -42,20 +56,6 @@ const sections = [
     description: "Roles needing attention.",
     icon: AlertTriangle,
     color: "bg-amber-500",
-  },
-  {
-    path: "/market-context",
-    title: "Market Context",
-    description: "Economic indicators and commentary.",
-    icon: TrendingUp,
-    color: "bg-green-500",
-  },
-  {
-    path: "/sector-insight",
-    title: "Sector Insight",
-    description: "Housing Association trends.",
-    icon: Building2,
-    color: "bg-indigo-500",
   },
   {
     path: "/bonus",

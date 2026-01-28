@@ -18,11 +18,11 @@ import logoImage from "@/assets/twentysix-logo.png";
 
 const navItems = [
   { path: "/", label: "How to Use This Report", icon: FileText },
+  { path: "/market-context", label: "Market Context", icon: TrendingUp },
+  { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
   { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
   { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
-  { path: "/market-context", label: "Market Context", icon: TrendingUp },
-  { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
   { path: "/bonus", label: "Bonus Potential", icon: Percent },
   { path: "/benefits", label: "Benefits", icon: Gift },
   { path: "/benefits-trends", label: "Benefits Trends & Ideas", icon: Lightbulb },
