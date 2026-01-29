@@ -113,48 +113,48 @@ export function MarketOverview() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+        <Card className="p-5 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-              <Percent className="w-4 h-4 text-slate-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Percent className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-slate-800">3.2%</p>
-          <p className="text-sm font-medium text-slate-600 mt-1">CPI Inflation</p>
-          <p className="text-xs text-slate-400 mt-0.5">November 2025</p>
+          <p className="text-3xl font-bold">3.2%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">CPI Inflation</p>
+          <p className="text-xs text-white/60 mt-0.5">November 2025</p>
         </Card>
 
-        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+        <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-              <Users className="w-4 h-4 text-slate-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Users className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-slate-800">5.1%</p>
-          <p className="text-sm font-medium text-slate-600 mt-1">Unemployment</p>
-          <p className="text-xs text-slate-400 mt-0.5">Up from 4.2% (Jul 24)</p>
+          <p className="text-3xl font-bold">5.1%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Unemployment</p>
+          <p className="text-xs text-white/60 mt-0.5">Up from 4.2% (Jul 24)</p>
         </Card>
 
-        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+        <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-              <TrendingUp className="w-4 h-4 text-slate-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-slate-800">3.0%</p>
-          <p className="text-sm font-medium text-slate-600 mt-1">Pay Rise Forecast</p>
-          <p className="text-xs text-slate-400 mt-0.5">CIPD 2026 Outlook</p>
+          <p className="text-3xl font-bold">3.0%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Pay Rise Forecast</p>
+          <p className="text-xs text-white/60 mt-0.5">CIPD 2026 Outlook</p>
         </Card>
 
-        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+        <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-3">
-            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
-              <AlertTriangle className="w-4 h-4 text-slate-600" />
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold text-slate-800">4.1%</p>
-          <p className="text-sm font-medium text-slate-600 mt-1">Min Wage Rise</p>
-          <p className="text-xs text-slate-400 mt-0.5">Statutory estimate</p>
+          <p className="text-3xl font-bold">4.1%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Min Wage Rise</p>
+          <p className="text-xs text-white/60 mt-0.5">Statutory estimate</p>
         </Card>
       </div>
 
