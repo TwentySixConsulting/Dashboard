@@ -113,40 +113,48 @@ export function MarketOverview() {
 
       {/* Key Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-gradient-to-br from-amber-500 to-amber-600 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-2 mb-2">
-            <Percent className="w-5 h-5" />
-            <span className="text-sm font-medium opacity-90">CPI Inflation</span>
+        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+              <Percent className="w-4 h-4 text-slate-600" />
+            </div>
           </div>
-          <p className="text-3xl font-bold">3.2%</p>
-          <p className="text-xs opacity-75 mt-1">November 2025</p>
+          <p className="text-3xl font-bold text-slate-800">3.2%</p>
+          <p className="text-sm font-medium text-slate-600 mt-1">CPI Inflation</p>
+          <p className="text-xs text-slate-400 mt-0.5">November 2025</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-red-500 to-red-600 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-2 mb-2">
-            <Users className="w-5 h-5" />
-            <span className="text-sm font-medium opacity-90">Unemployment</span>
+        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+              <Users className="w-4 h-4 text-slate-600" />
+            </div>
           </div>
-          <p className="text-3xl font-bold">5.1%</p>
-          <p className="text-xs opacity-75 mt-1">Up from 4.2% (Jul 24)</p>
+          <p className="text-3xl font-bold text-slate-800">5.1%</p>
+          <p className="text-sm font-medium text-slate-600 mt-1">Unemployment</p>
+          <p className="text-xs text-slate-400 mt-0.5">Up from 4.2% (Jul 24)</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-blue-500 to-blue-600 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-2 mb-2">
-            <TrendingUp className="w-5 h-5" />
-            <span className="text-sm font-medium opacity-90">Pay Rise Forecast</span>
+        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4 text-slate-600" />
+            </div>
           </div>
-          <p className="text-3xl font-bold">3.0%</p>
-          <p className="text-xs opacity-75 mt-1">CIPD 2026 Outlook</p>
+          <p className="text-3xl font-bold text-slate-800">3.0%</p>
+          <p className="text-sm font-medium text-slate-600 mt-1">Pay Rise Forecast</p>
+          <p className="text-xs text-slate-400 mt-0.5">CIPD 2026 Outlook</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-emerald-500 to-emerald-600 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-2 mb-2">
-            <AlertTriangle className="w-5 h-5" />
-            <span className="text-sm font-medium opacity-90">Min Wage Rise</span>
+        <Card className="p-5 bg-white border border-slate-200 shadow-sm">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+              <AlertTriangle className="w-4 h-4 text-slate-600" />
+            </div>
           </div>
-          <p className="text-3xl font-bold">4.1%</p>
-          <p className="text-xs opacity-75 mt-1">Statutory estimate</p>
+          <p className="text-3xl font-bold text-slate-800">4.1%</p>
+          <p className="text-sm font-medium text-slate-600 mt-1">Min Wage Rise</p>
+          <p className="text-xs text-slate-400 mt-0.5">Statutory estimate</p>
         </Card>
       </div>
 
