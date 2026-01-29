@@ -51,31 +51,37 @@ export function Risks() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-6 bg-gradient-to-br from-green-600 to-green-500 text-white border-0 shadow-lg">
+        <Card className="p-6 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-3 mb-4">
-            <CheckCircle2 className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+              <CheckCircle2 className="w-5 h-5" />
+            </div>
             <span className="font-semibold">At Market Median</span>
           </div>
           <p className="text-5xl font-bold">{alignedPercentage}%</p>
-          <p className="text-sm opacity-80 mt-2">{alignedCount} roles at median</p>
+          <p className="text-sm text-white/70 mt-2">{alignedCount} roles at median</p>
         </Card>
 
-        <Card className="p-6 bg-gradient-to-br from-accent to-blue-500 text-white border-0 shadow-lg">
+        <Card className="p-6 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-3 mb-4">
-            <TrendingUp className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+              <TrendingUp className="w-5 h-5" />
+            </div>
             <span className="font-semibold">Above Market Median</span>
           </div>
           <p className="text-5xl font-bold">{abovePercentage}%</p>
-          <p className="text-sm opacity-80 mt-2">{aboveCount} roles above median</p>
+          <p className="text-sm text-white/70 mt-2">{aboveCount} roles above median</p>
         </Card>
 
-        <Card className="p-6 bg-gradient-to-br from-amber-500 to-orange-500 text-white border-0 shadow-lg">
+        <Card className="p-6 bg-gradient-to-br from-slate-600 to-slate-700 text-white border-0 shadow-md">
           <div className="flex items-center gap-3 mb-4">
-            <TrendingDown className="w-6 h-6" />
+            <div className="w-10 h-10 rounded-lg bg-white/10 flex items-center justify-center">
+              <TrendingDown className="w-5 h-5" />
+            </div>
             <span className="font-semibold">Below Market Median</span>
           </div>
           <p className="text-5xl font-bold">{belowPercentage}%</p>
-          <p className="text-sm opacity-80 mt-2">{belowCount} roles below median</p>
+          <p className="text-sm text-white/70 mt-2">{belowCount} roles below median</p>
         </Card>
       </div>
 

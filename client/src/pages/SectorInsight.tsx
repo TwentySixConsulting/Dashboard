@@ -47,36 +47,44 @@ export function SectorInsight() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-gradient-to-br from-primary to-primary/80 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-3 mb-3">
-            <TrendingUp className="w-5 h-5" />
-            <span className="text-sm opacity-80">Avg Salary Increase</span>
+        <Card className="p-5 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-md">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <TrendingUp className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-4xl font-bold">{sectorInsights.averageSalaryIncrease}%</p>
+          <p className="text-3xl font-bold">{sectorInsights.averageSalaryIncrease}%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Avg Salary Increase</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-accent to-accent/80 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-3 mb-3">
-            <Users className="w-5 h-5" />
-            <span className="text-sm opacity-80">Median Turnover</span>
+        <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Users className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-4xl font-bold">{sectorInsights.medianTurnover}%</p>
+          <p className="text-3xl font-bold">{sectorInsights.medianTurnover}%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Median Turnover</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-green-600 to-green-500 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-3 mb-3">
-            <Building2 className="w-5 h-5" />
-            <span className="text-sm opacity-80">Living Wage Accredited</span>
+        <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Building2 className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-4xl font-bold">98%</p>
+          <p className="text-3xl font-bold">98%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Living Wage Accredited</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-purple-600 to-purple-500 text-white border-0 shadow-lg">
-          <div className="flex items-center gap-3 mb-3">
-            <Briefcase className="w-5 h-5" />
-            <span className="text-sm opacity-80">Hybrid Working</span>
+        <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
+          <div className="flex items-center gap-2 mb-3">
+            <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
+              <Briefcase className="w-4 h-4" />
+            </div>
           </div>
-          <p className="text-4xl font-bold">87%</p>
+          <p className="text-3xl font-bold">87%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Hybrid Working</p>
         </Card>
       </div>
 
