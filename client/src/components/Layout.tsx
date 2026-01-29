@@ -14,6 +14,7 @@ import {
   Percent,
   Database,
   Home,
+  LineChart,
 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
 
@@ -24,6 +25,7 @@ const navItems = [
   { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
   { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
+  { path: "/market-comparison", label: "Market Comparison", icon: LineChart },
   { path: "/bonus", label: "Bonus Potential", icon: Percent },
   { path: "/benefits", label: "Benefits", icon: Gift },
   { path: "/benefits-trends", label: "Benefits Trends & Ideas", icon: Lightbulb },

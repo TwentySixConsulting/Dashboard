@@ -10,6 +10,7 @@ import { SectorInsight } from "@/pages/SectorInsight";
 import { Benchmarking } from "@/pages/Benchmarking";
 import { RoleDetails } from "@/pages/RoleDetails";
 import { Risks } from "@/pages/Risks";
+import { MarketComparison } from "@/pages/MarketComparison";
 import { Benefits } from "@/pages/Benefits";
 import { BenefitsTrends } from "@/pages/BenefitsTrends";
 import { Bonus } from "@/pages/Bonus";
@@ -25,6 +26,7 @@ function Router() {
         <Route path="/market-data" component={Benchmarking} />
         <Route path="/role-details" component={RoleDetails} />
         <Route path="/risks" component={Risks} />
+        <Route path="/market-comparison" component={MarketComparison} />
         <Route path="/market-context" component={MarketOverview} />
         <Route path="/sector-insight" component={SectorInsight} />
         <Route path="/bonus" component={Bonus} />
