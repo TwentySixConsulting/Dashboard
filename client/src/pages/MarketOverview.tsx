@@ -1,4 +1,6 @@
+import { useRef } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { marketTrends, cpiTrendData, salaryTrendData } from "@/lib/data";
 import {
   LineChart,
@@ -11,8 +13,98 @@ import {
   AreaChart,
   Area,
 } from "recharts";
-import { TrendingUp, Percent, PoundSterling, BarChart3 } from "lucide-react";
+import { TrendingUp, Percent, PoundSterling, BarChart3, Download } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
+import { toPng } from "html-to-image";
+
+function QuartilesExplained() {
+  const graphicRef = useRef<HTMLDivElement>(null);
+
+  const handleExport = async () => {
+    if (graphicRef.current) {
+      try {
+        const dataUrl = await toPng(graphicRef.current, {
+          backgroundColor: "#ffffff",
+          pixelRatio: 2,
+        });
+        const link = document.createElement("a");
+        link.download = "quartiles-explained.png";
+        link.href = dataUrl;
+        link.click();
+      } catch (error) {
+        console.error("Failed to export image:", error);
+      }
+    }
+  };
+
+  return (
+    <Card className="p-6 bg-white border-0 shadow-md">
+      <div className="flex items-center justify-between mb-4">
+        <h3 className="font-display font-bold text-xl">Quartiles Explained</h3>
+        <Button 
+          onClick={handleExport} 
+          variant="outline" 
+          size="sm" 
+          className="gap-2"
+          data-testid="button-export-quartiles"
+        >
+          <Download className="w-4 h-4" />
+          Export Image
+        </Button>
+      </div>
+
+      <div ref={graphicRef} className="p-4 bg-white">
+        {/* Horizontal Bar Graphic */}
+        <div className="mb-6">
+          <div className="flex h-12 rounded-lg overflow-hidden border border-slate-200">
+            <div className="flex-1 bg-red-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-red-700 text-center px-1">Below Lower Quartile</span>
+            </div>
+            <div className="flex-1 bg-amber-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-amber-700 text-center px-1">LQ → Median</span>
+            </div>
+            <div className="flex-1 bg-emerald-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-emerald-700 text-center px-1">Median → UQ</span>
+            </div>
+            <div className="flex-1 bg-blue-100 flex items-center justify-center">
+              <span className="text-xs font-medium text-blue-700 text-center px-1">Above Upper Quartile</span>
+            </div>
+          </div>
+
+          {/* Reference Points */}
+          <div className="relative h-8 mt-1">
+            <div className="absolute left-0 right-0 top-0 h-px bg-slate-300" />
+            
+            {/* LQ tick */}
+            <div className="absolute" style={{ left: "25%" }}>
+              <div className="w-px h-3 bg-slate-400 -translate-x-1/2" />
+              <p className="text-xs text-slate-600 font-medium mt-1 -translate-x-1/2 whitespace-nowrap">Lower Quartile</p>
+            </div>
+            
+            {/* Median tick */}
+            <div className="absolute" style={{ left: "50%" }}>
+              <div className="w-px h-3 bg-slate-600 -translate-x-1/2" />
+              <p className="text-xs text-slate-800 font-semibold mt-1 -translate-x-1/2">Median</p>
+            </div>
+            
+            {/* UQ tick */}
+            <div className="absolute" style={{ left: "75%" }}>
+              <div className="w-px h-3 bg-slate-400 -translate-x-1/2" />
+              <p className="text-xs text-slate-600 font-medium mt-1 -translate-x-1/2 whitespace-nowrap">Upper Quartile</p>
+            </div>
+          </div>
+        </div>
+
+        {/* Explanation */}
+        <p className="text-sm text-muted-foreground leading-relaxed">
+          <strong>Market data points:</strong> We use three standard reference points — Lower Quartile (LQ), Median, and Upper Quartile (UQ). 
+          <strong> Position bands:</strong> Each role's salary is categorised into one of four bands based on where it falls relative to these reference points. 
+          This helps identify whether a role is paid below market, around the middle, or above market rates.
+        </p>
+      </div>
+    </Card>
+  );
+}
 
 export function MarketOverview() {
   return (
@@ -29,8 +121,11 @@ export function MarketOverview() {
             Current economic indicators and market outlook shaping the employment landscape.
           </p>
         </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
+
+      {/* Quartiles Explained */}
+      <QuartilesExplained />
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <div className="grid grid-cols-2 gap-4">
