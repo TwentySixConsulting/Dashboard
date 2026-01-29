@@ -13,11 +13,12 @@ import {
   Lightbulb,
   Percent,
   Database,
+  Home,
 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
 
 const navItems = [
-  { path: "/", label: "How to Use This Report", icon: FileText },
+  { path: "/", label: "Dashboard", icon: Home },
   { path: "/market-context", label: "Market Context", icon: TrendingUp },
   { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
   { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
@@ -30,23 +31,34 @@ const navItems = [
   { path: "/data-sources", label: "Data Sources", icon: Database },
 ];
 
+const topNavItems = [
+  { path: "/market-data", label: "Market Data" },
+  { path: "/role-details", label: "Role Details" },
+  { path: "/risks", label: "Strengths & Risks" },
+  { path: "/market-context", label: "Market Context" },
+  { path: "/benefits", label: "Benefits" },
+  { path: "/next-steps", label: "Next Steps" },
+];
+
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
 
   return (
     <div className="flex min-h-screen">
+      {/* Sidebar */}
       <aside className="w-72 bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto">
         <div className="p-5 border-b border-sidebar-border">
           <img 
             src={logoImage} 
             alt="TwentySix" 
             className="h-10 w-auto brightness-0 invert"
+            style={{ opacity: 1 }}
           />
         </div>
 
         <div className="p-4">
           <p className="text-xs uppercase tracking-wider text-sidebar-foreground/40 mb-3 px-3">
-            Report Sections
+            Dashboard Sections
           </p>
           <nav className="space-y-0.5">
             {navItems.map((item) => {
@@ -86,7 +98,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
       </aside>
 
+      {/* Main Content */}
       <main className="flex-1 ml-72">
+        {/* Top Navigation Bar */}
+        <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-3">
+          <nav className="flex items-center gap-1">
+            <Link href="/">
+              <span className={cn(
+                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
+                location === "/" ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
+              )}>
+                Dashboard
+              </span>
+            </Link>
+            {topNavItems.map((item) => (
+              <Link key={item.path} href={item.path}>
+                <span className={cn(
+                  "px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
+                  location === item.path ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
+                )}>
+                  {item.label}
+                </span>
+              </Link>
+            ))}
+          </nav>
+        </div>
+
         <div className="min-h-screen p-8 lg:p-12">
           {children}
         </div>
