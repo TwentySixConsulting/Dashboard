@@ -90,9 +90,9 @@ export async function getPublishedMeta(): Promise<DashboardPageMeta> {
       return DEFAULT_PAGE_META;
     }
 
-    cachedMeta = data || DEFAULT_PAGE_META;
+    cachedMeta = data ?? DEFAULT_PAGE_META;
     cacheTimestamp = Date.now();
-    return cachedMeta;
+    return cachedMeta ?? DEFAULT_PAGE_META;
   } catch (err) {
     console.error('Failed to fetch page meta:', err);
     return DEFAULT_PAGE_META;
@@ -142,15 +142,52 @@ export async function getDraftMeta(): Promise<DashboardPageMeta | null> {
 
 export async function updateDraftSection(id: string, updates: Partial<DashboardSection>): Promise<boolean> {
   try {
-    const { error } = await supabase
+    // Check if draft exists, if not clone from published
+    const { data: draftSection } = await supabase
       .from('dashboard_sections')
-      .update({ ...updates, updated_at: new Date().toISOString() })
+      .select('id')
       .eq('id', id)
-      .eq('status', 'draft');
+      .eq('status', 'draft')
+      .single();
 
-    if (error) {
-      console.error('Error updating draft section:', error);
-      return false;
+    if (draftSection) {
+      // Update existing draft
+      const { error } = await supabase
+        .from('dashboard_sections')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', id)
+        .eq('status', 'draft');
+
+      if (error) {
+        console.error('Error updating draft section:', error);
+        return false;
+      }
+    } else {
+      // Get published version and create draft
+      const { data: published } = await supabase
+        .from('dashboard_sections')
+        .select('*')
+        .eq('slug', id.includes('-draft') ? id.replace('-draft', '') : id)
+        .eq('status', 'published')
+        .single();
+
+      if (published) {
+        const { error } = await supabase
+          .from('dashboard_sections')
+          .insert({
+            ...published,
+            id: undefined,
+            ...updates,
+            slug: `${published.slug}-draft`,
+            status: 'draft',
+            updated_at: new Date().toISOString(),
+          });
+
+        if (error) {
+          console.error('Error creating draft section:', error);
+          return false;
+        }
+      }
     }
 
     return true;
@@ -160,17 +197,47 @@ export async function updateDraftSection(id: string, updates: Partial<DashboardS
   }
 }
 
-export async function updateDraftMeta(id: string, updates: Partial<DashboardPageMeta>): Promise<boolean> {
+export async function updateDraftMeta(updates: Partial<DashboardPageMeta>): Promise<boolean> {
   try {
-    const { error } = await supabase
+    // First try to update existing draft
+    const { data: existingDraft } = await supabase
       .from('dashboard_page_meta')
-      .update({ ...updates, updated_at: new Date().toISOString() })
-      .eq('id', id)
-      .eq('status', 'draft');
+      .select('id')
+      .eq('page_key', 'home-draft')
+      .single();
 
-    if (error) {
-      console.error('Error updating draft meta:', error);
-      return false;
+    if (existingDraft) {
+      const { error } = await supabase
+        .from('dashboard_page_meta')
+        .update({ ...updates, updated_at: new Date().toISOString() })
+        .eq('id', existingDraft.id);
+
+      if (error) {
+        console.error('Error updating draft meta:', error);
+        return false;
+      }
+    } else {
+      // Get published version to clone
+      const { data: published } = await supabase
+        .from('dashboard_page_meta')
+        .select('*')
+        .eq('page_key', 'home')
+        .single();
+
+      const { error } = await supabase
+        .from('dashboard_page_meta')
+        .insert({
+          page_key: 'home-draft',
+          status: 'draft',
+          headline: updates.headline ?? published?.headline ?? 'Use Your Dashboard',
+          subheadline: updates.subheadline ?? published?.subheadline ?? 'How to interpret pay ranges',
+          intro: updates.intro ?? published?.intro ?? '',
+        });
+
+      if (error) {
+        console.error('Error inserting draft meta:', error);
+        return false;
+      }
     }
 
     return true;

@@ -296,7 +296,7 @@ export function ExecutiveSummary() {
         sort_order: index + 1,
       }));
       updateSectionOrder(orderUpdates);
-      trackChange('sections_order', JSON.stringify(orderUpdates), 'dashboard');
+      trackChange('sections_order', JSON.stringify(orderUpdates), 'dashboard', 'order');
     }
   }
 
@@ -306,7 +306,7 @@ export function ExecutiveSummary() {
     const section = sections.find(s => s.id === id);
     if (section) {
       updateDraftSection(id, { [field]: value });
-      trackChange(`section_${id}_${field}`, value, 'dashboard');
+      trackChange(`section_${id}_${field}`, value, 'dashboard', 'section');
     }
   }
 
@@ -314,7 +314,7 @@ export function ExecutiveSummary() {
     setEditingHeadline(false);
     if (headlineValue !== pageMeta.headline) {
       setPageMeta({ ...pageMeta, headline: headlineValue });
-      trackChange('dashboard_headline', headlineValue, 'dashboard');
+      trackChange('dashboard_headline', headlineValue, 'dashboard', 'meta');
     }
   }
 
@@ -322,7 +322,7 @@ export function ExecutiveSummary() {
     setEditingSubheadline(false);
     if (subheadlineValue !== pageMeta.subheadline) {
       setPageMeta({ ...pageMeta, subheadline: subheadlineValue });
-      trackChange('dashboard_subheadline', subheadlineValue, 'dashboard');
+      trackChange('dashboard_subheadline', subheadlineValue, 'dashboard', 'meta');
     }
   }
 
