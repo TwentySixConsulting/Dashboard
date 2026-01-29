@@ -6,7 +6,6 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { Layout } from "@/components/Layout";
 import { ExecutiveSummary } from "@/pages/ExecutiveSummary";
 import { MarketOverview } from "@/pages/MarketOverview";
-import { SectorInsight } from "@/pages/SectorInsight";
 import { Benchmarking } from "@/pages/Benchmarking";
 import { RoleDetails } from "@/pages/RoleDetails";
 import { Risks } from "@/pages/Risks";
@@ -28,7 +27,6 @@ function Router() {
         <Route path="/risks" component={Risks} />
         <Route path="/market-comparison" component={MarketComparison} />
         <Route path="/market-context" component={MarketOverview} />
-        <Route path="/sector-insight" component={SectorInsight} />
         <Route path="/bonus" component={Bonus} />
         <Route path="/benefits" component={Benefits} />
         <Route path="/benefits-trends" component={BenefitsTrends} />

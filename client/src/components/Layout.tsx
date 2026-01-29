@@ -3,7 +3,6 @@ import { cn } from "@/lib/utils";
 import {
   FileText,
   TrendingUp,
-  Building2,
   Users,
   BarChart3,
   AlertTriangle,
@@ -21,7 +20,6 @@ import logoImage from "@/assets/twentysix-logo.png";
 const navItems = [
   { path: "/", label: "Dashboard", icon: Home },
   { path: "/market-context", label: "Market Context", icon: TrendingUp },
-  { path: "/sector-insight", label: "Sector Insight", icon: Building2 },
   { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
   { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
