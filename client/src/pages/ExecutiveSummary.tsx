@@ -2,14 +2,10 @@ import { useState, useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
-import { Button } from "@/components/ui/button";
 import { Link } from "wouter";
 import { companyInfo } from "@/lib/data";
-import { getPublishedSections, getPublishedMeta, getDraftSections, getDraftMeta, updateDraftSection, updateDraftMeta, updateSectionOrder, publishDrafts, clearCache, DashboardSection, DashboardPageMeta, DEFAULT_SECTIONS, DEFAULT_PAGE_META } from "@/lib/dashboardData";
-import { isSupabaseConfigured } from "@/lib/supabase";
+import { getPublishedSections, getPublishedMeta, getDraftSections, getDraftMeta, updateDraftSection, updateSectionOrder, publishDrafts, clearCache, DashboardSection, DashboardPageMeta, DEFAULT_SECTIONS, DEFAULT_PAGE_META } from "@/lib/dashboardData";
 import { useAuth } from "@/contexts/AuthContext";
-import { LoginModal } from "@/components/LoginModal";
-import { EditModeToolbar } from "@/components/EditModeToolbar";
 import logoImage from "@/assets/twentysix-logo.png";
 import {
   DndContext,
@@ -48,7 +44,8 @@ import {
   LucideIcon,
   GripVertical,
   Pencil,
-  Lock,
+  Check,
+  X,
 } from "lucide-react";
 
 const iconMap: Record<string, LucideIcon> = {
@@ -107,6 +104,11 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
   const IconComponent = iconMap[section.icon || 'barChart'] || BarChart3;
   const bgColor = colorMap[section.slug] || 'bg-slate-600';
 
+  useEffect(() => {
+    setEditTitle(section.title);
+    setEditDescription(section.description || '');
+  }, [section]);
+
   function handleSaveEdit() {
     onUpdate(section.id, 'title', editTitle);
     onUpdate(section.id, 'description', editDescription);
@@ -129,6 +131,7 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
               onChange={(e) => setEditTitle(e.target.value)}
               className="font-semibold"
               placeholder="Section title"
+              autoFocus
               data-testid={`edit-title-${section.slug}`}
             />
             <Textarea
@@ -139,12 +142,19 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
               data-testid={`edit-description-${section.slug}`}
             />
             <div className="flex gap-2">
-              <Button size="sm" onClick={handleSaveEdit} data-testid={`save-edit-${section.slug}`}>
-                Save
-              </Button>
-              <Button size="sm" variant="outline" onClick={handleCancelEdit}>
-                Cancel
-              </Button>
+              <button 
+                onClick={handleSaveEdit} 
+                className="p-2 bg-green-500 text-white rounded hover:bg-green-600"
+                data-testid={`save-edit-${section.slug}`}
+              >
+                <Check className="w-4 h-4" />
+              </button>
+              <button 
+                onClick={handleCancelEdit}
+                className="p-2 bg-slate-400 text-white rounded hover:bg-slate-500"
+              >
+                <X className="w-4 h-4" />
+              </button>
             </div>
           </div>
         </Card>
@@ -156,7 +166,7 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
     <Card
       className={`p-5 bg-white border shadow-sm transition-all duration-200 ${
         isEditMode
-          ? 'border-dashed border-slate-300 hover:border-indigo-400 cursor-move'
+          ? 'border-dashed border-indigo-300 hover:border-indigo-500 cursor-move'
           : 'border-slate-200 hover:shadow-md hover:border-slate-300 cursor-pointer group'
       }`}
       data-testid={`launcher-${section.slug}`}
@@ -189,7 +199,7 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
                 className="p-1 hover:bg-slate-100 rounded"
                 data-testid={`edit-btn-${section.slug}`}
               >
-                <Pencil className="w-4 h-4 text-slate-400" />
+                <Pencil className="w-4 h-4 text-indigo-500" />
               </button>
             ) : (
               <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
@@ -217,16 +227,15 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
 }
 
 export function ExecutiveSummary() {
-  const { user, isEditMode, setEditMode } = useAuth();
+  const { user, isEditMode, trackChange, hasUnsavedChanges } = useAuth();
   const [sections, setSections] = useState<DashboardSection[]>([]);
   const [originalSections, setOriginalSections] = useState<DashboardSection[]>([]);
   const [pageMeta, setPageMeta] = useState<DashboardPageMeta>(DEFAULT_PAGE_META);
-  const [originalPageMeta, setOriginalPageMeta] = useState<DashboardPageMeta>(DEFAULT_PAGE_META);
   const [loading, setLoading] = useState(true);
-  const [saving, setSaving] = useState(false);
-  const [showLoginModal, setShowLoginModal] = useState(false);
   const [editingHeadline, setEditingHeadline] = useState(false);
   const [editingSubheadline, setEditingSubheadline] = useState(false);
+  const [headlineValue, setHeadlineValue] = useState('');
+  const [subheadlineValue, setSubheadlineValue] = useState('');
 
   const sensors = useSensors(
     useSensor(PointerSensor),
@@ -235,7 +244,12 @@ export function ExecutiveSummary() {
 
   useEffect(() => {
     loadData();
-  }, [isEditMode]);
+  }, [isEditMode, user]);
+
+  useEffect(() => {
+    setHeadlineValue(pageMeta.headline || 'Use Your Dashboard');
+    setSubheadlineValue(pageMeta.subheadline || 'How to interpret pay ranges');
+  }, [pageMeta]);
 
   async function loadData() {
     setLoading(true);
@@ -250,7 +264,6 @@ export function ExecutiveSummary() {
         setOriginalSections(JSON.parse(JSON.stringify(filteredSections)));
         if (metaData) {
           setPageMeta(metaData);
-          setOriginalPageMeta(JSON.parse(JSON.stringify(metaData)));
         }
       } else {
         const [sectionsData, metaData] = await Promise.all([
@@ -260,7 +273,6 @@ export function ExecutiveSummary() {
         setSections(sectionsData);
         setOriginalSections(JSON.parse(JSON.stringify(sectionsData)));
         setPageMeta(metaData);
-        setOriginalPageMeta(JSON.parse(JSON.stringify(metaData)));
       }
     } catch (error) {
       console.error('Failed to load dashboard data:', error);
@@ -276,63 +288,42 @@ export function ExecutiveSummary() {
     if (over && active.id !== over.id) {
       const oldIndex = sections.findIndex((s) => s.id === active.id);
       const newIndex = sections.findIndex((s) => s.id === over.id);
-      setSections(arrayMove(sections, oldIndex, newIndex));
+      const newSections = arrayMove(sections, oldIndex, newIndex);
+      setSections(newSections);
+      
+      const orderUpdates = newSections.map((s, index) => ({
+        id: s.id,
+        sort_order: index + 1,
+      }));
+      updateSectionOrder(orderUpdates);
+      trackChange('sections_order', JSON.stringify(orderUpdates), 'dashboard');
     }
   }
 
   function updateSection(id: string, field: keyof DashboardSection, value: string) {
     setSections(sections.map(s => s.id === id ? { ...s, [field]: value } : s));
-  }
-
-  function hasChanges(): boolean {
-    return JSON.stringify(sections) !== JSON.stringify(originalSections) ||
-           JSON.stringify(pageMeta) !== JSON.stringify(originalPageMeta);
-  }
-
-  async function handleSave() {
-    setSaving(true);
-    try {
-      const orderUpdates = sections.map((s, index) => ({
-        id: s.id,
-        sort_order: index + 1,
-      }));
-      await updateSectionOrder(orderUpdates);
-
-      for (const section of sections) {
-        const original = originalSections.find(s => s.id === section.id);
-        if (original && (original.title !== section.title || original.description !== section.description)) {
-          await updateDraftSection(section.id, {
-            title: section.title,
-            description: section.description,
-          });
-        }
-      }
-
-      if (pageMeta.id && pageMeta.id !== 'default') {
-        await updateDraftMeta(pageMeta.id, {
-          headline: pageMeta.headline,
-          subheadline: pageMeta.subheadline,
-          intro: pageMeta.intro,
-        });
-      } else {
-        console.log('Draft meta not available for update, headline/subheadline saved with sections');
-      }
-
-      await publishDrafts();
-      clearCache();
-
-      setOriginalSections(JSON.parse(JSON.stringify(sections)));
-      setOriginalPageMeta(JSON.parse(JSON.stringify(pageMeta)));
-    } catch (error) {
-      console.error('Failed to save:', error);
-    } finally {
-      setSaving(false);
+    
+    const section = sections.find(s => s.id === id);
+    if (section) {
+      updateDraftSection(id, { [field]: value });
+      trackChange(`section_${id}_${field}`, value, 'dashboard');
     }
   }
 
-  function handleUndo() {
-    setSections(JSON.parse(JSON.stringify(originalSections)));
-    setPageMeta(JSON.parse(JSON.stringify(originalPageMeta)));
+  function handleHeadlineSave() {
+    setEditingHeadline(false);
+    if (headlineValue !== pageMeta.headline) {
+      setPageMeta({ ...pageMeta, headline: headlineValue });
+      trackChange('dashboard_headline', headlineValue, 'dashboard');
+    }
+  }
+
+  function handleSubheadlineSave() {
+    setEditingSubheadline(false);
+    if (subheadlineValue !== pageMeta.subheadline) {
+      setPageMeta({ ...pageMeta, subheadline: subheadlineValue });
+      trackChange('dashboard_subheadline', subheadlineValue, 'dashboard');
+    }
   }
 
   return (
@@ -343,39 +334,49 @@ export function ExecutiveSummary() {
             Personalised Pay & Benefits Dashboard
           </p>
           {isEditMode && editingHeadline ? (
-            <Input
-              value={pageMeta.headline || ''}
-              onChange={(e) => setPageMeta({ ...pageMeta, headline: e.target.value })}
-              onBlur={() => setEditingHeadline(false)}
-              onKeyDown={(e) => e.key === 'Enter' && setEditingHeadline(false)}
-              className="text-4xl lg:text-5xl font-display font-bold mb-3 border-indigo-500"
-              autoFocus
-              data-testid="input-edit-headline"
-            />
+            <div className="flex items-center gap-2 mb-3">
+              <input
+                value={headlineValue}
+                onChange={(e) => setHeadlineValue(e.target.value)}
+                onBlur={handleHeadlineSave}
+                onKeyDown={(e) => e.key === 'Enter' && handleHeadlineSave()}
+                className="text-4xl lg:text-5xl font-display font-bold border-2 border-indigo-500 rounded px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                autoFocus
+                data-testid="input-edit-headline"
+              />
+              <button onClick={handleHeadlineSave} className="p-2 bg-green-500 text-white rounded">
+                <Check className="w-5 h-5" />
+              </button>
+            </div>
           ) : (
             <h1
-              className={`text-4xl lg:text-5xl font-display font-bold text-primary mb-3 ${isEditMode ? 'cursor-pointer hover:bg-indigo-50 rounded px-2 -mx-2' : ''}`}
+              className={`text-4xl lg:text-5xl font-display font-bold text-primary mb-3 ${isEditMode ? 'cursor-pointer hover:bg-indigo-50 hover:outline hover:outline-2 hover:outline-dashed hover:outline-indigo-300 rounded px-2 -mx-2 transition-all' : ''}`}
               onClick={() => isEditMode && setEditingHeadline(true)}
               data-testid="dashboard-headline"
             >
-              {pageMeta.headline || 'Use Your Dashboard'}
-              {isEditMode && <Pencil className="inline w-5 h-5 ml-2 text-slate-400" />}
+              {headlineValue}
+              {isEditMode && <Pencil className="inline w-5 h-5 ml-2 text-indigo-400 opacity-50" />}
             </h1>
           )}
           {isEditMode && editingSubheadline ? (
-            <Input
-              value={pageMeta.subheadline || ''}
-              onChange={(e) => setPageMeta({ ...pageMeta, subheadline: e.target.value })}
-              onBlur={() => setEditingSubheadline(false)}
-              onKeyDown={(e) => e.key === 'Enter' && setEditingSubheadline(false)}
-              className="border-indigo-500"
-              autoFocus
-              data-testid="input-edit-subheadline"
-            />
+            <div className="flex items-center gap-2">
+              <input
+                value={subheadlineValue}
+                onChange={(e) => setSubheadlineValue(e.target.value)}
+                onBlur={handleSubheadlineSave}
+                onKeyDown={(e) => e.key === 'Enter' && handleSubheadlineSave()}
+                className="border-2 border-indigo-500 rounded px-2 py-1 bg-white focus:outline-none focus:ring-2 focus:ring-indigo-300"
+                autoFocus
+                data-testid="input-edit-subheadline"
+              />
+              <button onClick={handleSubheadlineSave} className="p-1 bg-green-500 text-white rounded">
+                <Check className="w-4 h-4" />
+              </button>
+            </div>
           ) : (
             <Link href="#pay-ranges">
               <span
-                className={`inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors ${isEditMode ? 'cursor-pointer' : 'cursor-pointer'}`}
+                className={`inline-flex items-center gap-2 text-accent hover:text-accent/80 transition-colors cursor-pointer ${isEditMode ? 'hover:bg-indigo-50 hover:outline hover:outline-2 hover:outline-dashed hover:outline-indigo-300 rounded px-1' : ''}`}
                 onClick={(e) => {
                   if (isEditMode) {
                     e.preventDefault();
@@ -385,8 +386,8 @@ export function ExecutiveSummary() {
                 data-testid="dashboard-subheadline"
               >
                 <HelpCircle className="w-4 h-4" />
-                <span className="text-sm font-medium">{pageMeta.subheadline || 'How to interpret pay ranges'}</span>
-                {isEditMode && <Pencil className="w-3 h-3 text-slate-400" />}
+                <span className="text-sm font-medium">{subheadlineValue}</span>
+                {isEditMode && <Pencil className="w-3 h-3 text-indigo-400 opacity-50" />}
               </span>
             </Link>
           )}
@@ -503,43 +504,6 @@ export function ExecutiveSummary() {
           </div>
         </div>
       </Card>
-
-      {isSupabaseConfigured && !user && (
-        <div className="text-center pt-8 pb-4 border-t border-slate-200">
-          <button
-            onClick={() => setShowLoginModal(true)}
-            className="inline-flex items-center gap-2 text-sm text-slate-500 hover:text-slate-700 transition-colors"
-            data-testid="button-edit-as-admin"
-          >
-            <Lock className="w-4 h-4" />
-            <span>Edit as Admin</span>
-          </button>
-        </div>
-      )}
-
-      {user && !isEditMode && (
-        <div className="text-center pt-8 pb-4 border-t border-slate-200">
-          <button
-            onClick={() => setEditMode(true)}
-            className="inline-flex items-center gap-2 text-sm text-indigo-600 hover:text-indigo-700 transition-colors font-medium"
-            data-testid="button-enter-edit-mode"
-          >
-            <Pencil className="w-4 h-4" />
-            <span>Enter Edit Mode</span>
-          </button>
-        </div>
-      )}
-
-      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
-
-      {isEditMode && (
-        <EditModeToolbar
-          hasChanges={hasChanges()}
-          onSave={handleSave}
-          onUndo={handleUndo}
-          saving={saving}
-        />
-      )}
     </div>
   );
 }

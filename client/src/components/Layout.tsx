@@ -1,7 +1,11 @@
+import { useState } from "react";
 import { Link, useLocation } from "wouter";
 import { cn } from "@/lib/utils";
+import { useAuth } from "@/contexts/AuthContext";
+import { GlobalEditToolbar } from "@/components/GlobalEditToolbar";
+import { LoginModal } from "@/components/LoginModal";
+import { isSupabaseConfigured } from "@/lib/supabase";
 import {
-  FileText,
   TrendingUp,
   Users,
   BarChart3,
@@ -14,6 +18,8 @@ import {
   Database,
   Home,
   LineChart,
+  Lock,
+  Pencil,
 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
 
@@ -42,6 +48,8 @@ const topNavItems = [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const { user, isEditMode, setEditMode } = useAuth();
+  const [showLoginModal, setShowLoginModal] = useState(false);
 
   return (
     <div className="flex min-h-screen">
@@ -90,16 +98,56 @@ export function Layout({ children }: { children: React.ReactNode }) {
         </div>
 
         <div className="absolute bottom-0 left-0 right-0 p-4 border-t border-sidebar-border bg-sidebar">
-          <div className="bg-sidebar-accent/50 rounded-lg p-4">
+          <div className="bg-sidebar-accent/50 rounded-lg p-4 mb-3">
             <p className="text-xs text-sidebar-foreground/60 mb-1">Prepared for</p>
             <p className="font-semibold text-sm">Saffron Housing</p>
             <p className="text-xs text-sidebar-foreground/60 mt-1">January 2026</p>
           </div>
+          
+          {isSupabaseConfigured && (
+            <div className="pt-2 border-t border-sidebar-border">
+              {!user ? (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center gap-2 text-xs text-sidebar-foreground/50 hover:text-sidebar-foreground/80 transition-colors w-full px-2 py-1"
+                  data-testid="button-edit-as-admin"
+                >
+                  <Lock className="w-3 h-3" />
+                  <span>Edit as Admin</span>
+                </button>
+              ) : !isEditMode ? (
+                <button
+                  onClick={() => setEditMode(true)}
+                  className="flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors w-full px-2 py-1"
+                  data-testid="button-enter-edit-mode"
+                >
+                  <Pencil className="w-3 h-3" />
+                  <span>Enter Edit Mode</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2 text-xs text-green-400 px-2 py-1">
+                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                  <span>Edit Mode Active</span>
+                </div>
+              )}
+            </div>
+          )}
         </div>
       </aside>
 
       {/* Main Content */}
       <main className="flex-1 ml-72">
+        {/* Edit Mode Banner */}
+        {isEditMode && (
+          <div className="bg-indigo-600 text-white px-8 py-2 text-sm">
+            <div className="flex items-center gap-2">
+              <Pencil className="w-4 h-4" />
+              <span className="font-medium">Edit Mode Active</span>
+              <span className="text-indigo-200">— Click on any text to edit it, drag cards to reorder</span>
+            </div>
+          </div>
+        )}
+
         {/* Top Navigation Bar */}
         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-3">
           <nav className="flex items-center gap-1">
@@ -124,10 +172,13 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
 
-        <div className="min-h-screen p-8 lg:p-12">
+        <div className="min-h-screen p-8 lg:p-12 pb-24">
           {children}
         </div>
       </main>
+
+      <LoginModal isOpen={showLoginModal} onClose={() => setShowLoginModal(false)} />
+      <GlobalEditToolbar />
     </div>
   );
 }
