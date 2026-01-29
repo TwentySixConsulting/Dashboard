@@ -4,79 +4,39 @@ import { Button } from "@/components/ui/button";
 import { marketData } from "@/lib/data";
 import { Download, BarChart3, Layers, Users } from "lucide-react";
 import {
-  LineChart,
-  Line,
+  BarChart,
+  Bar,
   XAxis,
   YAxis,
   CartesianGrid,
   ResponsiveContainer,
   Tooltip,
-  ReferenceLine,
-  BarChart,
-  Bar,
-  Cell,
   Legend,
+  Cell,
+  ComposedChart,
+  Line,
 } from "recharts";
 import { toPng } from "html-to-image";
 import logoImage from "@/assets/twentysix-logo.png";
-
-const functionColors: Record<string, string> = {
-  Technical: "#6366f1",
-  HR: "#06b6d4",
-  Governance: "#14b8a6",
-  Operations: "#f59e0b",
-  Finance: "#8b5cf6",
-  IT: "#ec4899",
-  Comms: "#10b981",
-};
 
 const levelLabels: Record<number, string> = {
   1: "Head / Director",
   2: "Senior Manager",
   3: "Manager",
-  4: "Senior Professional",
+  4: "Senior Prof.",
   5: "Professional",
-  6: "Officer / Coordinator",
+  6: "Officer / Coord.",
 };
 
 type ViewMode = "roles" | "summary";
 
 export function MarketComparison() {
-  const [viewMode, setViewMode] = useState<ViewMode>("roles");
+  const [viewMode, setViewMode] = useState<ViewMode>("summary");
   const functionChartRef = useRef<HTMLDivElement>(null!);
   const levelChartRef = useRef<HTMLDivElement>(null!);
 
   const functions = Array.from(new Set(marketData.map((r) => r.function))).sort();
   const levels = Array.from(new Set(marketData.map((r) => r.jobLevel))).sort((a, b) => a - b);
-
-  const dataByFunction = functions.flatMap((fn) => {
-    const rolesInFunction = marketData
-      .filter((r) => r.function === fn)
-      .sort((a, b) => a.median - b.median);
-    return rolesInFunction.map((role, idx) => ({
-      ...role,
-      groupLabel: fn,
-      indexInGroup: idx,
-      isFirstInGroup: idx === 0,
-      delta: role.currentSalary - role.median,
-      deltaPercent: Math.round(((role.currentSalary - role.median) / role.median) * 100),
-    }));
-  });
-
-  const dataByLevel = levels.flatMap((lvl) => {
-    const rolesInLevel = marketData
-      .filter((r) => r.jobLevel === lvl)
-      .sort((a, b) => a.median - b.median);
-    return rolesInLevel.map((role, idx) => ({
-      ...role,
-      groupLabel: levelLabels[lvl] || `Level ${lvl}`,
-      levelNum: lvl,
-      indexInGroup: idx,
-      isFirstInGroup: idx === 0,
-      delta: role.currentSalary - role.median,
-      deltaPercent: Math.round(((role.currentSalary - role.median) / role.median) * 100),
-    }));
-  });
 
   const summaryByFunction = functions.map((fn) => {
     const rolesInFunction = marketData.filter((r) => r.function === fn);
@@ -107,6 +67,38 @@ export function MarketComparison() {
     };
   });
 
+  const roleDataByFunction = marketData
+    .slice()
+    .sort((a, b) => {
+      if (a.function !== b.function) return a.function.localeCompare(b.function);
+      return a.median - b.median;
+    })
+    .map((role) => ({
+      name: role.role.length > 20 ? role.role.substring(0, 18) + "..." : role.role,
+      fullName: role.role,
+      function: role.function,
+      actual: role.currentSalary,
+      median: role.median,
+      delta: role.currentSalary - role.median,
+      deltaPercent: Math.round(((role.currentSalary - role.median) / role.median) * 100),
+    }));
+
+  const roleDataByLevel = marketData
+    .slice()
+    .sort((a, b) => {
+      if (a.jobLevel !== b.jobLevel) return a.jobLevel - b.jobLevel;
+      return a.median - b.median;
+    })
+    .map((role) => ({
+      name: role.role.length > 20 ? role.role.substring(0, 18) + "..." : role.role,
+      fullName: role.role,
+      level: levelLabels[role.jobLevel] || `Level ${role.jobLevel}`,
+      actual: role.currentSalary,
+      median: role.median,
+      delta: role.currentSalary - role.median,
+      deltaPercent: Math.round(((role.currentSalary - role.median) / role.median) * 100),
+    }));
+
   const downloadChart = async (ref: React.RefObject<HTMLDivElement>, filename: string) => {
     if (ref.current) {
       try {
@@ -121,26 +113,20 @@ export function MarketComparison() {
     }
   };
 
-  const CustomTooltip = ({ active, payload }: any) => {
+  const SummaryTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-white p-3 rounded-lg shadow-lg border border-slate-200 text-sm">
-          <p className="font-semibold text-slate-800">{data.role}</p>
-          <p className="text-slate-500 text-xs mb-2">{data.function || data.groupLabel}</p>
+          <p className="font-semibold text-slate-800 mb-2">{data.group}</p>
+          <p className="text-slate-500 text-xs mb-2">{data.count} role{data.count > 1 ? "s" : ""}</p>
           <div className="space-y-1">
+            <p><span className="text-slate-500">Avg Actual:</span> <span className="font-medium">£{data.avgActual?.toLocaleString()}</span></p>
+            <p><span className="text-slate-500">Avg Median:</span> <span className="font-medium">£{data.avgMedian?.toLocaleString()}</span></p>
             <p>
-              <span className="text-slate-500">Actual:</span>{" "}
-              <span className="font-medium">£{data.currentSalary?.toLocaleString() || data.avgActual?.toLocaleString()}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Median:</span>{" "}
-              <span className="font-medium">£{data.median?.toLocaleString() || data.avgMedian?.toLocaleString()}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Delta:</span>{" "}
+              <span className="text-slate-500">Variance:</span>{" "}
               <span className={`font-medium ${data.delta >= 0 ? "text-teal-600" : "text-slate-600"}`}>
-                {data.delta >= 0 ? "+" : ""}£{data.delta?.toLocaleString()} ({data.deltaPercent}%)
+                {data.delta >= 0 ? "+" : ""}£{data.delta?.toLocaleString()} ({data.deltaPercent >= 0 ? "+" : ""}{data.deltaPercent}%)
               </span>
             </p>
           </div>
@@ -150,26 +136,20 @@ export function MarketComparison() {
     return null;
   };
 
-  const SummaryTooltip = ({ active, payload }: any) => {
+  const RoleTooltip = ({ active, payload }: any) => {
     if (active && payload && payload.length) {
       const data = payload[0].payload;
       return (
         <div className="bg-white p-3 rounded-lg shadow-lg border border-slate-200 text-sm">
-          <p className="font-semibold text-slate-800">{data.group}</p>
-          <p className="text-slate-500 text-xs mb-2">{data.count} roles</p>
+          <p className="font-semibold text-slate-800">{data.fullName}</p>
+          <p className="text-slate-500 text-xs mb-2">{data.function || data.level}</p>
           <div className="space-y-1">
+            <p><span className="text-slate-500">Actual:</span> <span className="font-medium">£{data.actual?.toLocaleString()}</span></p>
+            <p><span className="text-slate-500">Median:</span> <span className="font-medium">£{data.median?.toLocaleString()}</span></p>
             <p>
-              <span className="text-slate-500">Avg Actual:</span>{" "}
-              <span className="font-medium">£{data.avgActual?.toLocaleString()}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Avg Median:</span>{" "}
-              <span className="font-medium">£{data.avgMedian?.toLocaleString()}</span>
-            </p>
-            <p>
-              <span className="text-slate-500">Delta:</span>{" "}
+              <span className="text-slate-500">Variance:</span>{" "}
               <span className={`font-medium ${data.delta >= 0 ? "text-teal-600" : "text-slate-600"}`}>
-                {data.delta >= 0 ? "+" : ""}£{data.delta?.toLocaleString()} ({data.deltaPercent}%)
+                {data.delta >= 0 ? "+" : ""}£{data.delta?.toLocaleString()} ({data.deltaPercent >= 0 ? "+" : ""}{data.deltaPercent}%)
               </span>
             </p>
           </div>
@@ -190,7 +170,7 @@ export function MarketComparison() {
             Market Position Comparison
           </h1>
           <p className="text-lg text-muted-foreground max-w-2xl">
-            Visual comparison of actual pay against market median by function and job level.
+            Visual comparison of actual pay against market median.
           </p>
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
@@ -198,22 +178,22 @@ export function MarketComparison() {
 
       <div className="flex gap-2">
         <Button
-          variant={viewMode === "roles" ? "default" : "outline"}
-          size="sm"
-          onClick={() => setViewMode("roles")}
-          className="gap-2"
-        >
-          <Users className="w-4 h-4" />
-          Role-Level View
-        </Button>
-        <Button
           variant={viewMode === "summary" ? "default" : "outline"}
           size="sm"
           onClick={() => setViewMode("summary")}
           className="gap-2"
         >
           <Layers className="w-4 h-4" />
-          Summary by Group Average
+          Group Averages
+        </Button>
+        <Button
+          variant={viewMode === "roles" ? "default" : "outline"}
+          size="sm"
+          onClick={() => setViewMode("roles")}
+          className="gap-2"
+        >
+          <Users className="w-4 h-4" />
+          Individual Roles
         </Button>
       </div>
 
@@ -221,7 +201,7 @@ export function MarketComparison() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-indigo-500" />
-            <h3 className="font-display font-bold text-xl">Actual vs Market Median by Function</h3>
+            <h3 className="font-display font-bold text-xl">By Function</h3>
           </div>
           <Button
             variant="outline"
@@ -230,99 +210,36 @@ export function MarketComparison() {
             className="gap-2"
           >
             <Download className="w-4 h-4" />
-            Download Image
+            Download
           </Button>
         </div>
 
         <div ref={functionChartRef} className="bg-white p-4">
-          {viewMode === "roles" ? (
-            <div className="overflow-x-auto">
-              <div style={{ minWidth: Math.max(800, dataByFunction.length * 50) }}>
-                <ResponsiveContainer width="100%" height={350}>
-                  <LineChart data={dataByFunction} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                    <XAxis
-                      dataKey="role"
-                      tick={{ fontSize: 10 }}
-                      stroke="#94a3b8"
-                      height={80}
-                      interval={0}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 12 }}
-                      stroke="#94a3b8"
-                      tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend verticalAlign="top" height={36} />
-                    {functions.map((fn, idx) => {
-                      const firstRoleIdx = dataByFunction.findIndex((d) => d.function === fn);
-                      if (firstRoleIdx > 0) {
-                        return (
-                          <ReferenceLine
-                            key={`ref-${fn}`}
-                            x={dataByFunction[firstRoleIdx].role}
-                            stroke="#cbd5e1"
-                            strokeDasharray="3 3"
-                          />
-                        );
-                      }
-                      return null;
-                    })}
-                    <Line
-                      type="monotone"
-                      dataKey="median"
-                      stroke="#94a3b8"
-                      strokeWidth={2}
-                      dot={{ fill: "#94a3b8", strokeWidth: 0, r: 4 }}
-                      name="Market Median"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="currentSalary"
-                      stroke="#6366f1"
-                      strokeWidth={2}
-                      dot={{ fill: "#6366f1", strokeWidth: 0, r: 4 }}
-                      name="Actual Pay"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+          {viewMode === "summary" ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={summaryByFunction} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                <XAxis dataKey="group" tick={{ fontSize: 12 }} stroke="#94a3b8" />
+                <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
+                <Tooltip content={<SummaryTooltip />} />
+                <Legend wrapperStyle={{ paddingTop: 10 }} />
+                <Bar dataKey="avgMedian" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={30} />
+                <Bar dataKey="avgActual" name="Actual Pay" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={30} />
+              </ComposedChart>
+            </ResponsiveContainer>
           ) : (
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={summaryByFunction} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <ComposedChart data={roleDataByFunction} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                <XAxis
-                  dataKey="group"
-                  tick={{ fontSize: 11 }}
-                  stroke="#94a3b8"
-                  height={60}
-                />
-                <YAxis
-                  tick={{ fontSize: 12 }}
-                  stroke="#94a3b8"
-                  tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
-                />
-                <Tooltip content={<SummaryTooltip />} />
-                <Legend verticalAlign="top" height={36} />
-                <Bar dataKey="avgMedian" name="Avg Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="avgActual" name="Avg Actual Pay" fill="#6366f1" radius={[4, 4, 0, 0]} />
-              </BarChart>
+                <XAxis dataKey="name" tick={{ fontSize: 9 }} stroke="#94a3b8" angle={-45} textAnchor="end" height={80} interval={0} />
+                <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
+                <Tooltip content={<RoleTooltip />} />
+                <Legend wrapperStyle={{ paddingTop: 10 }} />
+                <Bar dataKey="median" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={16} />
+                <Bar dataKey="actual" name="Actual Pay" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={16} />
+              </ComposedChart>
             </ResponsiveContainer>
           )}
-
-          <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-slate-100">
-            {functions.map((fn) => (
-              <div key={fn} className="flex items-center gap-2 text-xs">
-                <div
-                  className="w-3 h-3 rounded-full"
-                  style={{ backgroundColor: functionColors[fn] || "#64748b" }}
-                />
-                <span className="text-slate-600">{fn}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </Card>
 
@@ -330,7 +247,7 @@ export function MarketComparison() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Layers className="w-5 h-5 text-cyan-500" />
-            <h3 className="font-display font-bold text-xl">Actual vs Market Median by Job Level</h3>
+            <h3 className="font-display font-bold text-xl">By Job Level</h3>
           </div>
           <Button
             variant="outline"
@@ -339,109 +256,49 @@ export function MarketComparison() {
             className="gap-2"
           >
             <Download className="w-4 h-4" />
-            Download Image
+            Download
           </Button>
         </div>
 
         <div ref={levelChartRef} className="bg-white p-4">
-          {viewMode === "roles" ? (
-            <div className="overflow-x-auto">
-              <div style={{ minWidth: Math.max(800, dataByLevel.length * 50) }}>
-                <ResponsiveContainer width="100%" height={350}>
-                  <LineChart data={dataByLevel} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
-                    <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                    <XAxis
-                      dataKey="role"
-                      tick={{ fontSize: 10 }}
-                      stroke="#94a3b8"
-                      height={80}
-                      interval={0}
-                    />
-                    <YAxis
-                      tick={{ fontSize: 12 }}
-                      stroke="#94a3b8"
-                      tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
-                    />
-                    <Tooltip content={<CustomTooltip />} />
-                    <Legend verticalAlign="top" height={36} />
-                    {levels.map((lvl) => {
-                      const firstRoleIdx = dataByLevel.findIndex((d) => d.jobLevel === lvl);
-                      if (firstRoleIdx > 0) {
-                        return (
-                          <ReferenceLine
-                            key={`ref-lvl-${lvl}`}
-                            x={dataByLevel[firstRoleIdx].role}
-                            stroke="#cbd5e1"
-                            strokeDasharray="3 3"
-                          />
-                        );
-                      }
-                      return null;
-                    })}
-                    <Line
-                      type="monotone"
-                      dataKey="median"
-                      stroke="#94a3b8"
-                      strokeWidth={2}
-                      dot={{ fill: "#94a3b8", strokeWidth: 0, r: 4 }}
-                      name="Market Median"
-                    />
-                    <Line
-                      type="monotone"
-                      dataKey="currentSalary"
-                      stroke="#06b6d4"
-                      strokeWidth={2}
-                      dot={{ fill: "#06b6d4", strokeWidth: 0, r: 4 }}
-                      name="Actual Pay"
-                    />
-                  </LineChart>
-                </ResponsiveContainer>
-              </div>
-            </div>
+          {viewMode === "summary" ? (
+            <ResponsiveContainer width="100%" height={300}>
+              <ComposedChart data={summaryByLevel} margin={{ top: 20, right: 30, left: 20, bottom: 20 }}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
+                <XAxis dataKey="group" tick={{ fontSize: 11 }} stroke="#94a3b8" />
+                <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
+                <Tooltip content={<SummaryTooltip />} />
+                <Legend wrapperStyle={{ paddingTop: 10 }} />
+                <Bar dataKey="avgMedian" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={30} />
+                <Bar dataKey="avgActual" name="Actual Pay" fill="#06b6d4" radius={[4, 4, 0, 0]} barSize={30} />
+              </ComposedChart>
+            </ResponsiveContainer>
           ) : (
             <ResponsiveContainer width="100%" height={350}>
-              <BarChart data={summaryByLevel} margin={{ top: 20, right: 30, left: 20, bottom: 60 }}>
+              <ComposedChart data={roleDataByLevel} margin={{ top: 20, right: 30, left: 20, bottom: 80 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                <XAxis
-                  dataKey="group"
-                  tick={{ fontSize: 11 }}
-                  stroke="#94a3b8"
-                  height={60}
-                />
-                <YAxis
-                  tick={{ fontSize: 12 }}
-                  stroke="#94a3b8"
-                  tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
-                />
-                <Tooltip content={<SummaryTooltip />} />
-                <Legend verticalAlign="top" height={36} />
-                <Bar dataKey="avgMedian" name="Avg Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="avgActual" name="Avg Actual Pay" fill="#06b6d4" radius={[4, 4, 0, 0]} />
-              </BarChart>
+                <XAxis dataKey="name" tick={{ fontSize: 9 }} stroke="#94a3b8" angle={-45} textAnchor="end" height={80} interval={0} />
+                <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
+                <Tooltip content={<RoleTooltip />} />
+                <Legend wrapperStyle={{ paddingTop: 10 }} />
+                <Bar dataKey="median" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={16} />
+                <Bar dataKey="actual" name="Actual Pay" fill="#06b6d4" radius={[4, 4, 0, 0]} barSize={16} />
+              </ComposedChart>
             </ResponsiveContainer>
           )}
-
-          <div className="flex flex-wrap gap-3 mt-4 pt-4 border-t border-slate-100">
-            {levels.map((lvl) => (
-              <div key={lvl} className="flex items-center gap-2 text-xs">
-                <div className="w-3 h-3 rounded-full bg-slate-400" />
-                <span className="text-slate-600">{levelLabels[lvl] || `Level ${lvl}`}</span>
-              </div>
-            ))}
-          </div>
         </div>
       </Card>
 
-      <Card className="p-6 bg-slate-50 border-0 shadow-md">
-        <h3 className="font-display font-bold text-lg text-slate-800 mb-3">Reading These Charts</h3>
+      <Card className="p-6 bg-slate-50 border-0 shadow-sm">
+        <h3 className="font-display font-bold text-lg text-slate-800 mb-3">How to Read These Charts</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-4 text-sm text-slate-600">
           <div>
-            <p className="font-medium text-slate-700 mb-1">Role-Level View</p>
-            <p>Shows each individual role plotted as a point. Where actual pay (colored line) is above the median line, the role is paid above market median. Where it's below, the role is paid below median.</p>
+            <p className="font-medium text-slate-700 mb-1">Group Averages View</p>
+            <p>Compares average actual pay to average market median for each function or job level. Quick overview of overall positioning by group.</p>
           </div>
           <div>
-            <p className="font-medium text-slate-700 mb-1">Summary View</p>
-            <p>Shows average actual pay and average market median for each group. Useful for identifying whether entire functions or levels trend above or below market.</p>
+            <p className="font-medium text-slate-700 mb-1">Individual Roles View</p>
+            <p>Shows each role side-by-side. Hover for full details including variance from market median.</p>
           </div>
         </div>
       </Card>
