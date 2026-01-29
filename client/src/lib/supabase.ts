@@ -1,13 +1,19 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, SupabaseClient } from '@supabase/supabase-js';
 
 const supabaseUrl = import.meta.env.VITE_SUPABASE_URL || '';
 const supabaseAnonKey = import.meta.env.VITE_SUPABASE_ANON_KEY || '';
 
-if (!supabaseUrl || !supabaseAnonKey) {
+const isConfigured = !!(supabaseUrl && supabaseAnonKey);
+
+if (!isConfigured) {
   console.warn('Supabase credentials not configured. CMS features will be disabled.');
 }
 
-export const supabase = createClient(supabaseUrl, supabaseAnonKey);
+export const supabase: SupabaseClient = isConfigured 
+  ? createClient(supabaseUrl, supabaseAnonKey)
+  : createClient('https://placeholder.supabase.co', 'placeholder-key');
+
+export const isSupabaseConfigured = isConfigured;
 
 export interface DashboardSection {
   id: string;

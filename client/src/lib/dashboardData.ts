@@ -1,4 +1,6 @@
-import { supabase, DashboardSection, DashboardPageMeta } from './supabase';
+import { supabase, DashboardSection, DashboardPageMeta, isSupabaseConfigured } from './supabase';
+
+export type { DashboardSection, DashboardPageMeta };
 
 const DEFAULT_SECTIONS: DashboardSection[] = [
   { id: '1', slug: 'dashboard', title: 'Dashboard', description: 'Your dashboard starting point', icon: 'home', route: '/', status: 'published', sort_order: 1, updated_at: '', updated_by: null },
@@ -40,8 +42,7 @@ export async function getPublishedSections(): Promise<DashboardSection[]> {
   }
 
   try {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    if (!supabaseUrl) {
+    if (!isSupabaseConfigured) {
       console.warn('Supabase not configured, using default sections');
       return DEFAULT_SECTIONS.filter(s => s.slug !== 'dashboard');
     }
@@ -72,8 +73,7 @@ export async function getPublishedMeta(): Promise<DashboardPageMeta> {
   }
 
   try {
-    const supabaseUrl = import.meta.env.VITE_SUPABASE_URL;
-    if (!supabaseUrl) {
+    if (!isSupabaseConfigured) {
       console.warn('Supabase not configured, using default meta');
       return DEFAULT_PAGE_META;
     }
