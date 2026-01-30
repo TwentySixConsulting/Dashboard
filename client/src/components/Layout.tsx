@@ -104,34 +104,32 @@ export function Layout({ children }: { children: React.ReactNode }) {
             <p className="text-xs text-sidebar-foreground/60 mt-1">January 2026</p>
           </div>
           
-          {isSupabaseConfigured && (
-            <div className="pt-2 border-t border-sidebar-border">
-              {!user ? (
-                <button
-                  onClick={() => setShowLoginModal(true)}
-                  className="flex items-center gap-2 text-xs text-sidebar-foreground/50 hover:text-sidebar-foreground/80 transition-colors w-full px-2 py-1"
-                  data-testid="button-edit-as-admin"
-                >
-                  <Lock className="w-3 h-3" />
-                  <span>Edit as Admin</span>
-                </button>
-              ) : !isEditMode ? (
-                <button
-                  onClick={() => setEditMode(true)}
-                  className="flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors w-full px-2 py-1"
-                  data-testid="button-enter-edit-mode"
-                >
-                  <Pencil className="w-3 h-3" />
-                  <span>Enter Edit Mode</span>
-                </button>
-              ) : (
-                <div className="flex items-center gap-2 text-xs text-green-400 px-2 py-1">
-                  <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
-                  <span>Edit Mode Active</span>
-                </div>
-              )}
-            </div>
-          )}
+          <div className="pt-2 border-t border-sidebar-border">
+            {!user ? (
+              <button
+                onClick={() => setShowLoginModal(true)}
+                className="flex items-center gap-2 text-xs text-sidebar-foreground/50 hover:text-sidebar-foreground/80 transition-colors w-full px-2 py-1"
+                data-testid="button-edit-as-admin"
+              >
+                <Lock className="w-3 h-3" />
+                <span>Edit as Admin</span>
+              </button>
+            ) : !isEditMode ? (
+              <button
+                onClick={() => setEditMode(true)}
+                className="flex items-center gap-2 text-xs text-indigo-400 hover:text-indigo-300 transition-colors w-full px-2 py-1"
+                data-testid="button-enter-edit-mode"
+              >
+                <Pencil className="w-3 h-3" />
+                <span>Enter Edit Mode</span>
+              </button>
+            ) : (
+              <div className="flex items-center gap-2 text-xs text-green-400 px-2 py-1">
+                <div className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+                <span>Edit Mode Active</span>
+              </div>
+            )}
+          </div>
         </div>
       </aside>
 
