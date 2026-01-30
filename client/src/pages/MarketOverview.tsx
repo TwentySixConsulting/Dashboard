@@ -146,9 +146,9 @@ export function MarketOverview() {
               <Percent className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold">3.2%</p>
-          <p className="text-sm font-medium text-white/90 mt-1">CPI Inflation</p>
-          <p className="text-xs text-white/60 mt-0.5">November 2025</p>
+          <EditableText contentKey="stat-cpi-value" defaultValue="3.2%" className="text-3xl font-bold" as="p" page="market-context" />
+          <EditableText contentKey="stat-cpi-label" defaultValue="CPI Inflation" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
+          <EditableText contentKey="stat-cpi-date" defaultValue="November 2025" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
@@ -157,9 +157,9 @@ export function MarketOverview() {
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold">5.1%</p>
-          <p className="text-sm font-medium text-white/90 mt-1">Unemployment</p>
-          <p className="text-xs text-white/60 mt-0.5">Up from 4.2% (Jul 24)</p>
+          <EditableText contentKey="stat-unemployment-value" defaultValue="5.1%" className="text-3xl font-bold" as="p" page="market-context" />
+          <EditableText contentKey="stat-unemployment-label" defaultValue="Unemployment" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
+          <EditableText contentKey="stat-unemployment-note" defaultValue="Up from 4.2% (Jul 24)" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md">
@@ -168,9 +168,9 @@ export function MarketOverview() {
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold">3.0%</p>
-          <p className="text-sm font-medium text-white/90 mt-1">Pay Rise Forecast</p>
-          <p className="text-xs text-white/60 mt-0.5">CIPD 2026 Outlook</p>
+          <EditableText contentKey="stat-payrise-value" defaultValue="3.0%" className="text-3xl font-bold" as="p" page="market-context" />
+          <EditableText contentKey="stat-payrise-label" defaultValue="Pay Rise Forecast" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
+          <EditableText contentKey="stat-payrise-note" defaultValue="CIPD 2026 Outlook" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
@@ -179,9 +179,9 @@ export function MarketOverview() {
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <p className="text-3xl font-bold">4.1%</p>
-          <p className="text-sm font-medium text-white/90 mt-1">Min Wage Rise</p>
-          <p className="text-xs text-white/60 mt-0.5">Statutory estimate</p>
+          <EditableText contentKey="stat-minwage-value" defaultValue="4.1%" className="text-3xl font-bold" as="p" page="market-context" />
+          <EditableText contentKey="stat-minwage-label" defaultValue="Min Wage Rise" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
+          <EditableText contentKey="stat-minwage-note" defaultValue="Statutory estimate" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
         </Card>
       </div>
 
@@ -197,15 +197,30 @@ export function MarketOverview() {
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="prose prose-sm max-w-none text-slate-600">
-            <p className="mb-4">
-              The most recent data from the Office of National Statistics shows that twelve-month inflation in the Consumer Prices Index (CPI) was <strong className="text-slate-800">3.2% in November</strong>. Inflation has been higher than expected all year – at the end of 2024, it was 2.3% but climbed steadily throughout much of 2025.
-            </p>
-            <p className="mb-4">
-              It is, however, finally starting to come down (it was 3.8% in August), but still sits above the Bank of England's target of <strong className="text-slate-800">2%</strong>.
-            </p>
-            <p>
-              This level of inflation is likely to put <strong className="text-slate-800">upwards pressure on pay rises</strong>.
-            </p>
+            <EditableText 
+              contentKey="inflation-para-1" 
+              defaultValue="The most recent data from the Office of National Statistics shows that twelve-month inflation in the Consumer Prices Index (CPI) was 3.2% in November. Inflation has been higher than expected all year – at the end of 2024, it was 2.3% but climbed steadily throughout much of 2025."
+              className="mb-4 block" 
+              as="p" 
+              page="market-context"
+              multiline
+            />
+            <EditableText 
+              contentKey="inflation-para-2" 
+              defaultValue="It is, however, finally starting to come down (it was 3.8% in August), but still sits above the Bank of England's target of 2%."
+              className="mb-4 block" 
+              as="p" 
+              page="market-context"
+              multiline
+            />
+            <EditableText 
+              contentKey="inflation-para-3" 
+              defaultValue="This level of inflation is likely to put upwards pressure on pay rises."
+              className="block" 
+              as="p" 
+              page="market-context"
+              multiline
+            />
           </div>
           
           <ExportableChart title="CPI Inflation Trend" filename="cpi-inflation-trend" contentKey="chart-cpi-inflation-trend">
@@ -258,30 +273,40 @@ export function MarketOverview() {
           </ExportableChart>
           
           <div className="prose prose-sm max-w-none text-slate-600">
-            <p className="mb-4">
-              At the same time, the UK labour market is <strong className="text-slate-800">weakening</strong>, meaning that there is more supply than demand for workers. This is characterised by:
-            </p>
+            <EditableText 
+              contentKey="labour-market-intro" 
+              defaultValue="At the same time, the UK labour market is weakening, meaning that there is more supply than demand for workers. This is characterised by:"
+              className="mb-4 block" 
+              as="p" 
+              page="market-context"
+              multiline
+            />
             <ul className="space-y-2 mb-4">
               <li className="flex items-start gap-2">
                 <TrendingUp className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                <span>Rising unemployment (4.2% → 5.1%)</span>
+                <EditableText contentKey="labour-list-1" defaultValue="Rising unemployment (4.2% → 5.1%)" as="span" page="market-context" />
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>Slowing job growth</span>
+                <EditableText contentKey="labour-list-2" defaultValue="Slowing job growth" as="span" page="market-context" />
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>Fewer job vacancies</span>
+                <EditableText contentKey="labour-list-3" defaultValue="Fewer job vacancies" as="span" page="market-context" />
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <span>Slower wage growth</span>
+                <EditableText contentKey="labour-list-4" defaultValue="Slower wage growth" as="span" page="market-context" />
               </li>
             </ul>
-            <p>
-              This has slightly eased recruitment pressures for some organisations as the candidate pool has significantly increased, particularly for entry-level jobs. However, there is still a <strong className="text-slate-800">skill shortage</strong> and a fall in the quality of applications relative to 12 months ago.
-            </p>
+            <EditableText 
+              contentKey="labour-market-conclusion" 
+              defaultValue="This has slightly eased recruitment pressures for some organisations as the candidate pool has significantly increased, particularly for entry-level jobs. However, there is still a skill shortage and a fall in the quality of applications relative to 12 months ago."
+              className="block" 
+              as="p" 
+              page="market-context"
+              multiline
+            />
           </div>
         </div>
       </Card>

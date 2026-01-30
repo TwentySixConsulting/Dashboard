@@ -1,10 +1,12 @@
 import { useState } from 'react';
 import { useAuth } from '@/contexts/AuthContext';
+import { usePageEditor } from '@/contexts/PageEditorContext';
 import { Button } from '@/components/ui/button';
 import { Save, Undo2, X, Check, Loader2, LogOut } from 'lucide-react';
 
 export function GlobalEditToolbar() {
   const { user, isEditMode, hasUnsavedChanges, setEditMode, saveAllChanges, undoAllChanges, signOut } = useAuth();
+  const { savePageEdits } = usePageEditor();
   const [saving, setSaving] = useState(false);
   const [showSaved, setShowSaved] = useState(false);
 
@@ -12,9 +14,10 @@ export function GlobalEditToolbar() {
 
   async function handleSave() {
     setSaving(true);
-    const success = await saveAllChanges();
+    const contentSuccess = await saveAllChanges();
+    const pageSuccess = await savePageEdits();
     setSaving(false);
-    if (success) {
+    if (contentSuccess || pageSuccess) {
       setShowSaved(true);
       setTimeout(() => setShowSaved(false), 2000);
     }

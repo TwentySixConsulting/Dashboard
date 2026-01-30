@@ -264,9 +264,13 @@ export function Risks() {
               page="risks"
             />
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Roles positioned below market lower quartile, sorted by largest gap
-          </p>
+          <EditableText
+            contentKey="risks-below-lq-desc"
+            defaultValue="Roles positioned below market lower quartile, sorted by largest gap"
+            className="text-sm text-muted-foreground mb-4"
+            as="p"
+            page="risks"
+          />
           {belowLQRoles.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -311,9 +315,13 @@ export function Risks() {
               page="risks"
             />
           </div>
-          <p className="text-sm text-muted-foreground mb-4">
-            Roles positioned above market upper quartile, sorted by largest gap
-          </p>
+          <EditableText
+            contentKey="risks-above-uq-desc"
+            defaultValue="Roles positioned above market upper quartile, sorted by largest gap"
+            className="text-sm text-muted-foreground mb-4"
+            as="p"
+            page="risks"
+          />
           {aboveUQRoles.length > 0 ? (
             <div className="overflow-x-auto">
               <table className="w-full text-sm">
@@ -351,72 +359,85 @@ export function Risks() {
       <Card className="p-6 bg-white border-0 shadow-md">
         <div className="flex items-center gap-2 mb-4">
           <Info className="w-5 h-5 text-indigo-500" />
-          <h3 className="font-display font-bold text-xl">Interpreting Market Position</h3>
+          <EditableText contentKey="risks-interpreting-title" defaultValue="Interpreting Market Position" className="font-display font-bold text-xl" as="h3" page="risks" />
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <div>
-            <h4 className="font-semibold text-slate-800 mb-3">When positioning in the upper half may be appropriate</h4>
+            <EditableText contentKey="risks-upper-half-title" defaultValue="When positioning in the upper half may be appropriate" className="font-semibold text-slate-800 mb-3" as="h4" page="risks" />
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0" />
-                Scarce or specialist skills that are difficult to recruit
+                <EditableText contentKey="risks-upper-1" defaultValue="Scarce or specialist skills that are difficult to recruit" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0" />
-                High retention risk for critical roles
+                <EditableText contentKey="risks-upper-2" defaultValue="High retention risk for critical roles" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0" />
-                Roles with broader scope than typical market comparators
+                <EditableText contentKey="risks-upper-3" defaultValue="Roles with broader scope than typical market comparators" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-indigo-400 mt-2 shrink-0" />
-                Operating in highly competitive talent markets
+                <EditableText contentKey="risks-upper-4" defaultValue="Operating in highly competitive talent markets" as="span" page="risks" />
               </li>
             </ul>
           </div>
           <div>
-            <h4 className="font-semibold text-slate-800 mb-3">When positioning in the lower half may be appropriate</h4>
+            <EditableText contentKey="risks-lower-half-title" defaultValue="When positioning in the lower half may be appropriate" className="font-semibold text-slate-800 mb-3" as="h4" page="risks" />
             <ul className="space-y-2 text-sm text-slate-600">
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0" />
-                Role holder is still developing into the position
+                <EditableText contentKey="risks-lower-1" defaultValue="Role holder is still developing into the position" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0" />
-                Role scope is narrower than market comparators
+                <EditableText contentKey="risks-lower-2" defaultValue="Role scope is narrower than market comparators" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0" />
-                Organisation offers strong non-pay benefits
+                <EditableText contentKey="risks-lower-3" defaultValue="Organisation offers strong non-pay benefits" as="span" page="risks" />
               </li>
               <li className="flex items-start gap-2">
                 <span className="w-1.5 h-1.5 rounded-full bg-cyan-400 mt-2 shrink-0" />
-                Geographic location has lower cost of living
+                <EditableText contentKey="risks-lower-4" defaultValue="Geographic location has lower cost of living" as="span" page="risks" />
               </li>
             </ul>
           </div>
         </div>
         
         <div className="mt-6 p-4 bg-indigo-50 rounded-lg border border-indigo-200">
-          <p className="text-sm text-indigo-800 font-medium">
-            Appropriate positioning depends on your pay policy. There is no single "correct" market position—alignment should reflect your organisation's strategic priorities and reward philosophy.
-          </p>
+          <EditableText 
+            contentKey="risks-positioning-note" 
+            defaultValue="Appropriate positioning depends on your pay policy. There is no single 'correct' market position—alignment should reflect your organisation's strategic priorities and reward philosophy."
+            className="text-sm text-indigo-800 font-medium" 
+            as="p" 
+            page="risks"
+            multiline
+          />
         </div>
       </Card>
 
       <Card className="p-6 bg-white border-0 shadow-md">
         <div className="flex items-center gap-2 mb-4">
           <Scale className="w-5 h-5 text-amber-500" />
-          <h3 className="font-display font-bold text-xl">Equal Pay Considerations</h3>
+          <EditableText contentKey="risks-equal-pay-title" defaultValue="Equal Pay Considerations" className="font-display font-bold text-xl" as="h3" page="risks" />
         </div>
         <div className="space-y-4 text-sm text-slate-600">
-          <p>
-            Roles positioned as outliers (significantly below lower quartile or above upper quartile) can sometimes indicate internal equity issues that may require attention.
-          </p>
-          <p>
-            Significant pay differences between comparable roles, particularly where there are gender or other protected characteristic dimensions, may present equal pay risk.
-          </p>
+          <EditableText 
+            contentKey="risks-equal-pay-para1" 
+            defaultValue="Roles positioned as outliers (significantly below lower quartile or above upper quartile) can sometimes indicate internal equity issues that may require attention."
+            as="p" 
+            page="risks"
+            multiline
+          />
+          <EditableText 
+            contentKey="risks-equal-pay-para2" 
+            defaultValue="Significant pay differences between comparable roles, particularly where there are gender or other protected characteristic dimensions, may present equal pay risk."
+            as="p" 
+            page="risks"
+            multiline
+          />
           <div className="p-4 bg-amber-50 rounded-lg border border-amber-200">
             <p className="text-amber-800 font-medium">
               We recommend conducting an equal pay audit as a next step to identify and address any potential internal equity concerns.
