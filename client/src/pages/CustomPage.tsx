@@ -2,8 +2,8 @@ import { useEffect } from "react";
 import { Card } from "@/components/ui/card";
 import { EditableText } from "@/components/EditableText";
 import { AddSectionButton, SectionType } from "@/components/AddSectionButton";
-import { EditableSection } from "@/components/EditableSection";
-import { usePageEditor } from "@/contexts/PageEditorContext";
+import { SortableSectionList } from "@/components/SortableSectionList";
+import { usePageEditor, PageSection } from "@/contexts/PageEditorContext";
 import { useAuth } from "@/contexts/AuthContext";
 import logoImage from "@/assets/twentysix-logo.png";
 
@@ -14,7 +14,7 @@ interface CustomPageProps {
 
 export function CustomPage({ pageId, defaultTitle = "Custom Page" }: CustomPageProps) {
   const { isEditMode } = useAuth();
-  const { getSectionsForPage, addSection, deleteSection, loadPageSections } = usePageEditor();
+  const { getSectionsForPage, addSection, deleteSection, reorderSections, loadPageSections } = usePageEditor();
   
   useEffect(() => {
     loadPageSections(pageId);
@@ -34,6 +34,62 @@ export function CustomPage({ pageId, defaultTitle = "Custom Page" }: CustomPageP
   const handleDeleteSection = (sectionId: string) => {
     deleteSection(pageId, sectionId);
   };
+
+  const handleReorder = (newOrder: string[]) => {
+    reorderSections(pageId, newOrder);
+  };
+
+  const renderSectionContent = (section: PageSection) => (
+    <Card className="p-6 bg-white border-0 shadow-md">
+      <EditableText
+        contentKey={`${pageId}-section-${section.id}-title`}
+        defaultValue={section.title}
+        className="font-display font-bold text-xl mb-4"
+        as="h3"
+        page={pageId}
+      />
+      {section.type === 'text' && (
+        <EditableText
+          contentKey={`${pageId}-section-${section.id}-content`}
+          defaultValue="Click to edit this text content..."
+          className="text-slate-600"
+          as="p"
+          page={pageId}
+          multiline
+        />
+      )}
+      {section.type === 'stat' && (
+        <div className="grid grid-cols-2 gap-4">
+          <div>
+            <EditableText
+              contentKey={`${pageId}-section-${section.id}-value`}
+              defaultValue="0"
+              className="text-3xl font-bold text-primary"
+              as="p"
+              page={pageId}
+            />
+            <EditableText
+              contentKey={`${pageId}-section-${section.id}-label`}
+              defaultValue="Metric Label"
+              className="text-sm text-muted-foreground"
+              as="p"
+              page={pageId}
+            />
+          </div>
+        </div>
+      )}
+      {(section.type === 'card' || section.type === 'custom') && (
+        <EditableText
+          contentKey={`${pageId}-section-${section.id}-body`}
+          defaultValue="Add your card content here..."
+          className="text-slate-600"
+          as="p"
+          page={pageId}
+          multiline
+        />
+      )}
+    </Card>
+  );
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -74,71 +130,20 @@ export function CustomPage({ pageId, defaultTitle = "Custom Page" }: CustomPageP
         </Card>
       )}
 
-      {sections.map((section, index) => (
-        <EditableSection
-          key={section.id}
-          id={section.id}
-          title={section.title}
-          onDelete={() => handleDeleteSection(section.id)}
-          isVisible={section.visible}
-        >
-          <Card className="p-6 bg-white border-0 shadow-md">
-            <EditableText
-              contentKey={`${pageId}-section-${section.id}-title`}
-              defaultValue={section.title}
-              className="font-display font-bold text-xl mb-4"
-              as="h3"
-              page={pageId}
-            />
-            {section.type === 'text' && (
-              <EditableText
-                contentKey={`${pageId}-section-${section.id}-content`}
-                defaultValue="Click to edit this text content..."
-                className="text-slate-600"
-                as="p"
-                page={pageId}
-                multiline
-              />
-            )}
-            {section.type === 'stat' && (
-              <div className="grid grid-cols-2 gap-4">
-                <div>
-                  <EditableText
-                    contentKey={`${pageId}-section-${section.id}-value`}
-                    defaultValue="0"
-                    className="text-3xl font-bold text-primary"
-                    as="p"
-                    page={pageId}
-                  />
-                  <EditableText
-                    contentKey={`${pageId}-section-${section.id}-label`}
-                    defaultValue="Metric Label"
-                    className="text-sm text-muted-foreground"
-                    as="p"
-                    page={pageId}
-                  />
-                </div>
-              </div>
-            )}
-            {(section.type === 'card' || section.type === 'custom') && (
-              <EditableText
-                contentKey={`${pageId}-section-${section.id}-body`}
-                defaultValue="Add your card content here..."
-                className="text-slate-600"
-                as="p"
-                page={pageId}
-                multiline
-              />
-            )}
-          </Card>
-        </EditableSection>
-      ))}
+      <div className="space-y-6">
+        <SortableSectionList
+          items={sections.map(section => ({
+            id: section.id,
+            title: section.title,
+            visible: section.visible,
+            onDelete: () => handleDeleteSection(section.id),
+            content: renderSectionContent(section),
+          }))}
+          onReorder={handleReorder}
+        />
+      </div>
 
-      {isEditMode && sections.length > 0 && (
-        <AddSectionButton onAddSection={handleAddSection} />
-      )}
-      
-      {isEditMode && sections.length === 0 && (
+      {isEditMode && (
         <AddSectionButton onAddSection={handleAddSection} />
       )}
     </div>
