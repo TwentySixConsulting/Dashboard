@@ -148,25 +148,54 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
         {/* Top Navigation Bar */}
         <div className="sticky top-0 z-10 bg-white border-b border-slate-200 px-8 py-3">
-          <nav className="flex items-center gap-1">
-            <Link href="/">
-              <span className={cn(
-                "px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
-                location === "/" ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
-              )}>
-                Dashboard
-              </span>
-            </Link>
-            {topNavItems.map((item) => (
-              <Link key={item.path} href={item.path}>
+          <nav className="flex items-center justify-between">
+            <div className="flex items-center gap-1">
+              <Link href="/">
                 <span className={cn(
                   "px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
-                  location === item.path ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
+                  location === "/" ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
                 )}>
-                  {item.label}
+                  Dashboard
                 </span>
               </Link>
-            ))}
+              {topNavItems.map((item) => (
+                <Link key={item.path} href={item.path}>
+                  <span className={cn(
+                    "px-3 py-1.5 rounded-md text-sm font-medium transition-colors cursor-pointer",
+                    location === item.path ? "bg-primary text-white" : "text-slate-600 hover:bg-slate-100"
+                  )}>
+                    {item.label}
+                  </span>
+                </Link>
+              ))}
+            </div>
+            
+            <div>
+              {!user ? (
+                <button
+                  onClick={() => setShowLoginModal(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-slate-600 hover:bg-slate-100 rounded-md transition-colors"
+                  data-testid="button-edit-as-admin"
+                >
+                  <Lock className="w-4 h-4" />
+                  <span>Edit as Admin</span>
+                </button>
+              ) : !isEditMode ? (
+                <button
+                  onClick={() => setEditMode(true)}
+                  className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-indigo-600 hover:bg-indigo-50 rounded-md transition-colors"
+                  data-testid="button-enter-edit-mode"
+                >
+                  <Pencil className="w-4 h-4" />
+                  <span>Enter Edit Mode</span>
+                </button>
+              ) : (
+                <div className="flex items-center gap-2 px-3 py-1.5 text-sm font-medium text-green-600">
+                  <div className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+                  <span>Edit Mode Active</span>
+                </div>
+              )}
+            </div>
           </nav>
         </div>
 
