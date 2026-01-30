@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Download } from "lucide-react";
@@ -30,7 +31,13 @@ function QuartilesExplained() {
   return (
     <Card className="p-6 bg-white border-0 shadow-md">
       <div className="flex items-center justify-between mb-4">
-        <h3 className="font-display font-bold text-xl">Quartiles Explained</h3>
+        <EditableText
+          contentKey="benchmarking-quartiles-explained"
+          defaultValue="Quartiles Explained"
+          className="font-display font-bold text-xl"
+          as="h3"
+          page="benchmarking"
+        />
         <Button 
           onClick={handleExport} 
           variant="outline" 
@@ -131,15 +138,27 @@ export function Benchmarking() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Salary Analysis
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Market Data Results
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Overview of all roles with market ranges.
-          </p>
+          <EditableText
+            contentKey="benchmarking-subtitle"
+            defaultValue="Salary Analysis"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="benchmarking"
+          />
+          <EditableText
+            contentKey="benchmarking-title"
+            defaultValue="Market Data Results"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="benchmarking"
+          />
+          <EditableText
+            contentKey="benchmarking-intro"
+            defaultValue="Overview of all roles with market ranges."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="benchmarking"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
@@ -148,7 +167,13 @@ export function Benchmarking() {
 
       <Card className="p-6 bg-white border-0 shadow-md">
         <div className="flex items-center justify-between mb-6">
-          <h3 className="font-display font-bold text-xl">Summary of Market Data & Position</h3>
+          <EditableText
+            contentKey="benchmarking-summary-table"
+            defaultValue="Summary of Market Data & Position"
+            className="font-display font-bold text-xl"
+            as="h3"
+            page="benchmarking"
+          />
           <Button onClick={downloadCSV} variant="outline" className="gap-2" data-testid="button-download">
             <Download className="w-4 h-4" />
             Download CSV

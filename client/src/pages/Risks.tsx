@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 import { marketData } from "@/lib/data";
 import { Download, Lightbulb, BarChart3, AlertCircle, Info, Scale } from "lucide-react";
 import {
@@ -144,15 +145,27 @@ export function Risks() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Pay Analysis
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Strengths & Risks
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Position distribution and outlier analysis for your pay structure.
-          </p>
+          <EditableText
+            contentKey="risks-subtitle"
+            defaultValue="Pay Analysis"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="risks"
+          />
+          <EditableText
+            contentKey="risks-title"
+            defaultValue="Strengths & Risks"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="risks"
+          />
+          <EditableText
+            contentKey="risks-intro"
+            defaultValue="Position distribution and outlier analysis for your pay structure."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="risks"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
@@ -160,7 +173,13 @@ export function Risks() {
       <Card className="p-6 bg-white border-0 shadow-md">
         <div className="flex items-center gap-2 mb-4">
           <Lightbulb className="w-5 h-5 text-amber-500" />
-          <h3 className="font-display font-bold text-xl">Key Observations</h3>
+          <EditableText
+            contentKey="risks-key-observations"
+            defaultValue="Key Observations"
+            className="font-display font-bold text-xl"
+            as="h3"
+            page="risks"
+          />
         </div>
         <ul className="space-y-2">
           {observations.map((obs, i) => (
@@ -176,7 +195,13 @@ export function Risks() {
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-accent" />
-            <h3 className="font-display font-bold text-xl">Distribution Summary</h3>
+            <EditableText
+              contentKey="risks-distribution-summary"
+              defaultValue="Distribution Summary"
+              className="font-display font-bold text-xl"
+              as="h3"
+              page="risks"
+            />
           </div>
           <Button variant="outline" size="sm" onClick={downloadCSV} className="gap-2">
             <Download className="w-4 h-4" />
@@ -231,7 +256,13 @@ export function Risks() {
         <Card className="p-6 bg-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="w-5 h-5 text-slate-500" />
-            <h3 className="font-display font-bold text-xl">Watch: Below Lower Quartile</h3>
+            <EditableText
+              contentKey="risks-watch-below-lq"
+              defaultValue="Watch: Below Lower Quartile"
+              className="font-display font-bold text-xl"
+              as="h3"
+              page="risks"
+            />
           </div>
           <p className="text-sm text-muted-foreground mb-4">
             Roles positioned below market lower quartile, sorted by largest gap
@@ -272,7 +303,13 @@ export function Risks() {
         <Card className="p-6 bg-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="w-5 h-5 text-teal-600" />
-            <h3 className="font-display font-bold text-xl">Watch: Above Upper Quartile</h3>
+            <EditableText
+              contentKey="risks-watch-above-uq"
+              defaultValue="Watch: Above Upper Quartile"
+              className="font-display font-bold text-xl"
+              as="h3"
+              page="risks"
+            />
           </div>
           <p className="text-sm text-muted-foreground mb-4">
             Roles positioned above market upper quartile, sorted by largest gap

@@ -1,5 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 import {
   ArrowRight,
   BookOpen,
@@ -73,21 +74,39 @@ export function NextSteps() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Taking Action
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Next Steps
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Recommended actions and options for deeper analysis.
-          </p>
+          <EditableText
+            contentKey="next-steps-subtitle"
+            defaultValue="Taking Action"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="next-steps"
+          />
+          <EditableText
+            contentKey="next-steps-title"
+            defaultValue="Next Steps"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="next-steps"
+          />
+          <EditableText
+            contentKey="next-steps-intro"
+            defaultValue="Recommended actions and options for deeper analysis."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="next-steps"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
 
       <Card className="p-6 bg-white border-0 shadow-md">
-        <h3 className="font-display font-bold text-xl mb-6">Recommended Next Steps</h3>
+        <EditableText
+          contentKey="next-steps-recommended"
+          defaultValue="Recommended Next Steps"
+          className="font-display font-bold text-xl mb-6"
+          as="h3"
+          page="next-steps"
+        />
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {steps.map((step) => (
             <div key={step.number} className="flex gap-4">
@@ -107,7 +126,13 @@ export function NextSteps() {
         <Card className="p-6 bg-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="w-5 h-5 text-accent" />
-            <h3 className="font-display font-bold text-xl">When This Report Is Enough</h3>
+            <EditableText
+              contentKey="next-steps-report-enough"
+              defaultValue="When This Report Is Enough"
+              className="font-display font-bold text-xl"
+              as="h3"
+              page="next-steps"
+            />
           </div>
           <ul className="space-y-3">
             {[
@@ -128,7 +153,13 @@ export function NextSteps() {
         <Card className="p-6 bg-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-4">
             <BookOpen className="w-5 h-5 text-purple-500" />
-            <h3 className="font-display font-bold text-xl">When to Consider Bespoke Benchmarking</h3>
+            <EditableText
+              contentKey="next-steps-consider-bespoke"
+              defaultValue="When to Consider Bespoke Benchmarking"
+              className="font-display font-bold text-xl"
+              as="h3"
+              page="next-steps"
+            />
           </div>
           <ul className="space-y-3">
             {[

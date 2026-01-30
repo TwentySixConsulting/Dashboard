@@ -1,6 +1,7 @@
 import { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 import {
   Heart,
   Clock,
@@ -139,15 +140,27 @@ export function BenefitsTrends() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Innovation in Reward
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Benefit Trends & Ideas
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Guidance on emerging themes and ideas to enhance your benefits offering.
-          </p>
+          <EditableText
+            contentKey="benefits-trends-subtitle"
+            defaultValue="Innovation in Reward"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="benefits-trends"
+          />
+          <EditableText
+            contentKey="benefits-trends-title"
+            defaultValue="Benefit Trends & Ideas"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="benefits-trends"
+          />
+          <EditableText
+            contentKey="benefits-trends-intro"
+            defaultValue="Guidance on emerging themes and ideas to enhance your benefits offering."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="benefits-trends"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>

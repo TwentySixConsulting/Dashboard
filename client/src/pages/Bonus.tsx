@@ -1,4 +1,5 @@
 import { Card } from "@/components/ui/card";
+import { EditableText } from "@/components/EditableText";
 import { bonusData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Percent, Info } from "lucide-react";
@@ -9,15 +10,27 @@ export function Bonus() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Variable Pay Analysis
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Bonus Potential
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Market data on bonus levels by job level for the Housing Association sector.
-          </p>
+          <EditableText
+            contentKey="bonus-subtitle"
+            defaultValue="Variable Pay Analysis"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="bonus"
+          />
+          <EditableText
+            contentKey="bonus-title"
+            defaultValue="Bonus Potential"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="bonus"
+          />
+          <EditableText
+            contentKey="bonus-intro"
+            defaultValue="Market data on bonus levels by job level for the Housing Association sector."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="bonus"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
@@ -28,7 +41,13 @@ export function Bonus() {
             <Info className="w-6 h-6" />
           </div>
           <div>
-            <h2 className="text-xl font-display font-bold mb-2">About Bonus Data</h2>
+            <EditableText
+              contentKey="bonus-about-data"
+              defaultValue="About Bonus Data"
+              className="text-xl font-display font-bold mb-2"
+              as="h2"
+              page="bonus"
+            />
             <p className="text-white/80">
               The figures below represent typical bonus percentages as a proportion of base salary. In the Housing Association sector, bonuses are less common than in the private sector, but are increasingly being used for senior and specialist roles.
             </p>
@@ -37,10 +56,16 @@ export function Bonus() {
       </Card>
 
       <Card className="p-6 bg-white border-0 shadow-md">
-        <h3 className="font-display font-bold text-xl mb-6 flex items-center gap-2">
+        <div className="flex items-center gap-2 mb-6">
           <Percent className="w-5 h-5 text-accent" />
-          Bonus by Job Level
-        </h3>
+          <EditableText
+            contentKey="bonus-by-job-level"
+            defaultValue="Bonus by Job Level"
+            className="font-display font-bold text-xl"
+            as="h3"
+            page="bonus"
+          />
+        </div>
         
         <div className="overflow-x-auto">
           <table className="w-full text-sm">

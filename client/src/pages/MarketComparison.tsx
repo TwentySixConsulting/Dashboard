@@ -1,6 +1,7 @@
 import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
+import { EditableText } from "@/components/EditableText";
 import { marketData } from "@/lib/data";
 import { Download, BarChart3, Layers, Users } from "lucide-react";
 import {
@@ -182,15 +183,27 @@ export function MarketComparison() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">
-            Executive Overview
-          </p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">
-            Market Position Comparison
-          </h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">
-            Visual comparison of actual pay against market median.
-          </p>
+          <EditableText
+            contentKey="market-comparison-subtitle"
+            defaultValue="Executive Overview"
+            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
+            as="p"
+            page="market-comparison"
+          />
+          <EditableText
+            contentKey="market-comparison-title"
+            defaultValue="Market Position Comparison"
+            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
+            as="h1"
+            page="market-comparison"
+          />
+          <EditableText
+            contentKey="market-comparison-intro"
+            defaultValue="Visual comparison of actual pay against market median."
+            className="text-lg text-muted-foreground max-w-2xl"
+            as="p"
+            page="market-comparison"
+          />
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
