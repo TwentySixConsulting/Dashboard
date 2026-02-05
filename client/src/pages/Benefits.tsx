@@ -49,9 +49,9 @@ const benefitsData: BenefitData[] = [
   { name: "Pension (employer contribution 5%+)", shortName: "Pension", small_nfp: 78, large_nfp: 95, small_private: 65, large_private: 88, public: 98, large_public: 99 },
   { name: "Annual leave (25+ days)", shortName: "Annual Leave", small_nfp: 72, large_nfp: 89, small_private: 58, large_private: 82, public: 95, large_public: 97 },
   { name: "Hybrid/remote working", shortName: "Hybrid/Remote", small_nfp: 85, large_nfp: 92, small_private: 78, large_private: 90, public: 75, large_public: 82 },
-  { name: "Healthcare (PMI or cash plan)", shortName: "Healthcare", small_nfp: 25, large_nfp: 48, small_private: 35, large_private: 72, public: 15, large_public: 28 },
-  { name: "Life assurance (2x+ salary)", shortName: "Life Assurance", small_nfp: 55, large_nfp: 82, small_private: 48, large_private: 85, public: 65, large_public: 78 },
-  { name: "Learning/development budget", shortName: "Learning Budget", small_nfp: 45, large_nfp: 72, small_private: 38, large_private: 68, public: 58, large_public: 75 },
+  { name: "Death in service (life assurance)", shortName: "Death in Service", small_nfp: 55, large_nfp: 82, small_private: 48, large_private: 85, public: 65, large_public: 78 },
+  { name: "Car allowance / company car", shortName: "Car Allowance", small_nfp: 15, large_nfp: 35, small_private: 42, large_private: 58, public: 22, large_public: 38 },
+  { name: "Enhanced maternity/paternity", shortName: "Enhanced Parental", small_nfp: 62, large_nfp: 78, small_private: 45, large_private: 72, public: 85, large_public: 88 },
 ];
 
 const barColors = ["#64748b", "#6366f1", "#06b6d4", "#14b8a6", "#f59e0b", "#ec4899"];

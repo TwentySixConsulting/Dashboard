@@ -16,8 +16,8 @@ function SalaryRangeIndicator({
   median: number; 
   uq: number;
 }) {
-  const min = Math.min(lq * 0.9, current * 0.95);
-  const max = Math.max(uq * 1.1, current * 1.05);
+  const min = Math.min(lq * 0.85, current * 0.9);
+  const max = Math.max(uq * 1.15, current * 1.1);
   const range = max - min;
   
   const lqPos = ((lq - min) / range) * 100;
@@ -30,7 +30,18 @@ function SalaryRangeIndicator({
   return (
     <div className="mt-4">
       <div className="relative h-8 mb-2">
-        <div className="absolute top-3 left-0 right-0 h-2 bg-gradient-to-r from-amber-200 via-green-200 to-blue-200 rounded-full" />
+        <div 
+          className="absolute top-3 h-2 bg-red-200 rounded-l-full" 
+          style={{ left: 0, width: `${lqPos}%` }}
+        />
+        <div 
+          className="absolute top-3 h-2 bg-gradient-to-r from-amber-200 via-green-200 to-emerald-200" 
+          style={{ left: `${lqPos}%`, width: `${uqPos - lqPos}%` }}
+        />
+        <div 
+          className="absolute top-3 h-2 bg-blue-200 rounded-r-full" 
+          style={{ left: `${uqPos}%`, right: 0 }}
+        />
         
         <div 
           className="absolute top-2.5 w-0.5 h-3 bg-gray-400"
@@ -54,10 +65,12 @@ function SalaryRangeIndicator({
         />
       </div>
       
-      <div className="relative text-xs text-muted-foreground h-4">
-        <span className="absolute" style={{ left: `calc(${lqPos}% - 10px)` }}>LQ</span>
+      <div className="relative text-xs text-muted-foreground h-5">
+        <span className="absolute text-red-600 font-medium" style={{ left: 0 }}>Below LQ</span>
+        <span className="absolute" style={{ left: `calc(${lqPos}% - 6px)` }}>LQ</span>
         <span className="absolute" style={{ left: `calc(${medianPos}% - 10px)` }}>Med</span>
-        <span className="absolute" style={{ left: `calc(${uqPos}% - 10px)` }}>UQ</span>
+        <span className="absolute" style={{ left: `calc(${uqPos}% - 8px)` }}>UQ</span>
+        <span className="absolute text-blue-600 font-medium" style={{ right: 0 }}>Above UQ</span>
       </div>
     </div>
   );
@@ -67,19 +80,13 @@ export function RoleDetails() {
   const positionColors: Record<string, string> = {
     below: "bg-red-500",
     lower: "bg-amber-500",
-    lowerMid: "bg-yellow-500",
-    median: "bg-green-500",
-    upperMid: "bg-teal-500",
-    upper: "bg-accent",
-    above: "bg-purple-500",
+    upper: "bg-emerald-500",
+    above: "bg-blue-500",
   };
 
   const positionIcons: Record<string, React.ReactNode> = {
     below: <TrendingDown className="w-4 h-4" />,
     lower: <TrendingDown className="w-4 h-4" />,
-    lowerMid: <TrendingDown className="w-4 h-4" />,
-    median: <Minus className="w-4 h-4" />,
-    upperMid: <TrendingUp className="w-4 h-4" />,
     upper: <TrendingUp className="w-4 h-4" />,
     above: <TrendingUp className="w-4 h-4" />,
   };

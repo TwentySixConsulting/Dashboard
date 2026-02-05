@@ -251,38 +251,27 @@ export function MarketComparison() {
             <>
               <div className="flex items-center gap-6 mb-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-1 bg-slate-300 rounded" />
-                  <span className="text-slate-600">Market Range (LQ-UQ)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-indigo-500" />
+                  <div className="w-3 h-3 rounded bg-indigo-500" />
                   <span className="text-slate-600">Actual Pay</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full border-2 border-slate-400 bg-white" />
+                  <div className="w-3 h-3 rounded bg-slate-300" />
                   <span className="text-slate-600">Market Median</span>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={320}>
-                <AreaChart data={roleDataByFunction} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
-                  <defs>
-                    <linearGradient id="marketRange" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#94a3b8" stopOpacity={0.3} />
-                      <stop offset="95%" stopColor="#94a3b8" stopOpacity={0.1} />
-                    </linearGradient>
-                  </defs>
+                <BarChart data={roleDataByFunction} margin={{ top: 10, right: 30, left: 20, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                  <XAxis dataKey="shortName" tick={{ fontSize: 10 }} stroke="#94a3b8" interval={0} angle={0} />
-                  <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} domain={['dataMin - 5000', 'dataMax + 5000']} />
+                  <XAxis dataKey="shortName" tick={{ fontSize: 10 }} stroke="#94a3b8" interval={0} angle={-45} textAnchor="end" height={60} />
+                  <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
                   <Tooltip content={<RoleTooltip />} />
-                  <Area type="monotone" dataKey="uq" stackId="1" stroke="none" fill="url(#marketRange)" />
-                  <Area type="monotone" dataKey="lq" stackId="2" stroke="none" fill="#ffffff" />
-                  <Area type="monotone" dataKey="median" stroke="#94a3b8" strokeWidth={2} strokeDasharray="5 5" fill="none" dot={{ fill: "#ffffff", stroke: "#94a3b8", strokeWidth: 2, r: 4 }} name="Median" />
-                  <Area type="monotone" dataKey="actual" stroke="#6366f1" strokeWidth={3} fill="none" dot={{ fill: "#6366f1", stroke: "#ffffff", strokeWidth: 2, r: 5 }} name="Actual" />
-                </AreaChart>
+                  <Legend wrapperStyle={{ paddingTop: 10 }} />
+                  <Bar dataKey="median" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={20} />
+                  <Bar dataKey="actual" name="Actual Pay" fill="#6366f1" radius={[4, 4, 0, 0]} barSize={20} />
+                </BarChart>
               </ResponsiveContainer>
               <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500">
-                {functions.map((fn, idx) => {
+                {functions.map((fn) => {
                   const startIdx = roleDataByFunction.findIndex(r => r.function === fn);
                   const endIdx = roleDataByFunction.filter(r => r.function === fn).length;
                   return (
@@ -331,35 +320,24 @@ export function MarketComparison() {
             <>
               <div className="flex items-center gap-6 mb-4 text-sm">
                 <div className="flex items-center gap-2">
-                  <div className="w-4 h-1 bg-slate-300 rounded" />
-                  <span className="text-slate-600">Market Range (LQ-UQ)</span>
-                </div>
-                <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full bg-cyan-500" />
+                  <div className="w-3 h-3 rounded bg-cyan-500" />
                   <span className="text-slate-600">Actual Pay</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <div className="w-3 h-3 rounded-full border-2 border-slate-400 bg-white" />
+                  <div className="w-3 h-3 rounded bg-slate-300" />
                   <span className="text-slate-600">Market Median</span>
                 </div>
               </div>
               <ResponsiveContainer width="100%" height={320}>
-                <AreaChart data={roleDataByLevel} margin={{ top: 10, right: 30, left: 20, bottom: 10 }}>
-                  <defs>
-                    <linearGradient id="marketRangeLevel" x1="0" y1="0" x2="0" y2="1">
-                      <stop offset="5%" stopColor="#06b6d4" stopOpacity={0.2} />
-                      <stop offset="95%" stopColor="#06b6d4" stopOpacity={0.05} />
-                    </linearGradient>
-                  </defs>
+                <BarChart data={roleDataByLevel} margin={{ top: 10, right: 30, left: 20, bottom: 60 }}>
                   <CartesianGrid strokeDasharray="3 3" stroke="#e5e7eb" vertical={false} />
-                  <XAxis dataKey="shortName" tick={{ fontSize: 10 }} stroke="#94a3b8" interval={0} />
-                  <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} domain={['dataMin - 5000', 'dataMax + 5000']} />
+                  <XAxis dataKey="shortName" tick={{ fontSize: 10 }} stroke="#94a3b8" interval={0} angle={-45} textAnchor="end" height={60} />
+                  <YAxis tick={{ fontSize: 12 }} stroke="#94a3b8" tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} />
                   <Tooltip content={<RoleTooltip />} />
-                  <Area type="monotone" dataKey="uq" stackId="1" stroke="none" fill="url(#marketRangeLevel)" />
-                  <Area type="monotone" dataKey="lq" stackId="2" stroke="none" fill="#ffffff" />
-                  <Area type="monotone" dataKey="median" stroke="#94a3b8" strokeWidth={2} strokeDasharray="5 5" fill="none" dot={{ fill: "#ffffff", stroke: "#94a3b8", strokeWidth: 2, r: 4 }} name="Median" />
-                  <Area type="monotone" dataKey="actual" stroke="#06b6d4" strokeWidth={3} fill="none" dot={{ fill: "#06b6d4", stroke: "#ffffff", strokeWidth: 2, r: 5 }} name="Actual" />
-                </AreaChart>
+                  <Legend wrapperStyle={{ paddingTop: 10 }} />
+                  <Bar dataKey="median" name="Market Median" fill="#94a3b8" radius={[4, 4, 0, 0]} barSize={20} />
+                  <Bar dataKey="actual" name="Actual Pay" fill="#06b6d4" radius={[4, 4, 0, 0]} barSize={20} />
+                </BarChart>
               </ResponsiveContainer>
               <div className="flex flex-wrap gap-4 mt-4 pt-4 border-t border-slate-100 text-xs text-slate-500">
                 {levels.map((lvl) => {
