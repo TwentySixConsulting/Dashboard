@@ -1,16 +1,26 @@
 import type { Express } from "express";
-import { createServer, type Server } from "http";
-import { storage } from "./storage";
+import type { Server } from "http";
+import { loadDraftReportModel } from "./reporting/loadDraftReport";
 
 export async function registerRoutes(
   httpServer: Server,
   app: Express
 ): Promise<Server> {
-  // put application routes here
-  // prefix all routes with /api
 
-  // use storage to perform CRUD operations on the storage interface
-  // e.g. storage.insertUser(user) or storage.getUserByUsername(username)
+  // -----------------------------
+  // Draft report endpoint
+  // -----------------------------
+  app.get("/api/report/draft", (_req, res) => {
+    const model = loadDraftReportModel();
+    res.json(model);
+  });
+
+  // -----------------------------
+  // (Future routes go here)
+  // -----------------------------
+  // e.g.
+  // app.post("/api/auth/login", ...)
+  // app.get("/api/report/:clientId", ...)
 
   return httpServer;
 }
