@@ -164,29 +164,29 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
 
   const cardContent = (
     <Card
-      className={`p-5 bg-white border shadow-sm transition-all duration-200 ${
+      className={`p-5 bg-white border-0 transition-all duration-300 ${
         isEditMode
-          ? 'border-dashed border-indigo-300 hover:border-indigo-500 cursor-move'
-          : 'border-slate-200 hover:shadow-md hover:border-slate-300 cursor-pointer group'
+          ? 'ring-2 ring-dashed ring-indigo-300 hover:ring-indigo-500 cursor-move shadow-md'
+          : 'shadow-[0_1px_3px_rgba(0,0,0,0.05),0_20px_40px_-20px_rgba(0,0,0,0.1)] hover:shadow-[0_1px_3px_rgba(0,0,0,0.05),0_30px_60px_-20px_rgba(0,0,0,0.15)] hover:-translate-y-1 cursor-pointer group'
       }`}
       data-testid={`launcher-${section.slug}`}
     >
       <div className="flex items-start gap-4">
         {isEditMode && (
           <div
-            className="mt-1 p-1 hover:bg-slate-100 rounded cursor-grab active:cursor-grabbing"
+            className="mt-1 p-1.5 hover:bg-slate-100 rounded-lg cursor-grab active:cursor-grabbing transition-colors"
             {...attributes}
             {...listeners}
           >
             <GripVertical className="w-4 h-4 text-slate-400" />
           </div>
         )}
-        <div className={`w-11 h-11 rounded-lg ${bgColor} flex items-center justify-center shrink-0`}>
+        <div className={`w-12 h-12 rounded-xl ${bgColor} flex items-center justify-center shrink-0 shadow-lg`}>
           <IconComponent className="w-5 h-5 text-white" />
         </div>
         <div className="flex-1 min-w-0">
           <div className="flex items-center justify-between">
-            <h3 className={`font-semibold text-slate-800 ${!isEditMode ? 'group-hover:text-primary' : ''} transition-colors`}>
+            <h3 className={`font-semibold text-slate-800 ${!isEditMode ? 'group-hover:text-accent' : ''} transition-colors`}>
               {section.title}
             </h3>
             {isEditMode ? (
@@ -196,16 +196,18 @@ function EditableCard({ section, isEditMode, onUpdate }: EditableCardProps) {
                   e.stopPropagation();
                   setIsEditing(true);
                 }}
-                className="p-1 hover:bg-slate-100 rounded"
+                className="p-1.5 hover:bg-slate-100 rounded-lg transition-colors"
                 data-testid={`edit-btn-${section.slug}`}
               >
                 <Pencil className="w-4 h-4 text-indigo-500" />
               </button>
             ) : (
-              <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-primary group-hover:translate-x-1 transition-all shrink-0" />
+              <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center group-hover:bg-accent group-hover:text-white transition-all">
+                <ChevronRight className="w-4 h-4 text-slate-400 group-hover:text-white group-hover:translate-x-0.5 transition-all shrink-0" />
+              </div>
             )}
           </div>
-          <p className="text-sm text-muted-foreground mt-1 leading-relaxed">{section.description}</p>
+          <p className="text-sm text-muted-foreground mt-1.5 leading-relaxed">{section.description}</p>
         </div>
       </div>
     </Card>
@@ -401,40 +403,40 @@ export function ExecutiveSummary() {
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-4 bg-white border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-            <Building2 className="w-5 h-5 text-slate-600" />
+        <Card className="p-5 bg-gradient-to-br from-slate-800 to-slate-900 border-0 shadow-xl flex items-center gap-4 text-white">
+          <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center">
+            <Building2 className="w-6 h-6 text-white" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Organisation</p>
-            <p className="font-semibold">{companyInfo.name}</p>
+            <p className="text-xs text-white/60 uppercase tracking-wide font-medium">Organisation</p>
+            <p className="font-semibold text-lg">{companyInfo.name}</p>
           </div>
         </Card>
 
-        <Card className="p-4 bg-white border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-            <MapPin className="w-5 h-5 text-slate-600" />
+        <Card className="p-5 bg-gradient-to-br from-accent to-cyan-600 border-0 shadow-xl flex items-center gap-4 text-white">
+          <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center">
+            <MapPin className="w-6 h-6 text-white" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Sector & Location</p>
-            <p className="font-semibold">{companyInfo.industry}, {companyInfo.location}</p>
+            <p className="text-xs text-white/60 uppercase tracking-wide font-medium">Sector & Location</p>
+            <p className="font-semibold text-lg">{companyInfo.industry}, {companyInfo.location}</p>
           </div>
         </Card>
 
-        <Card className="p-4 bg-white border border-slate-200 shadow-sm flex items-center gap-4">
-          <div className="w-10 h-10 rounded-full bg-slate-100 flex items-center justify-center">
-            <Calendar className="w-5 h-5 text-slate-600" />
+        <Card className="p-5 bg-gradient-to-br from-emerald-500 to-teal-600 border-0 shadow-xl flex items-center gap-4 text-white">
+          <div className="w-12 h-12 rounded-xl bg-white/10 backdrop-blur flex items-center justify-center">
+            <Calendar className="w-6 h-6 text-white" />
           </div>
           <div>
-            <p className="text-xs text-muted-foreground uppercase tracking-wide">Report Date</p>
-            <p className="font-semibold">{companyInfo.reportDate}</p>
+            <p className="text-xs text-white/60 uppercase tracking-wide font-medium">Report Date</p>
+            <p className="font-semibold text-lg">{companyInfo.reportDate}</p>
           </div>
         </Card>
       </div>
 
       <div>
-        <h2 className="text-2xl font-display font-bold text-slate-800 mb-2">What do you want to do today?</h2>
-        <p className="text-muted-foreground mb-6">Select a section to explore your personalised pay and benefits data.</p>
+        <h2 className="text-2xl font-display font-bold text-slate-800 mb-2">What do you want to explore?</h2>
+        <p className="text-muted-foreground mb-8">Select a section to dive into your personalised pay and benefits insights.</p>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
