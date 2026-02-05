@@ -162,30 +162,22 @@ export const sectorInsights = {
 };
 
 export function getPositioning(currentSalary: number, lq: number, median: number, uq: number): {
-  position: "below" | "lower" | "lowerMid" | "median" | "upperMid" | "upper" | "above";
+  position: "below" | "lower" | "upper" | "above";
   label: string;
   color: string;
   percentage: number;
 } {
   const range = uq - lq;
   const position = ((currentSalary - lq) / range) * 100;
-  const lowerMid = lq + (median - lq) / 2;
-  const upperMid = median + (uq - median) / 2;
   
   if (currentSalary < lq) {
-    return { position: "below", label: "Below Market", color: "hsl(0, 72%, 51%)", percentage: Math.max(0, position) };
-  } else if (currentSalary < lowerMid) {
-    return { position: "lower", label: "Lower Quartile", color: "hsl(35, 90%, 55%)", percentage: position };
-  } else if (currentSalary < median - (range * 0.05)) {
-    return { position: "lowerMid", label: "Lower-Mid", color: "hsl(45, 85%, 50%)", percentage: position };
-  } else if (currentSalary <= median + (range * 0.05)) {
-    return { position: "median", label: "At Median", color: "hsl(160, 70%, 45%)", percentage: position };
-  } else if (currentSalary < upperMid) {
-    return { position: "upperMid", label: "Upper-Mid", color: "hsl(180, 70%, 45%)", percentage: position };
+    return { position: "below", label: "Below LQ", color: "hsl(0, 72%, 51%)", percentage: Math.max(0, position) };
+  } else if (currentSalary < median) {
+    return { position: "lower", label: "LQ to Median", color: "hsl(35, 90%, 55%)", percentage: position };
   } else if (currentSalary <= uq) {
-    return { position: "upper", label: "Upper Quartile", color: "hsl(200, 85%, 55%)", percentage: position };
+    return { position: "upper", label: "Median to UQ", color: "hsl(160, 70%, 45%)", percentage: position };
   } else {
-    return { position: "above", label: "Above Market", color: "hsl(280, 65%, 55%)", percentage: Math.min(100, position) };
+    return { position: "above", label: "Above UQ", color: "hsl(210, 80%, 55%)", percentage: Math.min(100, position) };
   }
 }
 

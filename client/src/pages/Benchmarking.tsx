@@ -100,15 +100,12 @@ export function Benchmarking() {
   const positionColors: Record<string, string> = {
     below: "bg-red-500",
     lower: "bg-amber-500",
-    lowerMid: "bg-yellow-500",
-    median: "bg-green-500",
-    upperMid: "bg-teal-500",
-    upper: "bg-accent",
-    above: "bg-purple-500",
+    upper: "bg-emerald-500",
+    above: "bg-blue-500",
   };
 
   const downloadCSV = () => {
-    const headers = ["Role", "Function", "Current Salary", "Lower Quartile", "Lower-Mid", "Median", "Upper-Mid", "Upper Quartile", "Position"];
+    const headers = ["Role", "Function", "Current Salary", "Lower Quartile", "Median", "Upper Quartile", "Position"];
     const rows = marketData.map(role => {
       const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
       return [
@@ -116,9 +113,7 @@ export function Benchmarking() {
         role.function,
         role.currentSalary,
         role.lowerQuartile,
-        role.lowerMid,
         role.median,
-        role.upperMid,
         role.upperQuartile,
         pos.label
       ].join(",");
@@ -188,9 +183,7 @@ export function Benchmarking() {
                 <th className="text-left py-4 px-3 font-semibold">Function</th>
                 <th className="text-right py-4 px-3 font-semibold">Current</th>
                 <th className="text-right py-4 px-3 font-semibold text-amber-600">LQ</th>
-                <th className="text-right py-4 px-3 font-semibold text-yellow-600">L-Mid</th>
                 <th className="text-right py-4 px-3 font-semibold text-green-600">Median</th>
-                <th className="text-right py-4 px-3 font-semibold text-teal-600">U-Mid</th>
                 <th className="text-right py-4 px-3 font-semibold text-blue-600">UQ</th>
                 <th className="text-center py-4 px-3 font-semibold">Position</th>
               </tr>
@@ -210,9 +203,7 @@ export function Benchmarking() {
                     <td className="py-3 px-3 text-muted-foreground">{role.function}</td>
                     <td className="py-3 px-3 text-right font-semibold text-primary">£{role.currentSalary.toLocaleString()}</td>
                     <td className="py-3 px-3 text-right text-muted-foreground">£{role.lowerQuartile.toLocaleString()}</td>
-                    <td className="py-3 px-3 text-right text-muted-foreground">£{role.lowerMid.toLocaleString()}</td>
                     <td className="py-3 px-3 text-right text-muted-foreground">£{role.median.toLocaleString()}</td>
-                    <td className="py-3 px-3 text-right text-muted-foreground">£{role.upperMid.toLocaleString()}</td>
                     <td className="py-3 px-3 text-right text-muted-foreground">£{role.upperQuartile.toLocaleString()}</td>
                     <td className="py-3 px-3">
                       <div className="flex justify-center">
@@ -237,31 +228,19 @@ export function Benchmarking() {
       <div className="flex flex-wrap gap-3 justify-center p-4 bg-white rounded-xl shadow-sm">
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-red-500" />
-          <span className="text-sm text-muted-foreground">Below Market</span>
+          <span className="text-sm text-muted-foreground">Below LQ</span>
         </div>
         <div className="flex items-center gap-2">
           <div className="w-3 h-3 rounded-full bg-amber-500" />
-          <span className="text-sm text-muted-foreground">Lower Quartile</span>
+          <span className="text-sm text-muted-foreground">LQ to Median</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-yellow-500" />
-          <span className="text-sm text-muted-foreground">Lower-Mid</span>
+          <div className="w-3 h-3 rounded-full bg-emerald-500" />
+          <span className="text-sm text-muted-foreground">Median to UQ</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-green-500" />
-          <span className="text-sm text-muted-foreground">At Median</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-teal-500" />
-          <span className="text-sm text-muted-foreground">Upper-Mid</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-accent" />
-          <span className="text-sm text-muted-foreground">Upper Quartile</span>
-        </div>
-        <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-purple-500" />
-          <span className="text-sm text-muted-foreground">Above Market</span>
+          <div className="w-3 h-3 rounded-full bg-blue-500" />
+          <span className="text-sm text-muted-foreground">Above UQ</span>
         </div>
       </div>
     </div>
