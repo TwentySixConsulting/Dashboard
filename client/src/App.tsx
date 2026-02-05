@@ -6,6 +6,7 @@ import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PageEditorProvider } from "@/contexts/PageEditorContext";
 import { Layout } from "@/components/Layout";
+
 import { ExecutiveSummary } from "@/pages/ExecutiveSummary";
 import { MarketOverview } from "@/pages/MarketOverview";
 import { Benchmarking } from "@/pages/Benchmarking";
@@ -18,12 +19,17 @@ import { Bonus } from "@/pages/Bonus";
 import { NextSteps } from "@/pages/NextSteps";
 import { DataSources } from "@/pages/DataSources";
 import { CustomPage } from "@/pages/CustomPage";
+import DraftReport from "@/pages/report/DraftReport";
 import NotFound from "@/pages/not-found";
 
 function Router() {
   return (
     <Layout>
       <Switch>
+        {/* INTERNAL – draft report builder */}
+        <Route path="/__draft/report" component={DraftReport} />
+
+        {/* CLIENT-FACING ROUTES */}
         <Route path="/" component={ExecutiveSummary} />
         <Route path="/market-data" component={Benchmarking} />
         <Route path="/role-details" component={RoleDetails} />
@@ -35,9 +41,18 @@ function Router() {
         <Route path="/benefits-trends" component={BenefitsTrends} />
         <Route path="/next-steps" component={NextSteps} />
         <Route path="/data-sources" component={DataSources} />
+
         <Route path="/custom/:pageId">
-          {(params) => <CustomPage pageId={params.pageId} defaultTitle={params.pageId.replace(/-/g, ' ').replace(/\b\w/g, c => c.toUpperCase())} />}
+          {(params) => (
+            <CustomPage
+              pageId={params.pageId}
+              defaultTitle={params.pageId
+                .replace(/-/g, " ")
+                .replace(/\b\w/g, (c) => c.toUpperCase())}
+            />
+          )}
         </Route>
+
         <Route component={NotFound} />
       </Switch>
     </Layout>
