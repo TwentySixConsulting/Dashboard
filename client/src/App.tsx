@@ -1,12 +1,14 @@
 import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
+
+import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
 import { AuthProvider } from "@/contexts/AuthContext";
 import { PageEditorProvider } from "@/contexts/PageEditorContext";
 import { Layout } from "@/components/Layout";
 
+// Client-facing pages
 import { ExecutiveSummary } from "@/pages/ExecutiveSummary";
 import { MarketOverview } from "@/pages/MarketOverview";
 import { Benchmarking } from "@/pages/Benchmarking";
@@ -19,7 +21,10 @@ import { Bonus } from "@/pages/Bonus";
 import { NextSteps } from "@/pages/NextSteps";
 import { DataSources } from "@/pages/DataSources";
 import { CustomPage } from "@/pages/CustomPage";
+
+// INTERNAL draft report builder
 import DraftReport from "@/pages/report/DraftReport";
+
 import NotFound from "@/pages/not-found";
 
 function Router() {
@@ -27,7 +32,7 @@ function Router() {
     <Layout>
       <Switch>
         {/* INTERNAL – draft report builder */}
-        <Route path="/__draft/report" component={DraftReport} />
+        <Route path="/report/draft" component={DraftReport} />
 
         {/* CLIENT-FACING ROUTES */}
         <Route path="/" component={ExecutiveSummary} />
