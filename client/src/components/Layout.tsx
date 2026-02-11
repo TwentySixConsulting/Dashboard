@@ -205,14 +205,14 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 />
                 <EditableText
                   contentKey="sidebar-client-name"
-                  defaultValue="Saffron Housing"
+                  defaultValue="Brighton Demo Technologies"
                   className="font-semibold text-sm block"
                   as="p"
                   page="layout"
                 />
                 <EditableText
                   contentKey="sidebar-date"
-                  defaultValue="January 2026"
+                  defaultValue="Q1 2026"
                   className="text-xs text-sidebar-foreground/60 mt-1 block"
                   as="p"
                   page="layout"
@@ -221,8 +221,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
             ) : (
               <>
                 <p className="text-xs text-sidebar-foreground/60 mb-1">Prepared for</p>
-                <p className="font-semibold text-sm">Saffron Housing</p>
-                <p className="text-xs text-sidebar-foreground/60 mt-1">January 2026</p>
+                <p className="font-semibold text-sm">Brighton Demo Technologies</p>
+                <p className="text-xs text-sidebar-foreground/60 mt-1">Q1 2026</p>
               </>
             )}
           </div>

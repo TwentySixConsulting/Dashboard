@@ -83,19 +83,19 @@ export function DataSources() {
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>Housing association specific surveys</span>
+              <span>SaaS & Technology sector salary surveys</span>
             </li>
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>National Housing Federation data</span>
+              <span>Tech industry compensation benchmarks</span>
             </li>
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>Regional housing sector networks</span>
+              <span>Regional technology sector networks</span>
             </li>
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>Social housing reward forums</span>
+              <span>Digital & data reward forums</span>
             </li>
           </ul>
         </Card>
@@ -164,11 +164,11 @@ export function DataSources() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-4 mb-4">
             <div className="p-4 bg-muted/30 rounded-lg">
               <h4 className="font-semibold text-foreground mb-2">Industry Match</h4>
-              <p className="text-sm">Primary matching to Housing Association roles, with secondary matching to related not-for-profit sectors.</p>
+              <p className="text-sm">Primary matching to SaaS & Technology roles, with secondary matching to related digital and data sectors.</p>
             </div>
             <div className="p-4 bg-muted/30 rounded-lg">
               <h4 className="font-semibold text-foreground mb-2">Location</h4>
-              <p className="text-sm">Regional adjustments applied based on Norfolk/East Anglia market rates.</p>
+              <p className="text-sm">Regional adjustments applied based on Brighton / South East market rates.</p>
             </div>
             <div className="p-4 bg-muted/30 rounded-lg">
               <h4 className="font-semibold text-foreground mb-2">Role Scope</h4>
@@ -183,7 +183,7 @@ export function DataSources() {
 
       <Card className="p-6 bg-muted/30 border-0">
         <p className="text-sm text-muted-foreground text-center">
-          Data in this report is valid as of January 2026. For the most current market data or custom analysis, please contact your TwentySix consultant.
+          Data in this report is valid as of February 2026 (Q1 2026). For the most current market data or custom analysis, please contact your TwentySix consultant.
         </p>
       </Card>
     </div>

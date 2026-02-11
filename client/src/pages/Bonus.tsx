@@ -26,7 +26,7 @@ export function Bonus() {
           />
           <EditableText
             contentKey="bonus-intro"
-            defaultValue="Market data on bonus levels by job level for the Housing Association sector."
+            defaultValue="Market data on bonus levels by job level for the SaaS / Technology sector."
             className="text-lg text-muted-foreground max-w-2xl"
             as="p"
             page="bonus"
@@ -49,7 +49,7 @@ export function Bonus() {
               page="bonus"
             />
             <p className="text-white/80">
-              The figures below represent typical bonus percentages as a proportion of base salary. In the Housing Association sector, bonuses are less common than in the private sector, but are increasingly being used for senior and specialist roles.
+              The figures below represent typical bonus percentages as a proportion of base salary. In the SaaS / Technology sector, bonuses are commonly used to attract and retain talent, particularly for senior, technical, and commercial roles.
             </p>
           </div>
         </div>
