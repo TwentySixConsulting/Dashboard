@@ -12,7 +12,7 @@ import {
   Sparkles,
 } from "lucide-react";
 import { toPng } from "html-to-image";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 const themeCards = [
   {
@@ -137,13 +137,10 @@ export function BenefitsTrends() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Innovation in Reward</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Benefit Trends & Ideas</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Guidance on emerging themes and ideas to enhance your benefits offering.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Innovation in Reward</p>
+        <h1>Benefit Trends & Ideas</h1>
+        <p className="page-subtitle">Guidance on emerging themes and ideas to enhance your benefits offering.</p>
       </div>
 
       <div className="flex justify-end">
@@ -181,7 +178,7 @@ export function BenefitsTrends() {
         </div>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center gap-2 mb-4">
           <Sparkles className="w-5 h-5 text-amber-500" />
           <h3 className="font-display font-bold text-xl">Differentiator Benefits</h3>

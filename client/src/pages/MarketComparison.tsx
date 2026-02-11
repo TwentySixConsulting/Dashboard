@@ -14,7 +14,7 @@ import {
   Bar,
 } from "recharts";
 import { toPng } from "html-to-image";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 const levelLabels: Record<number, string> = {
   1: "Head / Director",
@@ -178,13 +178,10 @@ export function MarketComparison() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Executive Overview</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Market Position Comparison</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Visual comparison of actual pay against market median.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Executive Overview</p>
+        <h1>Market Position Comparison</h1>
+        <p className="page-subtitle">Visual comparison of actual pay against market median.</p>
       </div>
 
       <div className="flex gap-2">
@@ -208,7 +205,7 @@ export function MarketComparison() {
         </Button>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-indigo-500" />
@@ -277,7 +274,7 @@ export function MarketComparison() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <Layers className="w-5 h-5 text-cyan-500" />

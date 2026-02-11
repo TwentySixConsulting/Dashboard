@@ -4,7 +4,7 @@ import { Button } from "@/components/ui/button";
 import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Download } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 import { toPng } from "html-to-image";
 
 function QuartilesExplained() {
@@ -28,7 +28,7 @@ function QuartilesExplained() {
   };
 
   return (
-    <Card className="p-6 bg-white border-0 shadow-md">
+    <Card className="p-6 section-card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-display font-bold text-xl">Quartiles Explained</h3>
         <Button 
@@ -124,18 +124,15 @@ export function Benchmarking() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Salary Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Market Data Results</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Overview of all roles with market ranges.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Salary Analysis</p>
+        <h1>Market Data Results</h1>
+        <p className="page-subtitle">Overview of all roles with market ranges.</p>
       </div>
 
       <QuartilesExplained />
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center justify-between mb-6">
           <h3 className="font-display font-bold text-xl">Summary of Market Data & Position</h3>
           <Button onClick={downloadCSV} variant="outline" className="gap-2" data-testid="button-download">

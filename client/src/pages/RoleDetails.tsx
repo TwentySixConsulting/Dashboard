@@ -2,7 +2,7 @@ import { Card } from "@/components/ui/card";
 import { marketData, getPositioning } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { MapPin, Briefcase, TrendingUp, TrendingDown, Info } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 function SalaryRangeIndicator({ 
   current, 
@@ -92,13 +92,10 @@ export function RoleDetails() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Individual Role Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Role-by-Role Detail</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Detailed breakdown of each role with market positioning context from our market data.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+      <div className="page-header">
+        <p className="page-badge">Individual Role Analysis</p>
+        <h1>Role-by-Role Detail</h1>
+        <p className="page-subtitle">Detailed breakdown of each role with market positioning context from our market data.</p>
       </div>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -111,7 +108,7 @@ export function RoleDetails() {
             <Card 
               key={role.id} 
               className={cn(
-                "p-6 bg-white border-0 shadow-md hover:shadow-lg transition-all duration-300 opacity-0 animate-slide-up",
+                "p-6 section-card hover:shadow-lg transition-all duration-300 opacity-0 animate-slide-up",
                 `stagger-${(index % 5) + 1}`
               )}
               data-testid={`role-card-${role.id}`}

@@ -44,14 +44,22 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-72 bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto flex flex-col">
-        <div className="p-5 border-b border-sidebar-border">
-          <p className="text-sm font-semibold text-sidebar-foreground/80 tracking-wide uppercase">Pay & Benefits</p>
+      <aside className="w-[270px] bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto flex flex-col">
+        <div className="px-6 pt-7 pb-5">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
+              <BarChart3 className="w-4 h-4 text-white" />
+            </div>
+            <div>
+              <p className="text-[13px] font-bold text-sidebar-foreground/90 tracking-tight leading-none">Pay & Benefits</p>
+              <p className="text-[10px] text-sidebar-foreground/40 mt-0.5">Dashboard</p>
+            </div>
+          </div>
         </div>
 
-        <div className="p-4 flex-1">
-          <p className="text-[10px] uppercase tracking-[0.15em] text-sidebar-foreground/40 mb-3 px-3 font-medium">
-            Dashboard Sections
+        <div className="px-3 flex-1">
+          <p className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/30 mb-2 px-3 font-semibold">
+            Sections
           </p>
           <nav className="space-y-0.5">
             {navItems.map((item) => {
@@ -62,18 +70,18 @@ export function Layout({ children }: { children: React.ReactNode }) {
                   <div
                     data-testid={`nav-${item.path.replace("/", "") || "home"}`}
                     className={cn(
-                      "flex items-center gap-3 px-3 py-2.5 rounded-lg transition-all duration-200 cursor-pointer group",
+                      "flex items-center gap-3 px-3 py-2 rounded-xl transition-all duration-200 cursor-pointer group",
                       isActive
-                        ? "bg-sidebar-primary text-white shadow-lg shadow-sidebar-primary/20"
-                        : "text-sidebar-foreground/60 hover:bg-sidebar-accent hover:text-sidebar-foreground"
+                        ? "bg-gradient-to-r from-sidebar-primary/90 to-sidebar-primary text-white shadow-md shadow-sidebar-primary/25"
+                        : "text-sidebar-foreground/50 hover:bg-sidebar-accent hover:text-sidebar-foreground/80"
                     )}
                   >
-                    <IconComponent className={cn("w-4 h-4 shrink-0", isActive && "drop-shadow-sm")} />
-                    <span className="text-sm font-medium flex-1 leading-tight">{item.label}</span>
+                    <IconComponent className={cn("w-[15px] h-[15px] shrink-0", isActive && "drop-shadow-sm")} />
+                    <span className="text-[13px] font-medium flex-1 leading-tight">{item.label}</span>
                     <ChevronRight
                       className={cn(
-                        "w-3.5 h-3.5 opacity-0 transition-all shrink-0",
-                        isActive ? "opacity-100" : "group-hover:opacity-40"
+                        "w-3 h-3 opacity-0 transition-all shrink-0",
+                        isActive ? "opacity-80" : "group-hover:opacity-30"
                       )}
                     />
                   </div>
@@ -83,24 +91,24 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
 
-        <div className="p-4 border-t border-sidebar-border">
-          <div className="bg-sidebar-accent/50 rounded-xl p-4">
-            <p className="text-[10px] uppercase tracking-[0.15em] text-sidebar-foreground/40 mb-1 font-medium">Prepared for</p>
-            <p className="font-semibold text-sm">Brighton Demo Technologies</p>
-            <p className="text-xs text-sidebar-foreground/50 mt-1">2026: Quarter 1</p>
+        <div className="p-4">
+          <div className="bg-gradient-to-br from-sidebar-accent/80 to-sidebar-accent/40 rounded-xl p-4 border border-sidebar-border/30">
+            <p className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/30 mb-1.5 font-semibold">Prepared for</p>
+            <p className="font-bold text-[13px] text-sidebar-foreground/90">Brighton Demo Technologies</p>
+            <p className="text-[11px] text-sidebar-foreground/40 mt-1">2026: Quarter 1</p>
           </div>
         </div>
       </aside>
 
-      <main className="flex-1 ml-72">
-        <div className="sticky top-0 z-10 bg-white/80 backdrop-blur-xl border-b border-slate-200/80">
-          <div className="px-8 py-3">
+      <main className="flex-1 ml-[270px]">
+        <div className="sticky top-0 z-10 bg-white/70 backdrop-blur-2xl border-b border-slate-100">
+          <div className="px-8 py-2.5">
             <nav className="flex items-center justify-between">
-              <div className="flex items-center gap-1">
+              <div className="flex items-center gap-0.5">
                 <Link href="/">
                   <span className={cn(
-                    "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
-                    location === "/" ? "bg-primary text-white shadow-sm" : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                    "px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 cursor-pointer",
+                    location === "/" ? "bg-primary text-white shadow-sm shadow-primary/20" : "text-slate-400 hover:text-slate-700 hover:bg-slate-50"
                   )}>
                     Dashboard
                   </span>
@@ -108,8 +116,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
                 {topNavItems.map((item) => (
                   <Link key={item.path} href={item.path}>
                     <span className={cn(
-                      "px-3 py-1.5 rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer",
-                      location === item.path ? "bg-primary text-white shadow-sm" : "text-slate-500 hover:text-slate-800 hover:bg-slate-100"
+                      "px-3 py-1.5 rounded-lg text-[13px] font-medium transition-all duration-200 cursor-pointer",
+                      location === item.path ? "bg-primary text-white shadow-sm shadow-primary/20" : "text-slate-400 hover:text-slate-700 hover:bg-slate-50"
                     )}>
                       {item.label}
                     </span>
@@ -120,7 +128,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <img
                 src={logoImage}
                 alt="TwentySix"
-                className="h-8 w-auto"
+                className="h-7 w-auto opacity-80 hover:opacity-100 transition-opacity"
               />
             </nav>
           </div>

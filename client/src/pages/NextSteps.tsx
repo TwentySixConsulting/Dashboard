@@ -10,7 +10,7 @@ import {
   Phone,
   Globe,
 } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 const steps = [
   {
@@ -71,16 +71,13 @@ const comparison = [
 export function NextSteps() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Taking Action</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Next Steps</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Recommended actions and options for deeper analysis.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+      <div className="page-header">
+        <p className="page-badge">Taking Action</p>
+        <h1>Next Steps</h1>
+        <p className="page-subtitle">Recommended actions and options for deeper analysis.</p>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <h3 className="font-display font-bold text-xl mb-6">Recommended Next Steps</h3>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           {steps.map((step) => (
@@ -98,7 +95,7 @@ export function NextSteps() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-2 mb-4">
             <FileText className="w-5 h-5 text-accent" />
             <h3 className="font-display font-bold text-xl">When This Report Is Enough</h3>
@@ -119,7 +116,7 @@ export function NextSteps() {
           </ul>
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-2 mb-4">
             <BookOpen className="w-5 h-5 text-purple-500" />
             <h3 className="font-display font-bold text-xl">When to Consider Bespoke Benchmarking</h3>
@@ -141,7 +138,7 @@ export function NextSteps() {
         </Card>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <h3 className="font-display font-bold text-xl mb-6">Service Comparison</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
@@ -165,7 +162,7 @@ export function NextSteps() {
         </div>
       </Card>
 
-      <Card className="p-8 bg-muted/30 border-0 shadow-md">
+      <Card className="p-8 section-card">
         <div className="text-center max-w-2xl mx-auto">
           <MessageCircle className="w-12 h-12 text-accent mx-auto mb-4" />
           <h3 className="font-display font-bold text-2xl mb-2">Need Further Support?</h3>
@@ -185,7 +182,7 @@ export function NextSteps() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <h3 className="font-display font-bold text-xl mb-4">Contact Us</h3>
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="flex items-center gap-3">

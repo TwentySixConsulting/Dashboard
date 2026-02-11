@@ -12,7 +12,7 @@ import {
   Cell,
   Tooltip,
 } from "recharts";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 type PositionBand = "belowLQ" | "lqToMedian" | "medianToUQ" | "aboveUQ";
 
@@ -142,16 +142,13 @@ export function Risks() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Pay Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Strengths & Risks</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Position distribution and outlier analysis for your pay structure.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Pay Analysis</p>
+        <h1>Strengths & Risks</h1>
+        <p className="page-subtitle">Position distribution and outlier analysis for your pay structure.</p>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center gap-2 mb-4">
           <Lightbulb className="w-5 h-5 text-amber-500" />
           <h3 className="font-display font-bold text-xl">Key Observations</h3>
@@ -166,7 +163,7 @@ export function Risks() {
         </ul>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center justify-between mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-accent" />
@@ -222,7 +219,7 @@ export function Risks() {
       </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="w-5 h-5 text-slate-500" />
             <h3 className="font-display font-bold text-xl">Watch: Below Lower Quartile</h3>
@@ -261,7 +258,7 @@ export function Risks() {
           )}
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-2 mb-4">
             <AlertCircle className="w-5 h-5 text-teal-600" />
             <h3 className="font-display font-bold text-xl">Watch: Above Upper Quartile</h3>
@@ -301,7 +298,7 @@ export function Risks() {
         </Card>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center gap-2 mb-4">
           <Info className="w-5 h-5 text-indigo-500" />
           <h3 className="font-display font-bold text-xl">Interpreting Market Position</h3>
@@ -356,7 +353,7 @@ export function Risks() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center gap-2 mb-4">
           <Scale className="w-5 h-5 text-amber-500" />
           <h3 className="font-display font-bold text-xl">Equal Pay Considerations</h3>

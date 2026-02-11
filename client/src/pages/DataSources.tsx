@@ -1,21 +1,18 @@
 import { Card } from "@/components/ui/card";
 import { Database, FileText, Building2, Globe, CheckCircle2 } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 export function DataSources() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Methodology</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Data Sources</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Information about the data sources and methodology used in this report.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+      <div className="page-header">
+        <p className="page-badge">Methodology</p>
+        <h1>Data Sources</h1>
+        <p className="page-subtitle">Information about the data sources and methodology used in this report.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Database className="w-6 h-6 text-primary" />
@@ -42,7 +39,7 @@ export function DataSources() {
           </ul>
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
               <Building2 className="w-6 h-6 text-accent" />
@@ -69,7 +66,7 @@ export function DataSources() {
           </ul>
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-green-500/10 flex items-center justify-center">
               <Globe className="w-6 h-6 text-green-600" />
@@ -96,7 +93,7 @@ export function DataSources() {
           </ul>
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <div className="flex items-center gap-3 mb-4">
             <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
               <FileText className="w-6 h-6 text-purple-600" />
@@ -124,7 +121,7 @@ export function DataSources() {
         </Card>
       </div>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <h3 className="font-display font-bold text-xl mb-4">Our Methodology</h3>
         <div className="prose prose-sm text-muted-foreground max-w-none">
           <p className="mb-4">

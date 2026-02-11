@@ -16,7 +16,7 @@ import {
   Line,
 } from "recharts";
 import { TrendingUp, TrendingDown, Percent, Users, AlertTriangle, ArrowRight, Download } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 import { toPng } from "html-to-image";
 
 const inflationData = [
@@ -74,7 +74,7 @@ function ExportableChart({
   };
 
   return (
-    <Card className="p-6 bg-white border-0 shadow-md">
+    <Card className="p-6 section-card">
       <div className="flex items-center justify-between mb-4">
         <h3 className="font-display font-bold text-lg">{title}</h3>
         <Button 
@@ -96,17 +96,14 @@ function ExportableChart({
 export function MarketOverview() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Economic & Labour Market Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Market Context</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Understanding the economic factors shaping pay decisions in 2026.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Economic & Labour Market Analysis</p>
+        <h1>Market Context</h1>
+        <p className="page-subtitle">Understanding the economic factors shaping pay decisions in 2026.</p>
       </div>
 
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
-        <Card className="p-5 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-md">
+        <Card className="p-5 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-md card-shine">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
               <Percent className="w-4 h-4" />
@@ -117,7 +114,7 @@ export function MarketOverview() {
           <p className="text-xs text-white/60 mt-0.5">November 2025</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
+        <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md card-shine">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
               <Users className="w-4 h-4" />
@@ -128,7 +125,7 @@ export function MarketOverview() {
           <p className="text-xs text-white/60 mt-0.5">Up from 4.2% (Jul 24)</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md">
+        <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md card-shine">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
               <TrendingUp className="w-4 h-4" />
@@ -139,7 +136,7 @@ export function MarketOverview() {
           <p className="text-xs text-white/60 mt-0.5">CIPD 2026 Outlook</p>
         </Card>
 
-        <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
+        <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md card-shine">
           <div className="flex items-center gap-2 mb-3">
             <div className="w-8 h-8 rounded-lg bg-white/10 flex items-center justify-center">
               <AlertTriangle className="w-4 h-4" />
@@ -151,7 +148,7 @@ export function MarketOverview() {
         </Card>
       </div>
 
-      <Card className="p-8 bg-white border-0 shadow-md">
+      <Card className="p-8 section-card">
         <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Inflation & the Labour Market</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -184,7 +181,7 @@ export function MarketOverview() {
         </div>
       </Card>
 
-      <Card className="p-8 bg-white border-0 shadow-md">
+      <Card className="p-8 section-card">
         <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Labour Market Weakening</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
@@ -228,7 +225,7 @@ export function MarketOverview() {
         </div>
       </Card>
 
-      <Card className="p-8 bg-white border-0 shadow-md">
+      <Card className="p-8 section-card">
         <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Pay Rises in 2026</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">

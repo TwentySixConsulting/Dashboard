@@ -2,18 +2,15 @@ import { Card } from "@/components/ui/card";
 import { bonusData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Percent, Info } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 export function Bonus() {
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Variable Pay Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Bonus Potential</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Market data on bonus levels by job level for the SaaS / Technology sector.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+      <div className="page-header">
+        <p className="page-badge">Variable Pay Analysis</p>
+        <h1>Bonus Potential</h1>
+        <p className="page-subtitle">Market data on bonus levels by job level for the SaaS / Technology sector.</p>
       </div>
 
       <Card className="p-6 bg-gradient-to-br from-primary to-primary/80 text-white border-0 shadow-xl">
@@ -30,7 +27,7 @@ export function Bonus() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex items-center gap-2 mb-6">
           <Percent className="w-5 h-5 text-accent" />
           <h3 className="font-display font-bold text-xl">Bonus by Job Level</h3>
@@ -86,7 +83,7 @@ export function Bonus() {
       </Card>
 
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <h3 className="font-display font-bold text-lg mb-4">Sector Trends</h3>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
@@ -108,7 +105,7 @@ export function Bonus() {
           </ul>
         </Card>
 
-        <Card className="p-6 bg-white border-0 shadow-md">
+        <Card className="p-6 section-card">
           <h3 className="font-display font-bold text-lg mb-4">Considerations</h3>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">

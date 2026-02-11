@@ -20,7 +20,7 @@ import {
   Cell,
 } from "recharts";
 import { toPng } from "html-to-image";
-import logoImage from "@/assets/twentysix-logo.png";
+
 
 type SegmentKey = "small_nfp" | "large_nfp" | "small_private" | "large_private" | "public" | "large_public";
 
@@ -115,13 +115,10 @@ export function Benefits() {
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
-      <div className="flex items-start justify-between mb-8">
-        <div>
-          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Total Reward Analysis</p>
-          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Benefits Breakdown</h1>
-          <p className="text-lg text-muted-foreground max-w-2xl">Market provision of key benefits by organisation type.</p>
-        </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
+      <div className="page-header">
+        <p className="page-badge">Total Reward Analysis</p>
+        <h1>Benefits Breakdown</h1>
+        <p className="page-subtitle">Market provision of key benefits by organisation type.</p>
       </div>
 
       <Card className="p-6 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-lg">
@@ -138,7 +135,7 @@ export function Benefits() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-indigo-500" />
@@ -192,7 +189,7 @@ export function Benefits() {
         </div>
       </Card>
 
-      <Card className="p-6 bg-white border-0 shadow-md">
+      <Card className="p-6 section-card">
         <h3 className="font-display font-bold text-xl mb-4">Detailed Breakdown</h3>
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
