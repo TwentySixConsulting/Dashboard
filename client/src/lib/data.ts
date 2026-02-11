@@ -17,7 +17,7 @@ export const companyInfo = {
   name: "Brighton Demo Technologies",
   industry: "SaaS / Technology",
   location: "Brighton",
-  reportDate: "February 2026 (Q1 2026)",
+  reportDate: "2026: Quarter 1",
   employees: 15,
   rolesAssessed: 10,
 };

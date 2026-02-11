@@ -46,11 +46,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
     <div className="flex min-h-screen">
       <aside className="w-72 bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto flex flex-col">
         <div className="p-5 border-b border-sidebar-border">
-          <img
-            src={logoImage}
-            alt="TwentySix"
-            className="h-9 w-auto brightness-0 invert"
-          />
+          <p className="text-sm font-semibold text-sidebar-foreground/80 tracking-wide uppercase">Pay & Benefits</p>
         </div>
 
         <div className="p-4 flex-1">
@@ -91,7 +87,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           <div className="bg-sidebar-accent/50 rounded-xl p-4">
             <p className="text-[10px] uppercase tracking-[0.15em] text-sidebar-foreground/40 mb-1 font-medium">Prepared for</p>
             <p className="font-semibold text-sm">Brighton Demo Technologies</p>
-            <p className="text-xs text-sidebar-foreground/50 mt-1">Q1 2026</p>
+            <p className="text-xs text-sidebar-foreground/50 mt-1">2026: Quarter 1</p>
           </div>
         </div>
       </aside>

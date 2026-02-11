@@ -3,7 +3,6 @@ import { Card } from "@/components/ui/card";
 import { Link } from "wouter";
 import { companyInfo } from "@/lib/data";
 import { getPublishedSections, getPublishedMeta, DashboardSection, DashboardPageMeta, DEFAULT_SECTIONS, DEFAULT_PAGE_META } from "@/lib/dashboardData";
-import logoImage from "@/assets/twentysix-logo.png";
 import {
   BarChart3,
   Users,
@@ -126,11 +125,6 @@ export function ExecutiveSummary() {
             </span>
           </Link>
         </div>
-        <img
-          src={logoImage}
-          alt="TwentySix"
-          className="h-12 w-auto hidden lg:block"
-        />
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
