@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { EditableText } from "@/components/EditableText";
 import { bonusData } from "@/lib/data";
 import { cn } from "@/lib/utils";
 import { Percent, Info } from "lucide-react";
@@ -10,27 +9,9 @@ export function Bonus() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <EditableText
-            contentKey="bonus-subtitle"
-            defaultValue="Variable Pay Analysis"
-            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
-            as="p"
-            page="bonus"
-          />
-          <EditableText
-            contentKey="bonus-title"
-            defaultValue="Bonus Potential"
-            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
-            as="h1"
-            page="bonus"
-          />
-          <EditableText
-            contentKey="bonus-intro"
-            defaultValue="Market data on bonus levels by job level for the SaaS / Technology sector."
-            className="text-lg text-muted-foreground max-w-2xl"
-            as="p"
-            page="bonus"
-          />
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Variable Pay Analysis</p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Bonus Potential</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">Market data on bonus levels by job level for the SaaS / Technology sector.</p>
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
@@ -41,13 +22,7 @@ export function Bonus() {
             <Info className="w-6 h-6" />
           </div>
           <div>
-            <EditableText
-              contentKey="bonus-about-data"
-              defaultValue="About Bonus Data"
-              className="text-xl font-display font-bold mb-2"
-              as="h2"
-              page="bonus"
-            />
+            <h2 className="text-xl font-display font-bold mb-2">About Bonus Data</h2>
             <p className="text-white/80">
               The figures below represent typical bonus percentages as a proportion of base salary. In the SaaS / Technology sector, bonuses are commonly used to attract and retain talent, particularly for senior, technical, and commercial roles.
             </p>
@@ -58,13 +33,7 @@ export function Bonus() {
       <Card className="p-6 bg-white border-0 shadow-md">
         <div className="flex items-center gap-2 mb-6">
           <Percent className="w-5 h-5 text-accent" />
-          <EditableText
-            contentKey="bonus-by-job-level"
-            defaultValue="Bonus by Job Level"
-            className="font-display font-bold text-xl"
-            as="h3"
-            page="bonus"
-          />
+          <h3 className="font-display font-bold text-xl">Bonus by Job Level</h3>
         </div>
         
         <div className="overflow-x-auto">

@@ -1,7 +1,6 @@
 import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EditableText } from "@/components/EditableText";
 import {
   Select,
   SelectContent,
@@ -118,27 +117,9 @@ export function Benefits() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <EditableText
-            contentKey="benefits-subtitle"
-            defaultValue="Total Reward Analysis"
-            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
-            as="p"
-            page="benefits"
-          />
-          <EditableText
-            contentKey="benefits-title"
-            defaultValue="Benefits Breakdown"
-            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
-            as="h1"
-            page="benefits"
-          />
-          <EditableText
-            contentKey="benefits-intro"
-            defaultValue="Market provision of key benefits by organisation type."
-            className="text-lg text-muted-foreground max-w-2xl"
-            as="p"
-            page="benefits"
-          />
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Total Reward Analysis</p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Benefits Breakdown</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">Market provision of key benefits by organisation type.</p>
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
@@ -149,13 +130,7 @@ export function Benefits() {
             <Shield className="w-6 h-6" />
           </div>
           <div>
-            <EditableText
-              contentKey="benefits-about-data"
-              defaultValue="About This Data"
-              className="text-xl font-display font-bold mb-2"
-              as="h2"
-              page="benefits"
-            />
+            <h2 className="text-xl font-display font-bold mb-2">About This Data</h2>
             <p className="text-white/80">
               This shows the percentage of organisations in each segment that offer each benefit. Data is based on market surveys and industry benchmarks. Use the dropdown to compare different organisation types.
             </p>
@@ -167,13 +142,7 @@ export function Benefits() {
         <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 mb-6">
           <div className="flex items-center gap-2">
             <BarChart3 className="w-5 h-5 text-indigo-500" />
-            <EditableText
-              contentKey="benefits-prevalence"
-              defaultValue="Benefits Prevalence"
-              className="font-display font-bold text-xl"
-              as="h3"
-              page="benefits"
-            />
+            <h3 className="font-display font-bold text-xl">Benefits Prevalence</h3>
           </div>
           <div className="flex flex-wrap items-center gap-3">
             <Select value={selectedSegment} onValueChange={(v) => setSelectedSegment(v as SegmentKey)}>

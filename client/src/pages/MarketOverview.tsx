@@ -1,7 +1,6 @@
 import { useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
-import { EditableText } from "@/components/EditableText";
 import {
   AreaChart,
   Area,
@@ -50,14 +49,10 @@ function ExportableChart({
   children, 
   title, 
   filename,
-  contentKey,
-  page = "market-context"
 }: { 
   children: React.ReactNode; 
   title: string; 
   filename: string;
-  contentKey?: string;
-  page?: string;
 }) {
   const chartRef = useRef<HTMLDivElement>(null);
 
@@ -81,17 +76,7 @@ function ExportableChart({
   return (
     <Card className="p-6 bg-white border-0 shadow-md">
       <div className="flex items-center justify-between mb-4">
-        {contentKey ? (
-          <EditableText
-            contentKey={contentKey}
-            defaultValue={title}
-            className="font-display font-bold text-lg"
-            as="h3"
-            page={page}
-          />
-        ) : (
-          <h3 className="font-display font-bold text-lg">{title}</h3>
-        )}
+        <h3 className="font-display font-bold text-lg">{title}</h3>
         <Button 
           onClick={handleExport} 
           variant="ghost" 
@@ -113,32 +98,13 @@ export function MarketOverview() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <EditableText
-            contentKey="market-context-subtitle"
-            defaultValue="Economic & Labour Market Analysis"
-            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
-            as="p"
-            page="market-context"
-          />
-          <EditableText
-            contentKey="market-context-title"
-            defaultValue="Market Context"
-            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
-            as="h1"
-            page="market-context"
-          />
-          <EditableText
-            contentKey="market-context-intro"
-            defaultValue="Understanding the economic factors shaping pay decisions in 2026."
-            className="text-lg text-muted-foreground max-w-2xl"
-            as="p"
-            page="market-context"
-          />
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Economic & Labour Market Analysis</p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Market Context</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">Understanding the economic factors shaping pay decisions in 2026.</p>
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" style={{ opacity: 1 }} />
       </div>
 
-      {/* Key Metrics */}
       <div className="grid grid-cols-2 lg:grid-cols-4 gap-4">
         <Card className="p-5 bg-gradient-to-br from-slate-700 to-slate-800 text-white border-0 shadow-md">
           <div className="flex items-center gap-2 mb-3">
@@ -146,9 +112,9 @@ export function MarketOverview() {
               <Percent className="w-4 h-4" />
             </div>
           </div>
-          <EditableText contentKey="stat-cpi-value" defaultValue="3.2%" className="text-3xl font-bold" as="p" page="market-context" />
-          <EditableText contentKey="stat-cpi-label" defaultValue="CPI Inflation" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
-          <EditableText contentKey="stat-cpi-date" defaultValue="November 2025" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
+          <p className="text-3xl font-bold">3.2%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">CPI Inflation</p>
+          <p className="text-xs text-white/60 mt-0.5">November 2025</p>
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-indigo-600 to-indigo-700 text-white border-0 shadow-md">
@@ -157,9 +123,9 @@ export function MarketOverview() {
               <Users className="w-4 h-4" />
             </div>
           </div>
-          <EditableText contentKey="stat-unemployment-value" defaultValue="5.1%" className="text-3xl font-bold" as="p" page="market-context" />
-          <EditableText contentKey="stat-unemployment-label" defaultValue="Unemployment" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
-          <EditableText contentKey="stat-unemployment-note" defaultValue="Up from 4.2% (Jul 24)" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
+          <p className="text-3xl font-bold">5.1%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Unemployment</p>
+          <p className="text-xs text-white/60 mt-0.5">Up from 4.2% (Jul 24)</p>
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-cyan-600 to-cyan-700 text-white border-0 shadow-md">
@@ -168,9 +134,9 @@ export function MarketOverview() {
               <TrendingUp className="w-4 h-4" />
             </div>
           </div>
-          <EditableText contentKey="stat-payrise-value" defaultValue="3.0%" className="text-3xl font-bold" as="p" page="market-context" />
-          <EditableText contentKey="stat-payrise-label" defaultValue="Pay Rise Forecast" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
-          <EditableText contentKey="stat-payrise-note" defaultValue="CIPD 2026 Outlook" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
+          <p className="text-3xl font-bold">3.0%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Pay Rise Forecast</p>
+          <p className="text-xs text-white/60 mt-0.5">CIPD 2026 Outlook</p>
         </Card>
 
         <Card className="p-5 bg-gradient-to-br from-teal-600 to-teal-700 text-white border-0 shadow-md">
@@ -179,51 +145,23 @@ export function MarketOverview() {
               <AlertTriangle className="w-4 h-4" />
             </div>
           </div>
-          <EditableText contentKey="stat-minwage-value" defaultValue="4.1%" className="text-3xl font-bold" as="p" page="market-context" />
-          <EditableText contentKey="stat-minwage-label" defaultValue="Min Wage Rise" className="text-sm font-medium text-white/90 mt-1" as="p" page="market-context" />
-          <EditableText contentKey="stat-minwage-note" defaultValue="Statutory estimate" className="text-xs text-white/60 mt-0.5" as="p" page="market-context" />
+          <p className="text-3xl font-bold">4.1%</p>
+          <p className="text-sm font-medium text-white/90 mt-1">Min Wage Rise</p>
+          <p className="text-xs text-white/60 mt-0.5">Statutory estimate</p>
         </Card>
       </div>
 
-      {/* Inflation & Labour Market Section */}
       <Card className="p-8 bg-white border-0 shadow-md">
-        <EditableText
-            contentKey="section-inflation-labour-market"
-            defaultValue="Inflation & the Labour Market"
-            className="font-display font-bold text-2xl text-slate-800 mb-6"
-            as="h2"
-            page="market-context"
-          />
+        <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Inflation & the Labour Market</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="prose prose-sm max-w-none text-slate-600">
-            <EditableText 
-              contentKey="inflation-para-1" 
-              defaultValue="The most recent data from the Office of National Statistics shows that twelve-month inflation in the Consumer Prices Index (CPI) was 3.2% in November. Inflation has been higher than expected all year – at the end of 2024, it was 2.3% but climbed steadily throughout much of 2025."
-              className="mb-4 block" 
-              as="p" 
-              page="market-context"
-              multiline
-            />
-            <EditableText 
-              contentKey="inflation-para-2" 
-              defaultValue="It is, however, finally starting to come down (it was 3.8% in August), but still sits above the Bank of England's target of 2%."
-              className="mb-4 block" 
-              as="p" 
-              page="market-context"
-              multiline
-            />
-            <EditableText 
-              contentKey="inflation-para-3" 
-              defaultValue="This level of inflation is likely to put upwards pressure on pay rises."
-              className="block" 
-              as="p" 
-              page="market-context"
-              multiline
-            />
+            <p className="mb-4 block">The most recent data from the Office of National Statistics shows that twelve-month inflation in the Consumer Prices Index (CPI) was 3.2% in November. Inflation has been higher than expected all year – at the end of 2024, it was 2.3% but climbed steadily throughout much of 2025.</p>
+            <p className="mb-4 block">It is, however, finally starting to come down (it was 3.8% in August), but still sits above the Bank of England's target of 2%.</p>
+            <p className="block">This level of inflation is likely to put upwards pressure on pay rises.</p>
           </div>
           
-          <ExportableChart title="CPI Inflation Trend" filename="cpi-inflation-trend" contentKey="chart-cpi-inflation-trend">
+          <ExportableChart title="CPI Inflation Trend" filename="cpi-inflation-trend">
             <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <AreaChart data={inflationData}>
@@ -246,18 +184,11 @@ export function MarketOverview() {
         </div>
       </Card>
 
-      {/* Labour Market Weakening */}
       <Card className="p-8 bg-white border-0 shadow-md">
-        <EditableText
-            contentKey="section-labour-market-weakening"
-            defaultValue="Labour Market Weakening"
-            className="font-display font-bold text-2xl text-slate-800 mb-6"
-            as="h2"
-            page="market-context"
-          />
+        <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Labour Market Weakening</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
-          <ExportableChart title="Unemployment Rate" filename="unemployment-trend" contentKey="chart-unemployment-rate">
+          <ExportableChart title="Unemployment Rate" filename="unemployment-trend">
             <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <LineChart data={unemploymentData}>
@@ -273,53 +204,32 @@ export function MarketOverview() {
           </ExportableChart>
           
           <div className="prose prose-sm max-w-none text-slate-600">
-            <EditableText 
-              contentKey="labour-market-intro" 
-              defaultValue="At the same time, the UK labour market is weakening, meaning that there is more supply than demand for workers. This is characterised by:"
-              className="mb-4 block" 
-              as="p" 
-              page="market-context"
-              multiline
-            />
+            <p className="mb-4 block">At the same time, the UK labour market is weakening, meaning that there is more supply than demand for workers. This is characterised by:</p>
             <ul className="space-y-2 mb-4">
               <li className="flex items-start gap-2">
                 <TrendingUp className="w-4 h-4 text-red-500 shrink-0 mt-0.5" />
-                <EditableText contentKey="labour-list-1" defaultValue="Rising unemployment (4.2% → 5.1%)" as="span" page="market-context" />
+                <span>Rising unemployment (4.2% → 5.1%)</span>
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <EditableText contentKey="labour-list-2" defaultValue="Slowing job growth" as="span" page="market-context" />
+                <span>Slowing job growth</span>
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <EditableText contentKey="labour-list-3" defaultValue="Fewer job vacancies" as="span" page="market-context" />
+                <span>Fewer job vacancies</span>
               </li>
               <li className="flex items-start gap-2">
                 <TrendingDown className="w-4 h-4 text-amber-500 shrink-0 mt-0.5" />
-                <EditableText contentKey="labour-list-4" defaultValue="Slower wage growth" as="span" page="market-context" />
+                <span>Slower wage growth</span>
               </li>
             </ul>
-            <EditableText 
-              contentKey="labour-market-conclusion" 
-              defaultValue="This has slightly eased recruitment pressures for some organisations as the candidate pool has significantly increased, particularly for entry-level jobs. However, there is still a skill shortage and a fall in the quality of applications relative to 12 months ago."
-              className="block" 
-              as="p" 
-              page="market-context"
-              multiline
-            />
+            <p className="block">This has slightly eased recruitment pressures for some organisations as the candidate pool has significantly increased, particularly for entry-level jobs. However, there is still a skill shortage and a fall in the quality of applications relative to 12 months ago.</p>
           </div>
         </div>
       </Card>
 
-      {/* Pay Rises in 2026 */}
       <Card className="p-8 bg-white border-0 shadow-md">
-        <EditableText
-            contentKey="section-pay-rises-2026"
-            defaultValue="Pay Rises in 2026"
-            className="font-display font-bold text-2xl text-slate-800 mb-6"
-            as="h2"
-            page="market-context"
-          />
+        <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">Pay Rises in 2026</h2>
         
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
           <div className="prose prose-sm max-w-none text-slate-600">
@@ -334,7 +244,7 @@ export function MarketOverview() {
             </p>
           </div>
           
-          <ExportableChart title="2026 Pay Rise Comparison" filename="pay-rise-comparison" contentKey="chart-pay-rise-comparison">
+          <ExportableChart title="2026 Pay Rise Comparison" filename="pay-rise-comparison">
             <div className="h-48">
               <ResponsiveContainer width="100%" height="100%">
                 <BarChart data={payRiseComparisonData} layout="vertical">
@@ -354,15 +264,8 @@ export function MarketOverview() {
         </div>
       </Card>
 
-      {/* Key Trends */}
       <Card className="p-8 bg-slate-50 border border-slate-200">
-        <EditableText
-            contentKey="section-short-term-trends"
-            defaultValue="What We're Seeing in the Short Term"
-            className="font-display font-bold text-2xl text-slate-800 mb-6"
-            as="h2"
-            page="market-context"
-          />
+        <h2 className="font-display font-bold text-2xl text-slate-800 mb-6">What We're Seeing in the Short Term</h2>
         
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
           <div className="bg-white p-6 rounded-xl border border-slate-200">
@@ -397,7 +300,6 @@ export function MarketOverview() {
         </div>
       </Card>
 
-      {/* Summary Box */}
       <Card className="p-6 bg-gradient-to-br from-primary to-primary/80 text-white border-0 shadow-xl">
         <div className="flex items-start gap-4">
           <ArrowRight className="w-6 h-6 shrink-0 mt-1" />

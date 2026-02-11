@@ -1,5 +1,4 @@
 import { Card } from "@/components/ui/card";
-import { EditableText } from "@/components/EditableText";
 import { Database, FileText, Building2, Globe, CheckCircle2 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
 
@@ -8,27 +7,9 @@ export function DataSources() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="flex items-start justify-between mb-8">
         <div>
-          <EditableText
-            contentKey="data-sources-subtitle"
-            defaultValue="Methodology"
-            className="text-sm font-medium text-accent uppercase tracking-wider mb-2"
-            as="p"
-            page="data-sources"
-          />
-          <EditableText
-            contentKey="data-sources-title"
-            defaultValue="Data Sources"
-            className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4"
-            as="h1"
-            page="data-sources"
-          />
-          <EditableText
-            contentKey="data-sources-intro"
-            defaultValue="Information about the data sources and methodology used in this report."
-            className="text-lg text-muted-foreground max-w-2xl"
-            as="p"
-            page="data-sources"
-          />
+          <p className="text-sm font-medium text-accent uppercase tracking-wider mb-2">Methodology</p>
+          <h1 className="text-4xl lg:text-5xl font-display font-bold text-primary mb-4">Data Sources</h1>
+          <p className="text-lg text-muted-foreground max-w-2xl">Information about the data sources and methodology used in this report.</p>
         </div>
         <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
       </div>
@@ -39,13 +20,7 @@ export function DataSources() {
             <div className="w-12 h-12 rounded-xl bg-primary/10 flex items-center justify-center">
               <Database className="w-6 h-6 text-primary" />
             </div>
-            <EditableText
-              contentKey="data-sources-salary-data"
-              defaultValue="Salary Data"
-              className="font-display font-bold text-xl"
-              as="h3"
-              page="data-sources"
-            />
+            <h3 className="font-display font-bold text-xl">Salary Data</h3>
           </div>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
@@ -72,13 +47,7 @@ export function DataSources() {
             <div className="w-12 h-12 rounded-xl bg-accent/10 flex items-center justify-center">
               <Building2 className="w-6 h-6 text-accent" />
             </div>
-            <EditableText
-              contentKey="data-sources-sector-data"
-              defaultValue="Sector Data"
-              className="font-display font-bold text-xl"
-              as="h3"
-              page="data-sources"
-            />
+            <h3 className="font-display font-bold text-xl">Sector Data</h3>
           </div>
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
