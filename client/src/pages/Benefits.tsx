@@ -19,10 +19,9 @@ import {
 
 interface BenefitRow {
   benefit: string;
-  companyProvision: string;
-  startupSME: string;
-  midSizeTech: string;
-  largeTech: string;
+  smallPrivate: string;
+  socialEnterprises: string;
+  largePrivate: string;
 }
 
 interface BenefitSection {
@@ -53,71 +52,68 @@ const benefitSections: BenefitSection[] = [
     rows: [
       {
         benefit: "Bonus",
-        companyProvision: "Annual performance-based bonus",
-        startupSME: "Profit share or performance bonus common, typically 5–15% depending on role",
-        midSizeTech: "Performance bonus standard, typically 10–20% with individual and company targets",
-        largeTech: "Structured bonus schemes are the norm, 10–25% with clear KPIs; sales roles often higher",
+        smallPrivate: "Yes – either profit share or performance bonus common, typically between 5–20% depending on role and organisation",
+        socialEnterprises: "Rare",
+        largePrivate: "Yes – either profit share or performance bonus common, typically between 5–20% depending on role and organisation",
       },
       {
         benefit: "Annual Leave",
-        companyProvision: "25 days plus bank holidays, increasing with service",
-        startupSME: "20–25 days plus bank holidays; unlimited leave policies emerging but still uncommon",
-        midSizeTech: "25 days plus bank holidays is standard, with around 60% increasing through service",
-        largeTech: "25–28 days plus bank holidays, increasing with service; some offer 30+ days at senior level",
+        smallPrivate: "20–25 days (plus bank holidays), increasing with service",
+        socialEnterprises: "25–28 days, increasing with service",
+        largePrivate: "25 days (with around 50% increasing annual leave through service)",
       },
       {
         benefit: "Additional Days (e.g. Christmas close-down)",
-        companyProvision: "Not currently offered",
-        startupSME: "Relatively uncommon, though some offer office closure between Christmas and New Year",
-        midSizeTech: "1–3 additional days at Christmas is increasingly common",
-        largeTech: "1–3 additional days at Christmas is typical; some offer company-wide wellbeing days",
+        smallPrivate: "Relatively uncommon",
+        socialEnterprises: "1–3 additional days at Christmas is common but not universal",
+        largePrivate: "Relatively uncommon",
       },
       {
         benefit: "Buy & Sell Leave",
-        companyProvision: "Buy or sell up to 5 days",
-        startupSME: "Relatively uncommon in smaller organisations",
-        midSizeTech: "Ability to buy up to 5 days is a typical benefit; selling leave is less common but growing",
-        largeTech: "Ability to buy/sell up to 5 days is standard practice",
+        smallPrivate: "Relatively uncommon",
+        socialEnterprises: "Being able to buy leave (up to 5 days) is a typical benefit; being able to sell leave is less common, although does happen",
+        largePrivate: "Ability to buy/sell up to 5 days",
       },
       {
         benefit: "Pension",
-        companyProvision: "5% employer contribution",
-        startupSME: "Auto-enrolment minimum levels are typical; some offer 3–5%",
-        midSizeTech: "5–7% employer contribution is typical market practice",
-        largeTech: "5–8% employer contribution typical, with ability to match contributions up to 10%",
+        smallPrivate: "Auto-enrolment levels are typical market practice",
+        socialEnterprises: "5–7% employer contribution is typical",
+        largePrivate: "5–7% employer contribution is typical, although ability to match contributions up to a typical level of 8%",
       },
       {
         benefit: "Sick Pay",
-        companyProvision: "Up to 10 days full pay",
-        startupSME: "Statutory or 5–10 days full pay, followed by discretionary element",
-        midSizeTech: "Up to 3 months full pay; 3 months half pay is typical",
-        largeTech: "3 months full; 3 months half pay, often followed by Permanent Health Insurance",
+        smallPrivate: "10 days' full, followed by discretionary element",
+        socialEnterprises: "3 months' full; 3 months' half pay",
+        largePrivate: "3 months' full; 3 months' half pay (followed by Permanent Health Insurance)",
       },
       {
         benefit: "Maternity Pay",
-        companyProvision: "12 weeks full, 14 weeks at 50%",
-        startupSME: "Statutory is still common; enhanced increasingly expected",
-        midSizeTech: "Enhanced – typically 12–16 weeks full pay",
-        largeTech: "6 months full pay is increasingly standard; some offering gender-neutral parental leave",
+        smallPrivate: "Statutory",
+        socialEnterprises: "Enhanced – 12 weeks' full pay",
+        largePrivate: "6 months' full pay",
       },
       {
         benefit: "Paternity Pay",
-        companyProvision: "2 weeks full pay",
-        startupSME: "Statutory is most common",
-        midSizeTech: "2–4 weeks full pay is the typical enhanced benefit",
-        largeTech: "2–4 weeks full pay typical, with around 50% of organisations considering extending to match maternity",
+        smallPrivate: "Statutory",
+        socialEnterprises: "2 weeks' full pay",
+        largePrivate: "2 weeks' full pay is the typical benefit, but around 50% of organisations are considering extending this to match maternity benefit",
       },
       {
-        benefit: "Share/Equity Schemes",
-        companyProvision: "EMI share option scheme",
-        startupSME: "EMI share options common in VC-backed and founder-led companies; a key recruitment tool",
-        midSizeTech: "Share options and Save As You Earn (SAYE) schemes are increasingly common",
-        largeTech: "Share options, SAYE, RSUs and equity grants are standard practice across the sector",
+        benefit: "Share Schemes",
+        smallPrivate: "Formal equity is relatively rare and is more commonly used as a tool in founder-led progressive organisations",
+        socialEnterprises: "N/A",
+        largePrivate: "Share options and Save As You Earn share schemes are the norm",
+      },
+      {
+        benefit: "Car Allowance",
+        smallPrivate: "Typically for job need rather than status",
+        socialEnterprises: "Rare",
+        largePrivate: "Car allowance is given both for job need and typically at operational manager level upwards as a status perk",
       },
     ],
     ideas: [
-      "Additional days (up to 3) as Wellbeing/Mental Health Days that can be taken at short notice in addition to annual leave",
-      "Gender-neutral parental leave policies – a growing trend, with some UK tech firms offering 20+ weeks regardless of gender",
+      "Additional days (up to 3) as Wellbeing/Mental Health Days that can be taken in addition to annual leave at short notice",
+      "Gender-neutral parental leave policies – a growing trend, with some UK firms offering 20+ weeks regardless of gender",
       "Birthday leave – an extra day off on or around the employee's birthday",
     ],
   },
@@ -134,36 +130,32 @@ const benefitSections: BenefitSection[] = [
     rows: [
       {
         benefit: "Flexible Working",
-        companyProvision: "Core hours 10am–4pm with flex either side",
-        startupSME: "Very common in tech; flexible hours and output-focused working are standard",
-        midSizeTech: "Flexible hours widely offered; compressed hours and part-time arrangements available",
-        largeTech: "Full range: part-time, job-share, compressed hours, flexi-time; formal policies in place",
+        smallPrivate: "Statutory only",
+        socialEnterprises: "Yes: part-time; job-share; compressed hours offered",
+        largePrivate: "More variable practice, but larger professional services organisations would typically offer part-time, job-share and compressed hours",
       },
       {
         benefit: "Hybrid/Remote Working",
-        companyProvision: "Hybrid with minimum 2 days in office",
-        startupSME: "Fully remote or hybrid is common, with some startups being fully remote-first",
-        midSizeTech: "Hybrid is the norm – typically 2–3 days per week in office; some roles fully remote",
-        largeTech: "Hybrid is standard, with 2–3 days in office most common; fully remote for certain roles",
+        smallPrivate: "Mixed practice, but with the emphasis on being office-based",
+        socialEnterprises: "Mixed practice: some but not all roles offered with the possibility of hybrid, with a minimum of 1–2 days per week in the office",
+        largePrivate: "Mixed practice: some but not all roles offered with the possibility of hybrid, with a minimum of 1–2 days per week in the office",
       },
       {
         benefit: "Sabbaticals",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon due to team size constraints",
-        midSizeTech: "Offered by some after 3–5 years' service, typically 1–3 months",
-        largeTech: "Yes, typically after 4–5 years' service, ranging from 4 weeks to 3 months; increasingly popular",
+        smallPrivate: "No",
+        socialEnterprises: "Yes, typically after 3–5 years' service, ranging from 3–12 months",
+        largePrivate: "Yes, typically after 3–5 years' service, ranging from 3–12 months",
       },
       {
         benefit: "Compassionate Leave",
-        companyProvision: "Up to 5 days",
-        startupSME: "Discretionary – handled on a case-by-case basis",
-        midSizeTech: "Up to 5 days paid is typical",
-        largeTech: "Up to 5–10 days, with some extending to include pet bereavement",
+        smallPrivate: "Discretionary",
+        socialEnterprises: "Up to 5 days",
+        largePrivate: "Up to 5 days",
       },
     ],
     ideas: [
-      "Paid carers leave – a growing number of UK organisations now offer 1–2 weeks; the Carer's Leave Act 2024 provides statutory unpaid leave",
-      "4-day working week – CIPD research found 6% of UK employers now offer this; several tech companies piloting it in 2025–26",
+      "Paid carers leave – we found a few organisations offering this up to a week (or in one case two weeks)",
+      "4-day working week – CIPD found 6% of UK employers offer this to all staff",
       "Summer hours – reduced Friday hours during summer months, popular in creative and tech sectors",
     ],
   },
@@ -180,87 +172,75 @@ const benefitSections: BenefitSection[] = [
     rows: [
       {
         benefit: "Life Assurance",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon in smaller organisations",
-        midSizeTech: "Yes – 3–4x salary is typical",
-        largeTech: "Yes – 4x salary is standard; some offer up to 6x",
+        smallPrivate: "No",
+        socialEnterprises: "Yes – 3/4x salary",
+        largePrivate: "Yes – 3/4x salary",
       },
       {
         benefit: "Employee Assistance Programme",
-        companyProvision: "Yes – 24/7 helpline and counselling",
-        startupSME: "Increasingly common, often through a low-cost provider",
-        midSizeTech: "Yes – standard benefit",
-        largeTech: "Yes – standard benefit, often with enhanced face-to-face counselling",
+        smallPrivate: "Yes",
+        socialEnterprises: "Yes",
+        largePrivate: "Yes",
       },
       {
-        benefit: "Private Medical Insurance (PMI)",
-        companyProvision: "Not currently offered",
-        startupSME: "Growing in prevalence but not yet standard; around 35% offer this",
-        midSizeTech: "Common benefit – around 65% of mid-size tech firms now offer PMI",
-        largeTech: "Standard benefit – 84% of large tech employers offer this, typically individual cover with option to add family",
+        benefit: "Private Medical Insurance",
+        smallPrivate: "No",
+        socialEnterprises: "Currently not typically offered – however, we are seeing more interest so this is one to watch",
+        largePrivate: "This is a standard benefit in larger organisations, with 84% of respondents to a large benefits survey offering this. Coverage is typically for individuals with the ability to top up to family membership",
       },
       {
-        benefit: "Health Cash Plan",
-        companyProvision: "Yes – via Healthshield",
-        startupSME: "Less common; more prevalent where PMI is not offered",
-        midSizeTech: "Common as an alternative to or alongside PMI",
-        largeTech: "Less common where PMI is provided; sometimes offered as a supplementary benefit",
+        benefit: "Health Cash Plan (including dental)",
+        smallPrivate: "No",
+        socialEnterprises: "Yes – this is a very common benefit, much more so than PMI",
+        largePrivate: "Less common due to the prevalence of PMI",
       },
       {
-        benefit: "Permanent Health Insurance / Income Protection",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon",
-        midSizeTech: "Becoming more prevalent, especially alongside reduced sick pay entitlement",
-        largeTech: "Around 50% of larger employers now offer this; increasingly seen as essential",
+        benefit: "Permanent Health Insurance",
+        smallPrivate: "No",
+        socialEnterprises: "This is not yet a standard benefit, but has become more prevalent with the decrease in sick pay entitlement over the past 10 years",
+        largePrivate: "Mixed practice, with around half of private sector employers offering this",
       },
       {
         benefit: "Digital GP",
-        companyProvision: "Not currently offered",
-        startupSME: "May be offered as part of PMI or health cash plan",
-        midSizeTech: "Increasingly common as a standalone benefit or part of PMI",
-        largeTech: "Typically offered as part of PMI or as a standalone benefit; becoming standard",
+        smallPrivate: "No",
+        socialEnterprises: "May be offered as part of PMI or Health Cash Plan but not a standard benefit",
+        largePrivate: "Typically offered as part of PMI or Health Cash Plan – a more standard benefit than in the not-for-profit sector",
       },
       {
         benefit: "Health Screening",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon",
-        midSizeTech: "Mixed practice – not yet standard",
-        largeTech: "Typically offered, especially at senior levels; often as part of PMI or wellbeing programme",
+        smallPrivate: "No",
+        socialEnterprises: "Mixed practice – not a standard benefit",
+        largePrivate: "Typically offered as part of PMI or Health Cash Plan",
       },
       {
-        benefit: "Gym Membership / Fitness Contribution",
-        companyProvision: "Not currently offered",
-        startupSME: "Informal perks (e.g. ClassPass credits) are common in tech startups",
-        midSizeTech: "Contribution towards gym membership or fitness app subscription is common",
-        largeTech: "Standard benefit – often through a flexible benefits scheme or on-site gym facilities",
+        benefit: "Gym Membership",
+        smallPrivate: "No",
+        socialEnterprises: "Contribution towards gym membership is a common benefit",
+        largePrivate: "Contribution towards gym membership is a common benefit – often as part of a flexible benefits scheme",
       },
       {
         benefit: "Flu Jabs",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon",
-        midSizeTech: "Yes – increasingly standard",
-        largeTech: "Yes – standard benefit",
+        smallPrivate: "No",
+        socialEnterprises: "Yes",
+        largePrivate: "Yes",
       },
       {
         benefit: "Eye Care Vouchers",
-        companyProvision: "Not currently offered",
-        startupSME: "Mixed – legally required for DSE users but not always formalised",
-        midSizeTech: "Yes – standard for DSE users",
-        largeTech: "Yes – standard benefit",
+        smallPrivate: "Yes",
+        socialEnterprises: "Yes",
+        largePrivate: "Yes",
       },
       {
-        benefit: "Mental Health Apps / Support",
-        companyProvision: "Not currently offered",
-        startupSME: "Growing trend; apps like Headspace or Calm offered by some",
-        midSizeTech: "Yes – mental health apps and first aider programmes common",
-        largeTech: "Yes – comprehensive programmes including apps, counselling, and mental health first aiders",
+        benefit: "Access to Mental Health Apps",
+        smallPrivate: "No",
+        socialEnterprises: "Yes, but much less provision of Digital GP services",
+        largePrivate: "Yes",
       },
     ],
     ideas: [
+      "Free fruit or other food (this was very common at one point but appears to have fallen out of favour)",
+      "Programmes to encourage employee health/physical fitness/relaxation courses",
       "Menopause and fertility support – emerging trend with some organisations offering specific policies and support",
-      "Programmes to encourage physical fitness – step challenges, subsidised fitness classes, lunchtime yoga or running clubs",
-      "On-site or virtual physiotherapy sessions – a newer benefit gaining traction in tech companies",
-      "Sleep wellness programmes – education and tools to support better sleep; linked to productivity improvements",
     ],
   },
   {
@@ -274,40 +254,36 @@ const benefitSections: BenefitSection[] = [
     ],
     rows: [
       {
-        benefit: "Financial Education / Wellbeing",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon but growing",
-        midSizeTech: "Increasingly common – often offered through EAP or specialist provider",
-        largeTech: "Standard practice – financial education webinars, pension planning support, and salary sacrifice schemes",
+        benefit: "Financial Education",
+        smallPrivate: "No",
+        socialEnterprises: "This has become increasingly common and is often offered through the EAP provider",
+        largePrivate: "This has become increasingly common and is often offered through the EAP provider",
       },
       {
-        benefit: "Low-Cost Loans / Season Ticket Loans",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon",
-        midSizeTech: "Season ticket and cycle-to-work loans are standard",
-        largeTech: "Comprehensive – season ticket loans, tech purchase schemes, rental deposit loans",
+        benefit: "Low-Cost Loans and Savings Plans",
+        smallPrivate: "No",
+        socialEnterprises: "Low-cost loans typically given for specific items, such as Season Tickets. There is some use of Credit Unions but not universal practice",
+        largePrivate: "Low-cost loans typically given for specific items, such as Season Tickets. Save As You Earn/Share Save schemes are common",
       },
       {
         benefit: "Retail Discounts",
-        companyProvision: "Yes – online discount platform",
-        startupSME: "Growing – low-cost platforms like Perkbox widely available",
-        midSizeTech: "Standard benefit – online retail discount platforms typical",
-        largeTech: "Standard benefit – comprehensive platforms with wide range of discounts",
+        smallPrivate: "No",
+        socialEnterprises: "Online retail discount provider is typical",
+        largePrivate: "Online retail discount provider is typical",
       },
       {
         benefit: "Homeworker Financial Allowance",
-        companyProvision: "Yes – at statutory level",
-        startupSME: "Relatively uncommon as a formal benefit",
-        midSizeTech: "Mixed practice – some offer a one-off setup budget (typically £200–500)",
-        largeTech: "Around 40% offer a home office setup budget; annual allowance less common",
+        smallPrivate: "Relatively uncommon",
+        socialEnterprises: "Relatively uncommon",
+        largePrivate: "Relatively uncommon",
       },
     ],
     ideas: [
-      "Earned pay access (salary advance schemes) – 11% of UK employers surveyed by CIPD now offer this",
-      "Rental deposit loan scheme – helping employees in high-cost areas",
-      "Energy efficiency schemes and green salary sacrifice options",
-      "Will writing services – a low-cost benefit that employees value highly",
-      "Tech purchase salary sacrifice schemes – tax-efficient way for employees to buy personal technology",
+      "Earned pay access (Employer Salary Access Scheme) – 11% of respondents to the CIPD's Reward Management Survey had this",
+      "Rental deposit loan scheme",
+      "Motorsave – discounts on car maintenance",
+      "Energy switching schemes",
+      "Will writing services",
     ],
   },
   {
@@ -321,29 +297,26 @@ const benefitSections: BenefitSection[] = [
     rows: [
       {
         benefit: "Pension Invested Ethically",
-        companyProvision: "Not currently offered",
-        startupSME: "Mixed practice – growing interest but not standard",
-        midSizeTech: "Yes – ethical investment options available in most pension schemes",
-        largeTech: "Yes – ESG-screened pension options are typical; some default to ethical funds",
+        smallPrivate: "No",
+        socialEnterprises: "Yes (but practice more mixed than in Foundations)",
+        largePrivate: "Mixed practice",
       },
       {
         benefit: "Commitment to Tackling Pay Inequality",
-        companyProvision: "Not currently stated",
-        startupSME: "Uncommon to have formal commitments",
-        midSizeTech: "Yes – increasingly stated, with gender and ethnicity pay gap reporting",
-        largeTech: "Yes – standard practice with published pay gap reports and action plans",
+        smallPrivate: "No",
+        socialEnterprises: "Yes – stated",
+        largePrivate: "Yes – stated",
       },
       {
         benefit: "Paid Volunteering Days",
-        companyProvision: "Not currently offered",
-        startupSME: "Uncommon but valued when offered",
-        midSizeTech: "Yes – typically 1–2 days per year",
-        largeTech: "Around 60% offer volunteering days, with an average of 2–3 days per year",
+        smallPrivate: "No",
+        socialEnterprises: "Yes – typically around 1–2 days",
+        largePrivate: "Around 50% with an average provision of 1.5 days",
       },
     ],
     ideas: [
-      "Discounts on energy-efficient appliances or green commuting incentives",
-      "Mentoring programmes for under-represented groups to break down occupational barriers",
+      "Discounts on energy-efficient appliances",
+      "Mentoring opportunities for under-represented groups to break down occupational barriers",
       "Carbon offset schemes or matching employee donations to environmental causes",
       "Inclusive benefits reviews – ensuring benefit packages work for diverse employee populations",
     ],
@@ -359,37 +332,33 @@ const benefitSections: BenefitSection[] = [
     rows: [
       {
         benefit: "Personal Development Budget",
-        companyProvision: "Training support available",
-        startupSME: "Mixed – some offer annual budgets of £500–1,500; not yet standard",
-        midSizeTech: "Increasingly common – budgets of £1,000–2,500 per person per year typical",
-        largeTech: "Standard practice – annual budgets of £1,500–3,000+ with clear frameworks for usage",
+        smallPrivate: "No",
+        socialEnterprises: "Mixed practice – not standard to have a personal budget that is not linked to work outcomes",
+        largePrivate: "Mixed practice – not standard to have a personal budget that is not linked to work outcomes",
       },
       {
-        benefit: "Free Access to Courses & Platforms",
-        companyProvision: "Not currently offered",
-        startupSME: "Some offer Udemy or similar platform access",
-        midSizeTech: "Yes – platforms like LinkedIn Learning, Pluralsight, or Udemy for Business common",
-        largeTech: "Yes – comprehensive learning platforms with curated content; internal academies",
+        benefit: "Free Access to Courses and Videos",
+        smallPrivate: "Mixed practice",
+        socialEnterprises: "Yes",
+        largePrivate: "Yes",
       },
       {
-        benefit: "Professional Subscriptions Paid",
-        companyProvision: "Not currently offered",
-        startupSME: "Typically 1 relevant subscription paid for",
-        midSizeTech: "1–2 professional subscriptions typical",
-        largeTech: "2+ subscriptions, plus conference attendance budgets",
+        benefit: "Relevant Professional Subscriptions Paid",
+        smallPrivate: "Yes – typically 1 subscription paid for",
+        socialEnterprises: "Yes – typically 2 subscriptions paid for",
+        largePrivate: "Yes – typically 2 subscriptions paid for",
       },
       {
-        benefit: "Career Development (Mentoring, Shadowing, Coaching)",
-        companyProvision: "Not currently offered",
-        startupSME: "Informal – mentoring through networks; limited formal programmes",
-        midSizeTech: "Yes – mentoring programmes, internal mobility, and development pathways increasingly common",
-        largeTech: "Comprehensive – formal mentoring, coaching, work shadowing, internal academies, and leadership programmes",
+        benefit: "Career Development (Training, Shadowing, Mentoring)",
+        smallPrivate: "No",
+        socialEnterprises: "Yes, this is typical market practice. The not-for-profit sector typically places more emphasis on learning opportunities than the private sector",
+        largePrivate: "Yes, larger corporates have the full range of development opportunities",
       },
     ],
     ideas: [
-      "Innovation time – dedicated hours per week/month for personal projects or skill development (e.g. Google's '20% time' model)",
+      "Innovation time – dedicated hours per week/month for personal projects or skill development",
       "Conference attendance budget – separate from L&D budget, specifically for industry events and networking",
-      "Internal tech talks and knowledge sharing sessions – low-cost, high-impact development opportunity",
+      "Internal knowledge sharing sessions – low-cost, high-impact development opportunity",
       "Certification bonuses – financial reward for achieving relevant professional certifications",
     ],
   },
@@ -412,7 +381,7 @@ function BenefitSectionCard({ section, isOpen, onToggle }: {
         </div>
         <div className="flex-1">
           <h2 className="font-display font-bold text-lg text-slate-800">{section.title}</h2>
-          <p className="text-sm text-slate-400 mt-0.5">{section.rows.length} benefits compared across UK tech market segments</p>
+          <p className="text-sm text-slate-400 mt-0.5">{section.rows.length} benefits compared across UK market segments</p>
         </div>
         <div className="w-8 h-8 rounded-full bg-slate-100 flex items-center justify-center shrink-0">
           {isOpen ? <ChevronUp className="w-4 h-4 text-slate-500" /> : <ChevronDown className="w-4 h-4 text-slate-500" />}
@@ -436,26 +405,24 @@ function BenefitSectionCard({ section, isOpen, onToggle }: {
             </ul>
           </div>
 
-          <h3 className="font-display font-bold text-sm text-slate-700 mb-3">Typical UK Tech Market Practice</h3>
+          <h3 className="font-display font-bold text-sm text-slate-700 mb-3">Typical Market Practice</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
               <thead>
                 <tr className="border-b-2 border-slate-200">
-                  <th className="text-left py-3 px-3 font-bold text-slate-700 w-[160px]">Benefit</th>
-                  <th className="text-left py-3 px-3 font-bold text-blue-600 bg-blue-50/50 w-[140px]">{companyInfo.name.split(' ')[0]}</th>
-                  <th className="text-left py-3 px-3 font-bold text-slate-600">Startup / SME Tech</th>
-                  <th className="text-left py-3 px-3 font-bold text-slate-600">Mid-Size Tech</th>
-                  <th className="text-left py-3 px-3 font-bold text-slate-600">Large Tech / Enterprise</th>
+                  <th className="text-left py-3 px-3 font-bold text-slate-700 w-[180px]">Benefit</th>
+                  <th className="text-left py-3 px-3 font-bold text-slate-600">Small Private Sector</th>
+                  <th className="text-left py-3 px-3 font-bold text-slate-600">Social Enterprises</th>
+                  <th className="text-left py-3 px-3 font-bold text-slate-600">Large Private Sector</th>
                 </tr>
               </thead>
               <tbody>
                 {section.rows.map((row, i) => (
                   <tr key={i} className={`border-b border-slate-100 ${i % 2 === 0 ? 'bg-white' : 'bg-slate-50/30'}`}>
                     <td className="py-3 px-3 font-semibold text-slate-700 align-top">{row.benefit}</td>
-                    <td className="py-3 px-3 text-blue-700 bg-blue-50/30 align-top">{row.companyProvision}</td>
-                    <td className="py-3 px-3 text-slate-600 align-top">{row.startupSME}</td>
-                    <td className="py-3 px-3 text-slate-600 align-top">{row.midSizeTech}</td>
-                    <td className="py-3 px-3 text-slate-600 align-top">{row.largeTech}</td>
+                    <td className="py-3 px-3 text-slate-600 align-top">{row.smallPrivate}</td>
+                    <td className="py-3 px-3 text-slate-600 align-top">{row.socialEnterprises}</td>
+                    <td className="py-3 px-3 text-slate-600 align-top">{row.largePrivate}</td>
                   </tr>
                 ))}
               </tbody>
@@ -514,7 +481,7 @@ export function Benefits() {
         <p className="page-badge">Total Reward Analysis</p>
         <h1>Breakdown of Benefits Provision</h1>
         <p className="page-subtitle">
-          Detailed comparison of your benefits package against typical UK tech market practice across three market segments.
+          Detailed comparison of benefits practice across three UK market segments. For each benefit, we describe typical market practice to help inform your reward strategy.
         </p>
       </div>
 
@@ -526,7 +493,7 @@ export function Benefits() {
           <div>
             <h2 className="text-xl font-display font-bold mb-2">How to Read This Section</h2>
             <p className="text-white/80 text-[15px] leading-relaxed">
-              For each benefit, we set out {companyInfo.name} provision as we understand it and then describe typical market practice across three UK tech market segments. We've used descriptive comparisons rather than quartile positioning because not all organisations will have all of the benefits listed — being 'below' in some areas does not necessarily mean provision is deficient. The most important factor is that benefits are aligned with the needs of your current and future workforce.
+              For each benefit, we set out {companyInfo.name} provision as we understand it and then describe typical market practice. We've done this rather than use our standard LQ/M/UQ practice because the latter is misleading in that not all organisations will have all of the benefits listed to the level described. Therefore, to be 'below' in some areas does not necessarily mean benefits provision is deficient — the most important factor is that benefits are aligned with the needs of your current and future workforce.
             </p>
           </div>
         </div>
@@ -555,29 +522,60 @@ export function Benefits() {
       </div>
 
       <Card className="p-6 section-card">
-        <h3 className="font-display font-bold text-lg text-slate-800 mb-4">Example of an Above-Standard Benefits Package</h3>
+        <h3 className="font-display font-bold text-lg text-slate-800 mb-4">Examples of Above-Standard Benefits Packages</h3>
         <p className="text-sm text-slate-500 mb-5">
-          Below is an example benefits package from a leading UK organisation that demonstrates best-in-class practice. Not every organisation will match this, but it provides a useful benchmark for what competitive benefits look like.
+          Below, we give an overview of two packages that stood out during our research — one from the not-for-profit sector and one from the private sector. Neither has absolutely everything, but they are interesting. The key is that benefits need to be aligned to the needs of your current and future employee base in all its diversity.
         </p>
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-          {[
-            { category: "Core", items: ["25+ days holiday plus Christmas close-down", "Pension – up to 15% employer contribution", "Income protection – 50% salary for up to 5 years", "Life assurance – 4–6x base salary", "Gender-neutral family leave – 20 weeks paid"] },
-            { category: "Health & Wellbeing", items: ["Private medical insurance (individual, with family top-up)", "Free gym and fitness classes", "24/7 Employee Assistance Programme", "Mental health first aiders network", "Health assessments every two years"] },
-            { category: "Work-Life Balance", items: ["Flexible working hours and remote options", "Buy/sell up to 5 days holiday", "5 additional wellbeing days per year", "Sabbatical options after 5 years' service"] },
-            { category: "Other", items: ["4 days paid volunteering per year", "Cycle-to-work scheme with 25%+ discount", "Retail discount platform", "Staff social club and team events", "Structured bonus scheme tied to performance"] },
-          ].map((col) => (
-            <div key={col.category} className="bg-slate-50 rounded-xl p-4 border border-slate-100">
-              <h4 className="font-display font-bold text-sm text-slate-700 mb-3">{col.category}</h4>
-              <ul className="space-y-1.5">
-                {col.items.map((item, i) => (
-                  <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                    <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" />
-                    <span>{item}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          ))}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
+            <h4 className="font-display font-bold text-sm text-slate-700 mb-1">Not-for-Profit Example</h4>
+            <p className="text-xs text-slate-400 mb-3">Large charitable trust</p>
+            <ul className="space-y-1.5">
+              {[
+                "25 days' holiday plus bank holidays and Christmas close-down",
+                "Pension – up to 15% employer contribution",
+                "Income protection – maintains income during prolonged illness",
+                "Life assurance – 4–6x base salary",
+                "Private medical insurance (individual, with family top-up option)",
+                "Free gym membership and subsidised fitness classes",
+                "24/7 Employee Assistance Programme",
+                "Mental health first aiders network",
+                "Health assessments every two years",
+                "Buy/sell up to 5 days' holiday",
+                "4 days' paid volunteering per year",
+                "Cycle-to-work scheme with 25%+ discount",
+                "Retail discount platform",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-5 border border-slate-100">
+            <h4 className="font-display font-bold text-sm text-slate-700 mb-1">Large Private Sector Example</h4>
+            <p className="text-xs text-slate-400 mb-3">Major financial services company</p>
+            <ul className="space-y-1.5">
+              {[
+                "30 days' annual leave for all colleagues plus bank holidays",
+                "5 extra paid wellbeing days per year",
+                "Gender-neutral family leave – 20 weeks' paid (52 weeks total)",
+                "Pension – up to 13% employer contribution",
+                "Income protection – 50% of salary for up to 5 years",
+                "Life insurance – 4x base salary, with option to increase",
+                "Private medical insurance with family extension option",
+                "Structured bonus scheme tied to group and individual performance",
+                "Flexible benefits – customise your rewards package",
+                "Comprehensive retail discount platform",
+              ].map((item, i) => (
+                <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
+                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" />
+                  <span>{item}</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </Card>
 
@@ -591,10 +589,10 @@ export function Benefits() {
             </p>
             <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
               {[
-                { pillar: "Mind", desc: "Mental health support, counselling, stress management" },
-                { pillar: "Body", desc: "Fitness programmes, health screening, ergonomic support" },
-                { pillar: "Social", desc: "Team events, volunteering, community engagement" },
-                { pillar: "Finance", desc: "Financial education, salary advance, pension planning" },
+                { pillar: "Mind", desc: "Mental health support, counselling, stress management, mental health first aiders" },
+                { pillar: "Body", desc: "Fitness programmes, health screening, ergonomic support, flu jabs" },
+                { pillar: "Social", desc: "Team events, volunteering, community engagement, quarterly wellbeing check-ins" },
+                { pillar: "Finance", desc: "Financial education, salary advance, pension planning, retail discounts" },
               ].map((p) => (
                 <div key={p.pillar} className="bg-white rounded-lg p-3 border border-indigo-100">
                   <p className="font-display font-bold text-sm text-indigo-600 mb-1">{p.pillar}</p>
