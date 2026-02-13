@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { Card } from "@/components/ui/card";
-import { companyInfo } from "@/lib/data";
 import {
   Shield,
   Lightbulb,
@@ -11,7 +10,6 @@ import {
   Clock,
   ChevronDown,
   ChevronUp,
-  Building2,
   CheckCircle2,
   Info,
   Star,
@@ -390,21 +388,6 @@ function BenefitSectionCard({ section, isOpen, onToggle }: {
 
       {isOpen && (
         <div className="px-6 pb-6 animate-fade-in">
-          <div className="bg-gradient-to-br from-slate-50 to-slate-100/50 rounded-xl p-5 mb-6 border border-slate-100">
-            <div className="flex items-center gap-2 mb-3">
-              <Building2 className="w-4 h-4 text-blue-500" />
-              <h3 className="font-display font-bold text-sm text-slate-700">{companyInfo.name} — Current Provision</h3>
-            </div>
-            <ul className="space-y-1.5">
-              {section.companyProvisions.map((p, i) => (
-                <li key={i} className="flex items-start gap-2 text-sm text-slate-600">
-                  <CheckCircle2 className="w-3.5 h-3.5 text-emerald-500 mt-0.5 shrink-0" />
-                  <span>{p}</span>
-                </li>
-              ))}
-            </ul>
-          </div>
-
           <h3 className="font-display font-bold text-sm text-slate-700 mb-3">Typical Market Practice</h3>
           <div className="overflow-x-auto">
             <table className="w-full text-sm">
@@ -493,7 +476,7 @@ export function Benefits() {
           <div>
             <h2 className="text-xl font-display font-bold mb-2">How to Read This Section</h2>
             <p className="text-white/80 text-[15px] leading-relaxed">
-              For each benefit, we set out {companyInfo.name} provision as we understand it and then describe typical market practice. We've done this rather than use our standard LQ/M/UQ practice because the latter is misleading in that not all organisations will have all of the benefits listed to the level described. Therefore, to be 'below' in some areas does not necessarily mean benefits provision is deficient — the most important factor is that benefits are aligned with the needs of your current and future workforce.
+              For each benefit, we describe typical market practice across three sectors. We've done this rather than use our standard LQ/M/UQ practice because the latter is misleading in that not all organisations will have all of the benefits listed to the level described. Therefore, to be 'below' in some areas does not necessarily mean benefits provision is deficient — the most important factor is that benefits are aligned with the needs of your current and future workforce.
             </p>
           </div>
         </div>
