@@ -134,7 +134,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <div className="min-h-screen p-8 lg:p-12 pb-24">
+        <div className="min-h-screen p-8 lg:p-12 pb-24 dot-grid-bg">
           {children}
         </div>
       </main>

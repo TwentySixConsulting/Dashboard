@@ -77,10 +77,10 @@ function SalaryRangeIndicator({
 
 export function RoleDetails() {
   const positionColors: Record<string, string> = {
-    below: "bg-red-500",
-    lower: "bg-amber-500",
-    upper: "bg-emerald-500",
-    above: "bg-blue-500",
+    below: "bg-slate-600",
+    lower: "bg-slate-600",
+    upper: "bg-slate-600",
+    above: "bg-slate-600",
   };
 
   const positionIcons: Record<string, React.ReactNode> = {
