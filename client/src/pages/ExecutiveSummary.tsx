@@ -144,7 +144,7 @@ export function ExecutiveSummary() {
     <div className="max-w-6xl mx-auto space-y-10">
       <div className="page-header animate-fade-in">
         <p className="page-badge">
-          Personalised Pay & Benefits Dashboard
+          Pay & Benefits Dashboard
         </p>
         <h1 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 mb-3" data-testid="dashboard-headline"
           style={{ background: 'linear-gradient(135deg, hsl(228 35% 11%) 0%, hsl(228 25% 25%) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
@@ -167,7 +167,7 @@ export function ExecutiveSummary() {
 
       <div>
         <h2 className="text-2xl font-display font-bold text-slate-800 mb-1">Explore Your Report</h2>
-        <p className="text-slate-400 mb-6 text-[15px]">Select a section to dive into your personalised pay and benefits insights.</p>
+        <p className="text-slate-400 mb-6 text-[15px]">Select a section to dive into your pay and benefits insights.</p>
 
         {loading ? (
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
