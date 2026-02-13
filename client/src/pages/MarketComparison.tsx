@@ -1,7 +1,20 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
+import { Button } from "@/components/ui/button";
 import { marketData, getPositioning } from "@/lib/data";
-import { TrendingUp, TrendingDown, Minus, Info } from "lucide-react";
+import { Download, Users, Layers, Info } from "lucide-react";
+import {
+  XAxis,
+  YAxis,
+  CartesianGrid,
+  ResponsiveContainer,
+  Tooltip,
+  BarChart,
+  Bar,
+  Cell,
+  ReferenceLine,
+} from "recharts";
+import { toPng } from "html-to-image";
 
 const levelLabels: Record<number, string> = {
   1: "Director / Head",
@@ -12,221 +25,191 @@ const levelLabels: Record<number, string> = {
   6: "Officer / Coordinator",
 };
 
-type GroupBy = "function" | "level" | "all";
+const shortLevelLabels: Record<number, string> = {
+  1: "Director",
+  2: "Sr Manager",
+  3: "Manager",
+  4: "Sr Professional",
+  5: "Professional",
+  6: "Coordinator",
+};
 
-function RangeBar({ role }: { role: typeof marketData[0] }) {
-  const pos = getPositioning(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile);
-  const diff = role.currentSalary - role.median;
-  const diffPercent = ((diff / role.median) * 100).toFixed(1);
+const COLORS = {
+  actual: "#6366f1",
+  median: "#cbd5e1",
+  lq: "#e2e8f0",
+  uq: "#e2e8f0",
+  positive: "#10b981",
+  negative: "#f59e0b",
+};
 
-  const globalMin = Math.min(role.lowerQuartile * 0.88, role.currentSalary * 0.92);
-  const globalMax = Math.max(role.upperQuartile * 1.12, role.currentSalary * 1.08);
-  const range = globalMax - globalMin;
+function CustomTooltip({ active, payload, label }: any) {
+  if (!active || !payload?.length) return null;
+  const data = payload[0]?.payload;
+  if (!data) return null;
 
-  const lqPct = ((role.lowerQuartile - globalMin) / range) * 100;
-  const medPct = ((role.median - globalMin) / range) * 100;
-  const uqPct = ((role.upperQuartile - globalMin) / range) * 100;
-  const actualPct = ((role.currentSalary - globalMin) / range) * 100;
-  const barWidth = uqPct - lqPct;
+  const diff = (data.avgActual || data.actual) - (data.avgMedian || data.median);
+  const base = data.avgMedian || data.median;
+  const pct = ((diff / base) * 100).toFixed(1);
 
   return (
-    <div className="py-4 px-5 hover:bg-slate-50/50 transition-colors" data-testid={`comparison-role-${role.id}`}>
-      <div className="flex items-center justify-between mb-2">
-        <div>
-          <span className="font-semibold text-slate-800 text-sm">{role.role}</span>
-          <span className="text-xs text-slate-400 ml-2">{role.function}</span>
+    <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-4 text-sm min-w-[200px]">
+      <p className="font-display font-bold text-slate-800 mb-2">{data.name || data.group || label}</p>
+      {data.count !== undefined && (
+        <p className="text-xs text-slate-400 mb-2">{data.count} role{data.count !== 1 ? 's' : ''}</p>
+      )}
+      <div className="space-y-1.5">
+        <div className="flex justify-between">
+          <span className="text-slate-500">Actual Pay</span>
+          <span className="font-semibold text-indigo-600">£{(data.avgActual || data.actual)?.toLocaleString()}</span>
         </div>
-        <div className="flex items-center gap-1.5">
-          {diff > 0 ? (
-            <TrendingUp className="w-3.5 h-3.5 text-emerald-500" />
-          ) : diff < 0 ? (
-            <TrendingDown className="w-3.5 h-3.5 text-amber-500" />
-          ) : (
-            <Minus className="w-3.5 h-3.5 text-slate-400" />
-          )}
-          <span className={`text-xs font-semibold ${diff > 0 ? 'text-emerald-600' : diff < 0 ? 'text-amber-600' : 'text-slate-500'}`}>
-            {diff > 0 ? '+' : ''}{diffPercent}% vs median
+        <div className="flex justify-between">
+          <span className="text-slate-500">Market Median</span>
+          <span className="font-semibold text-slate-600">£{(data.avgMedian || data.median)?.toLocaleString()}</span>
+        </div>
+        {data.lq && (
+          <div className="flex justify-between">
+            <span className="text-slate-400">LQ – UQ</span>
+            <span className="text-slate-500">£{data.lq?.toLocaleString()} – £{data.uq?.toLocaleString()}</span>
+          </div>
+        )}
+        <div className="border-t border-slate-100 pt-1.5 flex justify-between">
+          <span className="text-slate-500">Difference</span>
+          <span className={`font-bold ${diff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
+            {diff >= 0 ? '+' : ''}{pct}%
           </span>
         </div>
-      </div>
-
-      <div className="relative h-10 mb-1.5">
-        <div
-          className="absolute top-3.5 h-3 rounded-full bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100"
-          style={{ left: `${lqPct}%`, width: `${barWidth}%` }}
-        />
-
-        <div
-          className="absolute top-2.5 w-px h-5 bg-slate-300"
-          style={{ left: `${lqPct}%` }}
-        />
-        <div
-          className="absolute top-2 w-0.5 h-6 bg-slate-500 rounded-full"
-          style={{ left: `${medPct}%` }}
-        />
-        <div
-          className="absolute top-2.5 w-px h-5 bg-slate-300"
-          style={{ left: `${uqPct}%` }}
-        />
-
-        <div
-          className="absolute top-1.5 w-7 h-7 rounded-full border-[3px] border-white flex items-center justify-center shadow-md transition-all"
-          style={{
-            left: `calc(${actualPct}% - 14px)`,
-            backgroundColor: pos.color,
-          }}
-        >
-          <span className="text-[8px] font-bold text-white">£</span>
-        </div>
-      </div>
-
-      <div className="flex items-center justify-between text-[10px] text-slate-400">
-        <div className="flex items-center gap-4" style={{ paddingLeft: `${Math.max(0, lqPct - 2)}%` }}>
-          <span>LQ £{(role.lowerQuartile / 1000).toFixed(0)}k</span>
-        </div>
-        <div className="flex items-center gap-4">
-          <span className="font-medium text-slate-500">Med £{(role.median / 1000).toFixed(0)}k</span>
-          <span>UQ £{(role.upperQuartile / 1000).toFixed(0)}k</span>
-        </div>
-      </div>
-
-      <div className="flex items-center gap-3 mt-1 text-[11px]">
-        <span className="text-slate-400">Actual:</span>
-        <span className="font-bold text-slate-700">£{role.currentSalary.toLocaleString()}</span>
-        <span className="text-slate-300">|</span>
-        <span className="text-slate-400">Position:</span>
-        <span className="font-medium text-slate-600">{pos.label}</span>
       </div>
     </div>
   );
 }
 
-function SummaryCard({ label, roles }: { label: string; roles: typeof marketData }) {
-  const avgActual = Math.round(roles.reduce((s, r) => s + r.currentSalary, 0) / roles.length);
-  const avgMedian = Math.round(roles.reduce((s, r) => s + r.median, 0) / roles.length);
-  const diff = avgActual - avgMedian;
-  const diffPct = ((diff / avgMedian) * 100).toFixed(1);
-
+function CustomBarLabel({ x, y, width, value }: any) {
+  if (!value) return null;
   return (
-    <div className="flex items-center justify-between py-3 px-4 rounded-xl bg-slate-50 border border-slate-100">
-      <div>
-        <p className="font-semibold text-sm text-slate-700">{label}</p>
-        <p className="text-xs text-slate-400">{roles.length} role{roles.length !== 1 ? 's' : ''}</p>
-      </div>
-      <div className="text-right">
-        <p className="text-sm">
-          <span className="text-slate-400">Avg: </span>
-          <span className="font-bold text-slate-800">£{avgActual.toLocaleString()}</span>
-          <span className="text-slate-300 mx-1.5">vs</span>
-          <span className="font-medium text-slate-500">£{avgMedian.toLocaleString()}</span>
-        </p>
-        <p className={`text-xs font-semibold ${diff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
-          {diff >= 0 ? '+' : ''}{diffPct}% vs market median
-        </p>
-      </div>
-    </div>
+    <text x={x + width / 2} y={y - 6} textAnchor="middle" className="text-[10px] fill-slate-400 font-medium">
+      £{(value / 1000).toFixed(0)}k
+    </text>
   );
 }
 
 export function MarketComparison() {
-  const [groupBy, setGroupBy] = useState<GroupBy>("all");
+  const [view, setView] = useState<"roles" | "summary">("roles");
+  const functionChartRef = useRef<HTMLDivElement>(null);
+  const levelChartRef = useRef<HTMLDivElement>(null);
 
   const functions = Array.from(new Set(marketData.map((r) => r.function))).sort();
   const levels = Array.from(new Set(marketData.map((r) => r.jobLevel))).sort((a, b) => a - b);
+
+  const rolesByFunction = marketData
+    .slice()
+    .sort((a, b) => {
+      if (a.function !== b.function) return a.function.localeCompare(b.function);
+      return b.currentSalary - a.currentSalary;
+    })
+    .map((role) => ({
+      name: role.role,
+      function: role.function,
+      actual: role.currentSalary,
+      median: role.median,
+      lq: role.lowerQuartile,
+      uq: role.upperQuartile,
+      delta: role.currentSalary - role.median,
+    }));
+
+  const rolesByLevel = marketData
+    .slice()
+    .sort((a, b) => {
+      if (a.jobLevel !== b.jobLevel) return a.jobLevel - b.jobLevel;
+      return b.currentSalary - a.currentSalary;
+    })
+    .map((role) => ({
+      name: role.role,
+      level: levelLabels[role.jobLevel],
+      actual: role.currentSalary,
+      median: role.median,
+      lq: role.lowerQuartile,
+      uq: role.upperQuartile,
+      delta: role.currentSalary - role.median,
+    }));
+
+  const summaryByFunction = functions.map((fn) => {
+    const roles = marketData.filter((r) => r.function === fn);
+    const avgActual = Math.round(roles.reduce((s, r) => s + r.currentSalary, 0) / roles.length);
+    const avgMedian = Math.round(roles.reduce((s, r) => s + r.median, 0) / roles.length);
+    return { group: fn, avgActual, avgMedian, count: roles.length, delta: avgActual - avgMedian };
+  });
+
+  const summaryByLevel = levels.map((lvl) => {
+    const roles = marketData.filter((r) => r.jobLevel === lvl);
+    const avgActual = Math.round(roles.reduce((s, r) => s + r.currentSalary, 0) / roles.length);
+    const avgMedian = Math.round(roles.reduce((s, r) => s + r.median, 0) / roles.length);
+    return { group: shortLevelLabels[lvl] || `Level ${lvl}`, avgActual, avgMedian, count: roles.length, delta: avgActual - avgMedian };
+  });
 
   const overallAvgActual = Math.round(marketData.reduce((s, r) => s + r.currentSalary, 0) / marketData.length);
   const overallAvgMedian = Math.round(marketData.reduce((s, r) => s + r.median, 0) / marketData.length);
   const overallDiff = overallAvgActual - overallAvgMedian;
   const overallDiffPct = ((overallDiff / overallAvgMedian) * 100).toFixed(1);
-
   const aboveCount = marketData.filter(r => r.currentSalary >= r.median).length;
-  const belowCount = marketData.length - aboveCount;
 
-  const sortedRoles = [...marketData].sort((a, b) => {
-    if (groupBy === "function") {
-      if (a.function !== b.function) return a.function.localeCompare(b.function);
-      return b.currentSalary - a.currentSalary;
+  const downloadChart = async (ref: React.RefObject<HTMLDivElement | null>, filename: string) => {
+    if (ref.current) {
+      try {
+        const dataUrl = await toPng(ref.current, { backgroundColor: "#ffffff", pixelRatio: 2 });
+        const link = document.createElement("a");
+        link.download = filename;
+        link.href = dataUrl;
+        link.click();
+      } catch (err) {
+        console.error("Failed to download chart", err);
+      }
     }
-    if (groupBy === "level") {
-      if (a.jobLevel !== b.jobLevel) return a.jobLevel - b.jobLevel;
-      return b.currentSalary - a.currentSalary;
-    }
-    return b.currentSalary - a.currentSalary;
-  });
-
-  const groupedRoles: { label: string; roles: typeof marketData }[] = [];
-  if (groupBy === "function") {
-    functions.forEach(fn => {
-      const roles = sortedRoles.filter(r => r.function === fn);
-      if (roles.length) groupedRoles.push({ label: fn, roles });
-    });
-  } else if (groupBy === "level") {
-    levels.forEach(lvl => {
-      const roles = sortedRoles.filter(r => r.jobLevel === lvl);
-      if (roles.length) groupedRoles.push({ label: levelLabels[lvl] || `Level ${lvl}`, roles });
-    });
-  } else {
-    groupedRoles.push({ label: "All Roles", roles: sortedRoles });
-  }
+  };
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="page-header">
         <p className="page-badge">Executive Overview</p>
         <h1>Market Position Comparison</h1>
-        <p className="page-subtitle">See at a glance where each role sits against the market range.</p>
+        <p className="page-subtitle">Visual comparison of actual pay against market data, grouped by function and job level.</p>
       </div>
 
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-5 section-card text-center">
+        <Card className="p-5 section-card text-center" data-testid="stat-overall">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Overall Position</p>
           <p className={`text-2xl font-display font-bold ${overallDiff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
             {overallDiff >= 0 ? '+' : ''}{overallDiffPct}%
           </p>
           <p className="text-xs text-slate-400 mt-1">vs market median (avg)</p>
         </Card>
-        <Card className="p-5 section-card text-center">
+        <Card className="p-5 section-card text-center" data-testid="stat-above">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">At or Above Median</p>
           <p className="text-2xl font-display font-bold text-emerald-600">{aboveCount} <span className="text-base font-normal text-slate-400">of {marketData.length}</span></p>
-          <p className="text-xs text-slate-400 mt-1">roles at or above market median</p>
+          <p className="text-xs text-slate-400 mt-1">roles at or above market</p>
         </Card>
-        <Card className="p-5 section-card text-center">
+        <Card className="p-5 section-card text-center" data-testid="stat-below">
           <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Below Median</p>
-          <p className="text-2xl font-display font-bold text-amber-600">{belowCount} <span className="text-base font-normal text-slate-400">of {marketData.length}</span></p>
+          <p className="text-2xl font-display font-bold text-amber-600">{marketData.length - aboveCount} <span className="text-base font-normal text-slate-400">of {marketData.length}</span></p>
           <p className="text-xs text-slate-400 mt-1">roles below market median</p>
         </Card>
       </div>
 
-      <div className="flex items-center justify-between">
-        <div className="flex items-center gap-5 text-xs text-slate-400">
-          <div className="flex items-center gap-1.5">
-            <div className="w-5 h-2.5 rounded-full bg-gradient-to-r from-slate-100 via-slate-200 to-slate-100" />
-            <span>Market range (LQ–UQ)</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-0.5 h-3 bg-slate-500 rounded-full" />
-            <span>Median</span>
-          </div>
-          <div className="flex items-center gap-1.5">
-            <div className="w-3.5 h-3.5 rounded-full bg-indigo-500 border-2 border-white shadow-sm" />
-            <span>Actual pay</span>
-          </div>
-        </div>
+      <div className="flex items-center justify-end">
         <div className="flex gap-1 bg-slate-100 rounded-lg p-0.5">
           {[
-            { key: "all" as GroupBy, label: "All" },
-            { key: "function" as GroupBy, label: "By Function" },
-            { key: "level" as GroupBy, label: "By Level" },
+            { key: "roles" as const, label: "Individual Roles" },
+            { key: "summary" as const, label: "Summary Averages" },
           ].map(opt => (
             <button
               key={opt.key}
-              onClick={() => setGroupBy(opt.key)}
-              className={`px-3 py-1.5 rounded-md text-xs font-medium transition-all ${
-                groupBy === opt.key
+              onClick={() => setView(opt.key)}
+              className={`px-3.5 py-1.5 rounded-md text-xs font-medium transition-all ${
+                view === opt.key
                   ? 'bg-white text-slate-800 shadow-sm'
                   : 'text-slate-400 hover:text-slate-600'
               }`}
-              data-testid={`button-group-${opt.key}`}
+              data-testid={`button-view-${opt.key}`}
             >
               {opt.label}
             </button>
@@ -234,60 +217,186 @@ export function MarketComparison() {
         </div>
       </div>
 
-      {groupedRoles.map(group => (
-        <Card key={group.label} className="section-card overflow-hidden">
-          {groupBy !== "all" && (
-            <div className="px-5 pt-4 pb-2 border-b border-slate-100">
-              <div className="flex items-center justify-between">
-                <h3 className="font-display font-bold text-slate-700">{group.label}</h3>
-                <SummaryBadge roles={group.roles} />
-              </div>
+      <Card className="section-card overflow-hidden" data-testid="chart-by-function">
+        <div className="p-6 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
+              <Users className="w-4 h-4 text-indigo-500" />
+            </div>
+            <div>
+              <h3 className="font-display font-bold text-lg text-slate-800">By Function</h3>
+              <p className="text-xs text-slate-400">Comparing actual pay to market median across departments</p>
+            </div>
+          </div>
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => downloadChart(functionChartRef, "comparison-by-function.png")}
+            className="gap-1.5 text-xs"
+            data-testid="button-download-function"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export
+          </Button>
+        </div>
+
+        <div ref={functionChartRef} className="bg-white px-4 pb-6 pt-2">
+          <div className="flex items-center gap-5 mb-4 px-2">
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: COLORS.actual }} />
+              Actual Pay
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: COLORS.median }} />
+              Market Median
+            </div>
+          </div>
+
+          {view === "roles" ? (
+            <ResponsiveContainer width="100%" height={380}>
+              <BarChart data={rolesByFunction} margin={{ top: 20, right: 20, left: 10, bottom: 60 }} barGap={2}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 11, fill: "#64748b" }}
+                  angle={-35}
+                  textAnchor="end"
+                  height={70}
+                  interval={0}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
+                  width={55}
+                />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(99,102,241,0.04)' }} />
+                <Bar dataKey="median" name="Market Median" fill={COLORS.median} radius={[4, 4, 0, 0]} barSize={24} label={<CustomBarLabel />} />
+                <Bar dataKey="actual" name="Actual Pay" radius={[4, 4, 0, 0]} barSize={24} label={<CustomBarLabel />}>
+                  {rolesByFunction.map((entry, i) => (
+                    <Cell key={i} fill={entry.delta >= 0 ? COLORS.positive : COLORS.negative} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={summaryByFunction} margin={{ top: 20, right: 20, left: 10, bottom: 20 }} barGap={4}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis dataKey="group" tick={{ fontSize: 12, fill: "#64748b" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} width={55} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(99,102,241,0.04)' }} />
+                <Bar dataKey="avgMedian" name="Market Median" fill={COLORS.median} radius={[6, 6, 0, 0]} barSize={40} label={<CustomBarLabel />} />
+                <Bar dataKey="avgActual" name="Actual Pay" radius={[6, 6, 0, 0]} barSize={40} label={<CustomBarLabel />}>
+                  {summaryByFunction.map((entry, i) => (
+                    <Cell key={i} fill={entry.delta >= 0 ? COLORS.positive : COLORS.negative} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+
+          {view === "roles" && (
+            <div className="flex flex-wrap gap-2 px-2 mt-2">
+              {functions.map((fn) => (
+                <span key={fn} className="px-2.5 py-1 text-[11px] text-slate-500 bg-slate-50 rounded-full border border-slate-100">
+                  {fn}
+                </span>
+              ))}
             </div>
           )}
-          <div className="divide-y divide-slate-100">
-            {group.roles.map(role => (
-              <RangeBar key={role.id} role={role} />
-            ))}
-          </div>
-        </Card>
-      ))}
+        </div>
+      </Card>
 
-      {groupBy !== "all" && (
-        <Card className="p-5 section-card">
-          <h3 className="font-display font-bold text-sm text-slate-700 mb-3">
-            Summary by {groupBy === "function" ? "Function" : "Job Level"}
-          </h3>
-          <div className="space-y-2">
-            {groupedRoles.map(group => (
-              <SummaryCard key={group.label} label={group.label} roles={group.roles} />
-            ))}
+      <Card className="section-card overflow-hidden" data-testid="chart-by-level">
+        <div className="p-6 pb-2 flex items-center justify-between">
+          <div className="flex items-center gap-2.5">
+            <div className="w-8 h-8 rounded-lg bg-cyan-50 flex items-center justify-center">
+              <Layers className="w-4 h-4 text-cyan-500" />
+            </div>
+            <div>
+              <h3 className="font-display font-bold text-lg text-slate-800">By Job Level</h3>
+              <p className="text-xs text-slate-400">Comparing actual pay to market median across seniority levels</p>
+            </div>
           </div>
-        </Card>
-      )}
+          <Button
+            variant="outline"
+            size="sm"
+            onClick={() => downloadChart(levelChartRef, "comparison-by-level.png")}
+            className="gap-1.5 text-xs"
+            data-testid="button-download-level"
+          >
+            <Download className="w-3.5 h-3.5" />
+            Export
+          </Button>
+        </div>
+
+        <div ref={levelChartRef} className="bg-white px-4 pb-6 pt-2">
+          <div className="flex items-center gap-5 mb-4 px-2">
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: COLORS.actual }} />
+              Actual Pay
+            </div>
+            <div className="flex items-center gap-1.5 text-xs text-slate-500">
+              <div className="w-3 h-3 rounded-sm" style={{ backgroundColor: COLORS.median }} />
+              Market Median
+            </div>
+          </div>
+
+          {view === "roles" ? (
+            <ResponsiveContainer width="100%" height={380}>
+              <BarChart data={rolesByLevel} margin={{ top: 20, right: 20, left: 10, bottom: 60 }} barGap={2}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis
+                  dataKey="name"
+                  tick={{ fontSize: 11, fill: "#64748b" }}
+                  angle={-35}
+                  textAnchor="end"
+                  height={70}
+                  interval={0}
+                />
+                <YAxis
+                  tick={{ fontSize: 11, fill: "#94a3b8" }}
+                  tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
+                  width={55}
+                />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(6,182,212,0.04)' }} />
+                <Bar dataKey="median" name="Market Median" fill={COLORS.median} radius={[4, 4, 0, 0]} barSize={24} label={<CustomBarLabel />} />
+                <Bar dataKey="actual" name="Actual Pay" radius={[4, 4, 0, 0]} barSize={24} label={<CustomBarLabel />}>
+                  {rolesByLevel.map((entry, i) => (
+                    <Cell key={i} fill={entry.delta >= 0 ? '#06b6d4' : COLORS.negative} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          ) : (
+            <ResponsiveContainer width="100%" height={320}>
+              <BarChart data={summaryByLevel} margin={{ top: 20, right: 20, left: 10, bottom: 20 }} barGap={4}>
+                <CartesianGrid strokeDasharray="3 3" stroke="#f1f5f9" vertical={false} />
+                <XAxis dataKey="group" tick={{ fontSize: 11, fill: "#64748b" }} />
+                <YAxis tick={{ fontSize: 11, fill: "#94a3b8" }} tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`} width={55} />
+                <Tooltip content={<CustomTooltip />} cursor={{ fill: 'rgba(6,182,212,0.04)' }} />
+                <Bar dataKey="avgMedian" name="Market Median" fill={COLORS.median} radius={[6, 6, 0, 0]} barSize={40} label={<CustomBarLabel />} />
+                <Bar dataKey="avgActual" name="Actual Pay" radius={[6, 6, 0, 0]} barSize={40} label={<CustomBarLabel />}>
+                  {summaryByLevel.map((entry, i) => (
+                    <Cell key={i} fill={entry.delta >= 0 ? '#06b6d4' : COLORS.negative} />
+                  ))}
+                </Bar>
+              </BarChart>
+            </ResponsiveContainer>
+          )}
+        </div>
+      </Card>
 
       <Card className="p-5 bg-slate-50 border-0 shadow-sm">
         <div className="flex items-start gap-3">
           <Info className="w-4 h-4 text-slate-400 mt-0.5 shrink-0" />
           <div className="text-sm text-slate-500 leading-relaxed">
             <p>
-              Each row shows a role's actual pay (coloured dot) relative to the market range. The grey bar represents the range from Lower Quartile to Upper Quartile, with the dark line marking the Median. The dot colour indicates positioning: roles at or above median appear in green/blue tones, while those below appear in amber/red tones.
+              Bars show actual pay (coloured) against market median (grey) for each role. Green/cyan bars indicate pay at or above market median; amber bars indicate pay below median. Toggle between individual roles and summary averages using the buttons above. Use <strong>Export</strong> to download charts as images.
             </p>
           </div>
         </div>
       </Card>
     </div>
-  );
-}
-
-function SummaryBadge({ roles }: { roles: typeof marketData }) {
-  const avgActual = Math.round(roles.reduce((s, r) => s + r.currentSalary, 0) / roles.length);
-  const avgMedian = Math.round(roles.reduce((s, r) => s + r.median, 0) / roles.length);
-  const diff = avgActual - avgMedian;
-  const pct = ((diff / avgMedian) * 100).toFixed(1);
-
-  return (
-    <span className={`text-xs font-semibold px-2 py-1 rounded-full ${diff >= 0 ? 'bg-emerald-50 text-emerald-600' : 'bg-amber-50 text-amber-600'}`}>
-      {diff >= 0 ? '+' : ''}{pct}% avg vs median
-    </span>
   );
 }
