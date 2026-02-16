@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { Card } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -23,6 +23,8 @@ import {
   FileSpreadsheet,
   Edit3,
   Info,
+  Upload,
+  AlertCircle,
 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
 import { signup, submitRoles } from "@/lib/auth";
@@ -53,34 +55,19 @@ const experienceLevels = [
   "Experts, Strategists & Leaders",
 ];
 
-const industries = [
-  "Technology / SaaS",
-  "Financial Services",
-  "Healthcare",
-  "Education",
-  "Manufacturing",
-  "Retail / E-commerce",
-  "Professional Services",
-  "Media / Entertainment",
-  "Non-Profit / Charity",
-  "Energy / Utilities",
-  "Construction / Property",
-  "Transport / Logistics",
-  "Public Sector",
-  "Other",
-];
-
 export function Signup({ onComplete, onBack }: SignupProps) {
   const [step, setStep] = useState(1);
   const [loading, setLoading] = useState(false);
   const [error, setError] = useState("");
   const [showPassword, setShowPassword] = useState(false);
+  const fileInputRef = useRef<HTMLInputElement>(null);
 
   const [formData, setFormData] = useState({
     firstName: "",
     lastName: "",
     email: "",
     password: "",
+    confirmPassword: "",
     organisationName: "",
     industry: "",
     numberOfEmployees: "",
@@ -88,7 +75,8 @@ export function Signup({ onComplete, onBack }: SignupProps) {
   });
 
   const [roles, setRoles] = useState<RoleEntry[]>([{ ...emptyRole }]);
-  const [roleEntryMode, setRoleEntryMode] = useState<"choose" | "online" | "download" | null>(null);
+  const [roleEntryMode, setRoleEntryMode] = useState<"online" | "upload" | null>(null);
+  const [uploadedFileName, setUploadedFileName] = useState("");
 
   const updateField = (field: string, value: string) => {
     setFormData((prev) => ({ ...prev, [field]: value }));
@@ -114,12 +102,8 @@ export function Signup({ onComplete, onBack }: SignupProps) {
 
   const downloadTemplate = () => {
     const headers = "Role Title,Current FTE Salary,Experience Level,Function/Job Family";
-    const exampleRows = [
-      "Data Analyst,35000,Entry or Foundation,Data & Analytics",
-      "Software Engineer,55000,Mid to Senior,Technology",
-      "Finance Director,87000,Experts Strategists & Leaders,Finance",
-    ];
-    const csv = [headers, ...exampleRows].join("\n");
+    const rows = Array.from({ length: 20 }, () => ",,,");
+    const csv = [headers, ...rows].join("\n");
     const blob = new Blob([csv], { type: "text/csv" });
     const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
@@ -127,6 +111,42 @@ export function Signup({ onComplete, onBack }: SignupProps) {
     link.download = "twentysix-role-template.csv";
     link.click();
     URL.revokeObjectURL(url);
+  };
+
+  const parseCSV = (text: string): RoleEntry[] => {
+    const lines = text.split(/\r?\n/).filter((l) => l.trim());
+    if (lines.length < 2) return [];
+    const parsed: RoleEntry[] = [];
+    for (let i = 1; i < lines.length; i++) {
+      const cols = lines[i].split(",").map((c) => c.trim());
+      if (cols.length >= 4 && cols[0]) {
+        parsed.push({
+          roleTitle: cols[0],
+          currentSalary: cols[1].replace(/[^0-9]/g, ""),
+          experienceLevel: cols[2],
+          functionFamily: cols[3],
+        });
+      }
+    }
+    return parsed;
+  };
+
+  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file) return;
+    setUploadedFileName(file.name);
+    const reader = new FileReader();
+    reader.onload = (ev) => {
+      const text = ev.target?.result as string;
+      const parsed = parseCSV(text);
+      if (parsed.length === 0) {
+        setError("No valid roles found in the file. Please check the format matches the template.");
+        return;
+      }
+      setRoles(parsed);
+      setError("");
+    };
+    reader.readAsText(file);
   };
 
   const handleSignup = async () => {
@@ -139,25 +159,23 @@ export function Signup({ onComplete, onBack }: SignupProps) {
         email: formData.email.trim(),
         password: formData.password,
         organisationName: formData.organisationName.trim(),
-        industry: formData.industry,
+        industry: formData.industry.trim(),
         numberOfEmployees: parseInt(formData.numberOfEmployees),
         numberOfRoles: parseInt(formData.numberOfRoles),
       });
 
-      if (roleEntryMode === "online") {
-        const validRoles = roles.filter(
-          (r) => r.roleTitle && r.currentSalary && r.experienceLevel && r.functionFamily
+      const validRoles = roles.filter(
+        (r) => r.roleTitle && r.currentSalary && r.experienceLevel && r.functionFamily
+      );
+      if (validRoles.length > 0) {
+        await submitRoles(
+          validRoles.map((r) => ({
+            roleTitle: r.roleTitle,
+            currentSalary: parseInt(r.currentSalary.replace(/[^0-9]/g, "")),
+            experienceLevel: r.experienceLevel,
+            functionFamily: r.functionFamily,
+          }))
         );
-        if (validRoles.length > 0) {
-          await submitRoles(
-            validRoles.map((r) => ({
-              roleTitle: r.roleTitle,
-              currentSalary: parseInt(r.currentSalary.replace(/[^0-9]/g, "")),
-              experienceLevel: r.experienceLevel,
-              functionFamily: r.functionFamily,
-            }))
-          );
-        }
       }
 
       onComplete();
@@ -168,8 +186,9 @@ export function Signup({ onComplete, onBack }: SignupProps) {
     }
   };
 
+  const passwordsMatch = formData.password === formData.confirmPassword;
   const isStep1Valid =
-    formData.firstName && formData.lastName && formData.email && formData.password.length >= 6;
+    formData.firstName && formData.lastName && formData.email && formData.password.length >= 6 && passwordsMatch && formData.confirmPassword;
 
   const isStep2Valid =
     formData.organisationName && formData.industry && formData.numberOfEmployees && formData.numberOfRoles;
@@ -207,7 +226,8 @@ export function Signup({ onComplete, onBack }: SignupProps) {
       <div className="pt-28 pb-20 px-6">
         <div className="max-w-xl mx-auto">
           {error && (
-            <div className="mb-6 bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-100">
+            <div className="mb-6 bg-red-50 text-red-600 text-sm px-4 py-3 rounded-lg border border-red-100 flex items-start gap-2">
+              <AlertCircle className="w-4 h-4 shrink-0 mt-0.5" />
               {error}
             </div>
           )}
@@ -277,7 +297,30 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                         {showPassword ? <EyeOff className="w-4 h-4" /> : <Eye className="w-4 h-4" />}
                       </button>
                     </div>
-                    <p className="text-xs text-slate-400">Minimum 6 characters</p>
+                  </div>
+                  <div className="space-y-2">
+                    <Label htmlFor="confirmPassword" className="text-slate-600 text-sm">Confirm password</Label>
+                    <Input
+                      id="confirmPassword"
+                      type={showPassword ? "text" : "password"}
+                      value={formData.confirmPassword}
+                      onChange={(e) => updateField("confirmPassword", e.target.value)}
+                      placeholder="Re-enter your password"
+                      className={`h-11 ${formData.confirmPassword && !passwordsMatch ? 'border-red-300 focus-visible:ring-red-400' : ''}`}
+                      data-testid="input-confirm-password"
+                    />
+                    {formData.confirmPassword && !passwordsMatch && (
+                      <p className="text-xs text-red-500 flex items-center gap-1">
+                        <AlertCircle className="w-3 h-3" />
+                        Passwords do not match
+                      </p>
+                    )}
+                    {formData.confirmPassword && passwordsMatch && (
+                      <p className="text-xs text-emerald-500 flex items-center gap-1">
+                        <CheckCircle className="w-3 h-3" />
+                        Passwords match
+                      </p>
+                    )}
                   </div>
                 </div>
               </Card>
@@ -314,17 +357,15 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label className="text-slate-600 text-sm">Industry</Label>
-                    <Select value={formData.industry} onValueChange={(v) => updateField("industry", v)}>
-                      <SelectTrigger className="h-11" data-testid="select-industry">
-                        <SelectValue placeholder="Select your industry" />
-                      </SelectTrigger>
-                      <SelectContent>
-                        {industries.map((ind) => (
-                          <SelectItem key={ind} value={ind}>{ind}</SelectItem>
-                        ))}
-                      </SelectContent>
-                    </Select>
+                    <Label htmlFor="industry" className="text-slate-600 text-sm">Industry</Label>
+                    <Input
+                      id="industry"
+                      value={formData.industry}
+                      onChange={(e) => updateField("industry", e.target.value)}
+                      placeholder="e.g. Technology, Financial Services, Healthcare"
+                      className="h-11"
+                      data-testid="input-industry"
+                    />
                   </div>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
@@ -408,7 +449,7 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                   <p className="text-sm text-slate-500 mb-4">How would you like to provide your role information?</p>
                   <div className="grid grid-cols-1 sm:grid-cols-2 gap-3">
                     <button
-                      onClick={() => setRoleEntryMode("online")}
+                      onClick={() => { setRoleEntryMode("online"); setUploadedFileName(""); }}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
                         roleEntryMode === "online"
                           ? "border-indigo-500 bg-indigo-50/50"
@@ -421,20 +462,17 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                       <p className="text-xs text-slate-400 mt-1">Enter your roles directly here</p>
                     </button>
                     <button
-                      onClick={() => {
-                        setRoleEntryMode("download");
-                        downloadTemplate();
-                      }}
+                      onClick={() => { setRoleEntryMode("upload"); }}
                       className={`p-4 rounded-xl border-2 text-left transition-all ${
-                        roleEntryMode === "download"
+                        roleEntryMode === "upload"
                           ? "border-indigo-500 bg-indigo-50/50"
                           : "border-slate-100 hover:border-slate-200"
                       }`}
-                      data-testid="button-entry-download"
+                      data-testid="button-entry-upload"
                     >
-                      <FileSpreadsheet className={`w-5 h-5 mb-2 ${roleEntryMode === "download" ? "text-indigo-500" : "text-slate-400"}`} />
-                      <p className="font-medium text-sm text-slate-700">Download template</p>
-                      <p className="text-xs text-slate-400 mt-1">Fill in a CSV and send it to us</p>
+                      <FileSpreadsheet className={`w-5 h-5 mb-2 ${roleEntryMode === "upload" ? "text-indigo-500" : "text-slate-400"}`} />
+                      <p className="font-medium text-sm text-slate-700">Download & upload template</p>
+                      <p className="text-xs text-slate-400 mt-1">Fill in a CSV template and upload it</p>
                     </button>
                   </div>
                 </div>
@@ -523,16 +561,83 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                 </Card>
               )}
 
-              {roleEntryMode === "download" && (
-                <Card className="p-6 shadow-lg border-slate-100 text-center">
-                  <CheckCircle className="w-10 h-10 text-emerald-500 mx-auto mb-3" />
-                  <h3 className="font-display font-bold text-slate-700 mb-2">Template downloaded</h3>
-                  <p className="text-sm text-slate-400 mb-4 max-w-sm mx-auto">
-                    Fill in your role details in the CSV template and send it to us. We'll populate your dashboard once received.
-                  </p>
-                  <Button variant="outline" size="sm" onClick={downloadTemplate} className="gap-2" data-testid="button-download-again">
-                    <Download className="w-4 h-4" /> Download again
-                  </Button>
+              {roleEntryMode === "upload" && (
+                <Card className="p-6 shadow-lg border-slate-100" data-testid="upload-section">
+                  <div className="space-y-5">
+                    <div>
+                      <h3 className="font-display font-bold text-slate-700 mb-2">Step 1: Download the template</h3>
+                      <p className="text-sm text-slate-400 mb-3">
+                        Download the CSV template below. It has four columns: Role Title, Current FTE Salary, Experience Level, and Function/Job Family. Fill in one role per row.
+                      </p>
+                      <Button variant="outline" size="sm" onClick={downloadTemplate} className="gap-2" data-testid="button-download-template">
+                        <Download className="w-4 h-4" /> Download template
+                      </Button>
+                    </div>
+
+                    <div className="border-t border-slate-100 pt-5">
+                      <h3 className="font-display font-bold text-slate-700 mb-2">Step 2: Upload your completed file</h3>
+                      <p className="text-sm text-slate-400 mb-3">
+                        Once you've filled in your roles, upload the completed CSV file here.
+                      </p>
+                      <input
+                        ref={fileInputRef}
+                        type="file"
+                        accept=".csv,.txt"
+                        onChange={handleFileUpload}
+                        className="hidden"
+                        data-testid="input-file-upload"
+                      />
+                      <button
+                        onClick={() => fileInputRef.current?.click()}
+                        className="w-full border-2 border-dashed border-slate-200 rounded-xl p-8 text-center hover:border-indigo-300 hover:bg-indigo-50/30 transition-all group"
+                        data-testid="button-upload-area"
+                      >
+                        <Upload className="w-8 h-8 text-slate-300 mx-auto mb-3 group-hover:text-indigo-400 transition-colors" />
+                        <p className="text-sm font-medium text-slate-600">Click to upload your CSV file</p>
+                        <p className="text-xs text-slate-400 mt-1">Accepts .csv files</p>
+                      </button>
+
+                      {uploadedFileName && (
+                        <div className="mt-4 bg-emerald-50 rounded-lg p-4 flex items-start gap-3 border border-emerald-100">
+                          <CheckCircle className="w-5 h-5 text-emerald-500 shrink-0 mt-0.5" />
+                          <div>
+                            <p className="text-sm font-medium text-emerald-700">File uploaded: {uploadedFileName}</p>
+                            <p className="text-xs text-emerald-500 mt-1">
+                              {roles.filter(r => r.roleTitle && r.currentSalary).length} role{roles.filter(r => r.roleTitle && r.currentSalary).length !== 1 ? 's' : ''} found
+                            </p>
+                          </div>
+                        </div>
+                      )}
+                    </div>
+
+                    {uploadedFileName && hasValidRoles && (
+                      <div className="border-t border-slate-100 pt-5">
+                        <h3 className="font-display font-bold text-slate-700 mb-3">Roles preview</h3>
+                        <div className="overflow-x-auto rounded-lg border border-slate-100">
+                          <table className="w-full text-sm">
+                            <thead>
+                              <tr className="bg-slate-50">
+                                <th className="text-left px-3 py-2 text-xs font-semibold text-slate-500">Role Title</th>
+                                <th className="text-left px-3 py-2 text-xs font-semibold text-slate-500">Salary</th>
+                                <th className="text-left px-3 py-2 text-xs font-semibold text-slate-500">Experience</th>
+                                <th className="text-left px-3 py-2 text-xs font-semibold text-slate-500">Function</th>
+                              </tr>
+                            </thead>
+                            <tbody>
+                              {roles.filter(r => r.roleTitle).map((role, i) => (
+                                <tr key={i} className="border-t border-slate-50">
+                                  <td className="px-3 py-2 text-slate-700">{role.roleTitle}</td>
+                                  <td className="px-3 py-2 text-slate-600">{role.currentSalary ? `£${parseInt(role.currentSalary).toLocaleString()}` : '-'}</td>
+                                  <td className="px-3 py-2 text-slate-600">{role.experienceLevel || '-'}</td>
+                                  <td className="px-3 py-2 text-slate-600">{role.functionFamily || '-'}</td>
+                                </tr>
+                              ))}
+                            </tbody>
+                          </table>
+                        </div>
+                      </div>
+                    )}
+                  </div>
                 </Card>
               )}
 
@@ -542,15 +647,11 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                 </Button>
                 <Button
                   className="flex-1 h-11 bg-gradient-to-r from-indigo-500 to-blue-500 text-white shadow-md"
-                  disabled={loading || (!roleEntryMode)}
+                  disabled={loading || !roleEntryMode || !hasValidRoles}
                   onClick={handleSignup}
                   data-testid="button-create-account"
                 >
-                  {loading ? "Creating account..." : (
-                    roleEntryMode === "online" && hasValidRoles
-                      ? "Create Account & Submit Roles"
-                      : "Create Account"
-                  )}
+                  {loading ? "Creating account..." : "Create Account & Submit Roles"}
                 </Button>
               </div>
             </div>

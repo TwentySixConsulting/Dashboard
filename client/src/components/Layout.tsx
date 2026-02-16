@@ -14,8 +14,11 @@ import {
   Database,
   Home,
   LineChart,
+  LogOut,
 } from "lucide-react";
 import logoImage from "@/assets/twentysix-logo.png";
+import { logout } from "@/lib/auth";
+import { useAuth } from "@/hooks/useAuth";
 
 const navItems = [
   { path: "/", label: "Dashboard", icon: Home },
@@ -42,9 +45,15 @@ const topNavItems = [
 
 export function Layout({ children }: { children: React.ReactNode }) {
   const [location] = useLocation();
+  const { user } = useAuth();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [location]);
+
+  const handleLogout = async () => {
+    await logout();
+    window.location.reload();
+  };
 
   return (
     <div className="flex min-h-screen">
@@ -95,12 +104,20 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </nav>
         </div>
 
-        <div className="p-4">
+        <div className="p-4 space-y-3">
           <div className="bg-gradient-to-br from-sidebar-accent/80 to-sidebar-accent/40 rounded-xl p-4 border border-sidebar-border/30">
             <p className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/30 mb-1.5 font-semibold">Prepared for</p>
-            <p className="font-bold text-[13px] text-sidebar-foreground/90">Brighton Demo Technologies</p>
+            <p className="font-bold text-[13px] text-sidebar-foreground/90">{user?.organisationName || "Brighton Demo Technologies"}</p>
             <p className="text-[11px] text-sidebar-foreground/40 mt-1">2026: Quarter 1</p>
           </div>
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-2.5 px-4 py-2.5 rounded-xl text-sidebar-foreground/40 hover:text-sidebar-foreground/70 hover:bg-sidebar-accent transition-all text-[13px]"
+            data-testid="button-logout"
+          >
+            <LogOut className="w-4 h-4" />
+            Log out
+          </button>
         </div>
       </aside>
 
