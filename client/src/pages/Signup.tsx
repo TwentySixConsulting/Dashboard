@@ -101,16 +101,10 @@ export function Signup({ onComplete, onBack }: SignupProps) {
   };
 
   const downloadTemplate = () => {
-    const headers = "Role Title,Current FTE Salary,Experience Level,Function/Job Family";
-    const rows = Array.from({ length: 20 }, () => ",,,");
-    const csv = [headers, ...rows].join("\n");
-    const blob = new Blob([csv], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
     const link = document.createElement("a");
-    link.href = url;
-    link.download = "twentysix-role-template.csv";
+    link.href = "/api/template/roles";
+    link.download = "twentysix-role-template.xlsx";
     link.click();
-    URL.revokeObjectURL(url);
   };
 
   const parseCSV = (text: string): RoleEntry[] => {
@@ -131,22 +125,55 @@ export function Signup({ onComplete, onBack }: SignupProps) {
     return parsed;
   };
 
-  const handleFileUpload = (e: React.ChangeEvent<HTMLInputElement>) => {
+  const parseXLSX = async (file: File): Promise<RoleEntry[]> => {
+    const ExcelJS = await import("exceljs");
+    const workbook = new ExcelJS.Workbook();
+    const buffer = await file.arrayBuffer();
+    await workbook.xlsx.load(buffer);
+    const sheet = workbook.worksheets[0];
+    if (!sheet) return [];
+    const parsed: RoleEntry[] = [];
+    sheet.eachRow((row, rowNumber) => {
+      if (rowNumber === 1) return;
+      const roleTitle = String(row.getCell(1).value || "").trim();
+      const salary = String(row.getCell(2).value || "").trim().replace(/[^0-9]/g, "");
+      const experience = String(row.getCell(3).value || "").trim();
+      const func = String(row.getCell(4).value || "").trim();
+      if (roleTitle) {
+        parsed.push({
+          roleTitle,
+          currentSalary: salary,
+          experienceLevel: experience,
+          functionFamily: func,
+        });
+      }
+    });
+    return parsed;
+  };
+
+  const handleFileUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files?.[0];
     if (!file) return;
     setUploadedFileName(file.name);
-    const reader = new FileReader();
-    reader.onload = (ev) => {
-      const text = ev.target?.result as string;
-      const parsed = parseCSV(text);
+
+    try {
+      let parsed: RoleEntry[];
+      if (file.name.endsWith(".xlsx") || file.name.endsWith(".xls")) {
+        parsed = await parseXLSX(file);
+      } else {
+        const text = await file.text();
+        parsed = parseCSV(text);
+      }
+
       if (parsed.length === 0) {
         setError("No valid roles found in the file. Please check the format matches the template.");
         return;
       }
       setRoles(parsed);
       setError("");
-    };
-    reader.readAsText(file);
+    } catch {
+      setError("Could not read the file. Please make sure it's a valid Excel or CSV file.");
+    }
   };
 
   const handleSignup = async () => {
@@ -582,7 +609,7 @@ export function Signup({ onComplete, onBack }: SignupProps) {
                       <input
                         ref={fileInputRef}
                         type="file"
-                        accept=".csv,.txt"
+                        accept=".csv,.txt,.xlsx,.xls"
                         onChange={handleFileUpload}
                         className="hidden"
                         data-testid="input-file-upload"
