@@ -94,8 +94,7 @@ export async function registerRoutes(
     try {
       const rolesData = z.array(insertClientRoleSchema.omit({ userId: true })).parse(req.body.roles);
       const rolesWithUser = rolesData.map((r) => ({ ...r, userId: req.user!.id }));
-      await storage.deleteClientRoles(req.user!.id);
-      const created = await storage.createClientRoles(rolesWithUser);
+      const created = await storage.replaceClientRoles(req.user!.id, rolesWithUser);
       res.json({ roles: created });
     } catch (err: any) {
       if (err instanceof z.ZodError) {

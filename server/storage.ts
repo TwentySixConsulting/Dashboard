@@ -1,5 +1,5 @@
 import { eq } from "drizzle-orm";
-import { db } from "./db";
+import { db, pool } from "./db";
 import { users, clientRoles, type User, type InsertUser, type ClientRole, type InsertClientRole } from "@shared/schema";
 
 export interface IStorage {
@@ -8,6 +8,7 @@ export interface IStorage {
   createUser(user: InsertUser): Promise<User>;
   getClientRoles(userId: number): Promise<ClientRole[]>;
   createClientRoles(roles: InsertClientRole[]): Promise<ClientRole[]>;
+  replaceClientRoles(userId: number, roles: InsertClientRole[]): Promise<ClientRole[]>;
   deleteClientRoles(userId: number): Promise<void>;
 }
 
@@ -34,6 +35,14 @@ export class DatabaseStorage implements IStorage {
   async createClientRoles(roles: InsertClientRole[]): Promise<ClientRole[]> {
     if (roles.length === 0) return [];
     return db.insert(clientRoles).values(roles).returning();
+  }
+
+  async replaceClientRoles(userId: number, roles: InsertClientRole[]): Promise<ClientRole[]> {
+    return db.transaction(async (tx) => {
+      await tx.delete(clientRoles).where(eq(clientRoles.userId, userId));
+      if (roles.length === 0) return [];
+      return tx.insert(clientRoles).values(roles).returning();
+    });
   }
 
   async deleteClientRoles(userId: number): Promise<void> {
