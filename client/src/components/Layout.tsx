@@ -57,7 +57,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
   return (
     <div className="flex min-h-screen">
-      <aside className="w-[270px] bg-sidebar text-sidebar-foreground fixed h-screen overflow-y-auto flex flex-col">
+      <aside className="w-[270px] bg-sidebar text-sidebar-foreground fixed h-screen flex flex-col">
         <div className="px-6 pt-7 pb-5">
           <div className="flex items-center gap-2.5">
             <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -70,7 +70,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
           </div>
         </div>
 
-        <div className="px-3 flex-1">
+        <div className="px-3 flex-1 overflow-y-auto">
           <p className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/30 mb-2 px-3 font-semibold">
             Sections
           </p>
