@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { Switch, Route } from "wouter";
 import { queryClient } from "./lib/queryClient";
 import { QueryClientProvider } from "@tanstack/react-query";
@@ -15,9 +16,12 @@ import { BenefitsTrends } from "@/pages/BenefitsTrends";
 import { Bonus } from "@/pages/Bonus";
 import { NextSteps } from "@/pages/NextSteps";
 import { DataSources } from "@/pages/DataSources";
+import { Landing } from "@/pages/Landing";
+import { Signup } from "@/pages/Signup";
 import NotFound from "@/pages/not-found";
+import { useAuth } from "@/hooks/useAuth";
 
-function Router() {
+function DashboardRouter() {
   return (
     <Layout>
       <Switch>
@@ -38,12 +42,52 @@ function Router() {
   );
 }
 
+function AuthGate() {
+  const { user, isLoading, isAuthenticated } = useAuth();
+  const [view, setView] = useState<"landing" | "signup">("landing");
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center bg-gradient-to-br from-slate-50 via-white to-blue-50/30">
+        <div className="flex flex-col items-center gap-3">
+          <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-400 to-indigo-500 flex items-center justify-center shadow-lg shadow-blue-500/20 animate-pulse">
+            <svg className="w-5 h-5 text-white" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+              <path d="M18 20V10M12 20V4M6 20v-6" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+          </div>
+          <p className="text-sm text-slate-400">Loading...</p>
+        </div>
+      </div>
+    );
+  }
+
+  if (isAuthenticated) {
+    return <DashboardRouter />;
+  }
+
+  if (view === "signup") {
+    return (
+      <Signup
+        onComplete={() => window.location.reload()}
+        onBack={() => setView("landing")}
+      />
+    );
+  }
+
+  return (
+    <Landing
+      onLogin={() => window.location.reload()}
+      onStartToday={() => setView("signup")}
+    />
+  );
+}
+
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
         <Toaster />
-        <Router />
+        <AuthGate />
       </TooltipProvider>
     </QueryClientProvider>
   );
