@@ -3,12 +3,16 @@ import { createServer, type Server } from "http";
 import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import bcrypt from "bcrypt";
-import ExcelJS from "exceljs";
+import path from "path";
+import { fileURLToPath } from "url";
 import passport from "./auth";
 import { storage } from "./storage";
 import { insertUserSchema, insertClientRoleSchema } from "@shared/schema";
 import { pool } from "./db";
 import { z } from "zod";
+
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
 
 const PgSession = connectPgSimple(session);
 
@@ -113,72 +117,15 @@ export async function registerRoutes(
     res.json({ roles });
   });
 
-  app.get("/api/template/roles", async (_req: Request, res: Response) => {
-    try {
-      const workbook = new ExcelJS.Workbook();
-      workbook.creator = "TwentySix Reward Consultancy";
-      workbook.created = new Date();
-
-      const sheet = workbook.addWorksheet("Role Data");
-
-      sheet.columns = [
-        { header: "Role Title", key: "roleTitle", width: 28 },
-        { header: "Current FTE Salary", key: "salary", width: 22 },
-        { header: "Experience Level", key: "experience", width: 28 },
-        { header: "Function/Job Family", key: "function", width: 28 },
-      ];
-
-      const headerRow = sheet.getRow(1);
-      headerRow.font = { bold: true, size: 11 };
-      headerRow.fill = {
-        type: "pattern",
-        pattern: "solid",
-        fgColor: { argb: "FFE8E8E8" },
-      };
-      headerRow.alignment = { vertical: "middle", horizontal: "left" };
-      headerRow.height = 22;
-
-      headerRow.eachCell((cell) => {
-        cell.border = {
-          bottom: { style: "thin", color: { argb: "FFCCCCCC" } },
-        };
-      });
-
-      for (let i = 2; i <= 51; i++) {
-        sheet.addRow(["", "", "", ""]);
+  app.get("/api/template/roles", (_req: Request, res: Response) => {
+    const templatePath = path.resolve(process.cwd(), "server", "templates", "role-template.xlsx");
+    res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+    res.setHeader("Content-Disposition", "attachment; filename=TwentySix-Benchmarking-Template.xlsx");
+    res.sendFile(templatePath, (err) => {
+      if (err) {
+        res.status(500).json({ message: "Failed to send template" });
       }
-
-      const refSheet = workbook.addWorksheet("_Options");
-      refSheet.state = "veryHidden";
-      const options = [
-        "Entry or Foundation",
-        "Early and Developing",
-        "Mid to Senior",
-        "Experts, Strategists & Leaders",
-      ];
-      options.forEach((opt, i) => {
-        refSheet.getCell(`A${i + 1}`).value = opt;
-      });
-
-      for (let i = 2; i <= 51; i++) {
-        sheet.getCell(`C${i}`).dataValidation = {
-          type: "list",
-          allowBlank: true,
-          formulae: ["_Options!$A$1:$A$4"],
-          showErrorMessage: true,
-          errorTitle: "Invalid Experience Level",
-          error: "Please select from the dropdown list.",
-        };
-      }
-
-      res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-      res.setHeader("Content-Disposition", "attachment; filename=twentysix-role-template.xlsx");
-
-      await workbook.xlsx.write(res);
-      res.end();
-    } catch (err: any) {
-      res.status(500).json({ message: "Failed to generate template" });
-    }
+    });
   });
 
   return httpServer;

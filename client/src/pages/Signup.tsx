@@ -103,7 +103,7 @@ export function Signup({ onComplete, onBack }: SignupProps) {
   const downloadTemplate = () => {
     const link = document.createElement("a");
     link.href = "/api/template/roles";
-    link.download = "twentysix-role-template.xlsx";
+    link.download = "TwentySix-Benchmarking-Template.xlsx";
     link.click();
   };
 
@@ -130,11 +130,20 @@ export function Signup({ onComplete, onBack }: SignupProps) {
     const workbook = new ExcelJS.Workbook();
     const buffer = await file.arrayBuffer();
     await workbook.xlsx.load(buffer);
-    const sheet = workbook.worksheets[0];
-    if (!sheet) return [];
+    const rolesSheet = workbook.getWorksheet("Roles") || workbook.worksheets[0];
+    if (!rolesSheet) return [];
+
+    let headerRow = 1;
+    rolesSheet.eachRow((row, rowNumber) => {
+      const val = String(row.getCell(1).value || "").trim().toLowerCase();
+      if (val === "role title") {
+        headerRow = rowNumber;
+      }
+    });
+
     const parsed: RoleEntry[] = [];
-    sheet.eachRow((row, rowNumber) => {
-      if (rowNumber === 1) return;
+    rolesSheet.eachRow((row, rowNumber) => {
+      if (rowNumber <= headerRow) return;
       const roleTitle = String(row.getCell(1).value || "").trim();
       const salary = String(row.getCell(2).value || "").trim().replace(/[^0-9]/g, "");
       const experience = String(row.getCell(3).value || "").trim();
