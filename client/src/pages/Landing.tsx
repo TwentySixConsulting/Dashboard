@@ -193,17 +193,14 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
                   <span>UK Market Data</span>
                   <span className="w-1 h-1 rounded-full bg-slate-600" />
                   <span>Updated Quarterly</span>
-                  <span className="w-1 h-1 rounded-full bg-slate-600" />
-                  <span>Instant Reports</span>
                 </div>
               </div>
             )}
           </div>
         </div>
 
-        <footer className="px-8 py-5 flex items-center justify-between border-t border-white/[0.04]">
-          <p className="text-[11px] text-slate-600">TwentySix Reward Consultancy</p>
-          <p className="text-[11px] text-slate-600">Powered by market intelligence</p>
+        <footer className="px-8 py-5 border-t border-white/[0.04]">
+          <p className="text-[11px] text-slate-600">TwentySix</p>
         </footer>
       </div>
     </div>
