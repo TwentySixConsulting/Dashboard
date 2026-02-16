@@ -20,7 +20,13 @@ Preferred communication style: Simple, everyday language.
 
 ## Application Mode
 
-This is a **client-facing read-only dashboard**. All CMS/edit mode functionality has been removed. The application is designed for professional presentation of salary benchmarking data to clients.
+The application has a **public landing page** with login/signup functionality. Unauthenticated users see the landing page with product overview and can either log in or create an account via a 3-step signup wizard (personal details, organisation details, role entry). Authenticated users are taken directly to the **client-facing dashboard** with salary benchmarking data.
+
+### Authentication System
+- **Backend**: Passport.js with local strategy, bcrypt password hashing, PostgreSQL session store (connect-pg-simple)
+- **Frontend**: React Query-based auth hook (`useAuth`), AuthGate component in App.tsx
+- **Signup flow**: 3 steps - personal info, org details, role template (online entry or CSV download)
+- **Session**: Persistent via PostgreSQL, 30-day cookie expiry
 
 ## System Architecture
 
