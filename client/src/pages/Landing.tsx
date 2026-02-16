@@ -53,7 +53,7 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
       }} />
 
       <div className="relative z-10 min-h-screen flex flex-col">
-        <nav className="px-8 py-6 flex items-center justify-between">
+        <nav className="px-8 py-5 flex items-center justify-between">
           <div className="flex items-center gap-3">
             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-indigo-400 to-blue-500 flex items-center justify-center shadow-lg shadow-indigo-500/30">
               <BarChart3 className="w-5 h-5 text-white" />
@@ -63,6 +63,9 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
               <p className="text-[10px] text-slate-400 mt-0.5">by TwentySix</p>
             </div>
           </div>
+          <div className="bg-white rounded-lg px-4 py-2 shadow-md">
+            <img src={logoImage} alt="TwentySix" className="h-6" />
+          </div>
         </nav>
 
         <div className="flex-1 flex items-center justify-center px-6 pb-12">
@@ -70,7 +73,6 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
             {showLogin ? (
               <div className="space-y-8 animate-in fade-in duration-300">
                 <div className="text-center space-y-3">
-                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto brightness-0 invert opacity-60 mb-6" />
                   <h1 className="text-3xl font-display font-bold text-white tracking-tight">
                     Welcome back
                   </h1>
@@ -153,8 +155,6 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
             ) : (
               <div className="text-center space-y-10 animate-in fade-in duration-300">
                 <div className="space-y-6">
-                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto brightness-0 invert opacity-60" />
-
                   <h1 className="text-4xl sm:text-5xl font-display font-bold text-white leading-tight tracking-tight">
                     Pay & Benefits
                     <span className="block text-transparent bg-clip-text bg-gradient-to-r from-indigo-400 to-blue-400 mt-1">
