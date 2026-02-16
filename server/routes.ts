@@ -148,12 +148,23 @@ export async function registerRoutes(
         sheet.addRow(["", "", "", ""]);
       }
 
-      const experienceOptions = '"Entry or Foundation,Early and Developing,Mid to Senior,Experts Strategists & Leaders"';
+      const refSheet = workbook.addWorksheet("_Options");
+      refSheet.state = "veryHidden";
+      const options = [
+        "Entry or Foundation",
+        "Early and Developing",
+        "Mid to Senior",
+        "Experts, Strategists & Leaders",
+      ];
+      options.forEach((opt, i) => {
+        refSheet.getCell(`A${i + 1}`).value = opt;
+      });
+
       for (let i = 2; i <= 51; i++) {
         sheet.getCell(`C${i}`).dataValidation = {
           type: "list",
           allowBlank: true,
-          formulae: [experienceOptions],
+          formulae: ["_Options!$A$1:$A$4"],
           showErrorMessage: true,
           errorTitle: "Invalid Experience Level",
           error: "Please select from the dropdown list.",
