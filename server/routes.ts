@@ -4,15 +4,11 @@ import session from "express-session";
 import connectPgSimple from "connect-pg-simple";
 import bcrypt from "bcrypt";
 import path from "path";
-import { fileURLToPath } from "url";
 import passport from "./auth";
 import { storage } from "./storage";
 import { insertUserSchema, insertClientRoleSchema } from "@shared/schema";
 import { pool } from "./db";
 import { z } from "zod";
-
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
 
 const PgSession = connectPgSimple(session);
 
@@ -118,7 +114,7 @@ export async function registerRoutes(
   });
 
   app.get("/api/template/roles", (_req: Request, res: Response) => {
-    const templatePath = path.resolve(process.cwd(), "server", "templates", "role-template.xlsx");
+    const templatePath = path.join(process.cwd(), "server", "templates", "role-template.xlsx");
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
     res.setHeader("Content-Disposition", "attachment; filename=TwentySix-Benchmarking-Template.xlsx");
     res.sendFile(templatePath, (err) => {
