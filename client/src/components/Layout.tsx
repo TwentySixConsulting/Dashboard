@@ -149,7 +149,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <img
                 src={logoImage}
                 alt="TwentySix"
-                className="h-7 w-auto opacity-80 hover:opacity-100 transition-opacity"
+                className="h-7 w-auto brightness-0 invert opacity-60 hover:opacity-80 transition-opacity"
               />
             </nav>
           </div>

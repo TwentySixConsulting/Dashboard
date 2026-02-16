@@ -70,7 +70,7 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
             {showLogin ? (
               <div className="space-y-8 animate-in fade-in duration-300">
                 <div className="text-center space-y-3">
-                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto opacity-70 mb-6" />
+                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto brightness-0 invert opacity-60 mb-6" />
                   <h1 className="text-3xl font-display font-bold text-white tracking-tight">
                     Welcome back
                   </h1>
@@ -153,7 +153,7 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
             ) : (
               <div className="text-center space-y-10 animate-in fade-in duration-300">
                 <div className="space-y-6">
-                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto opacity-70" />
+                  <img src={logoImage} alt="TwentySix" className="h-7 mx-auto brightness-0 invert opacity-60" />
 
                   <h1 className="text-4xl sm:text-5xl font-display font-bold text-white leading-tight tracking-tight">
                     Pay & Benefits
