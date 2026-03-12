@@ -40,60 +40,73 @@ function SalaryRangeIndicator({
   median: number; 
   uq: number;
 }) {
-  const min = Math.min(lq * 0.85, current * 0.9);
-  const max = Math.max(uq * 1.15, current * 1.1);
-  const range = max - min;
-  
-  const lqPos = ((lq - min) / range) * 100;
-  const medianPos = ((median - min) / range) * 100;
-  const uqPos = ((uq - min) / range) * 100;
-  const currentPos = ((current - min) / range) * 100;
+  const lqFixed = 25;
+  const medFixed = 50;
+  const uqFixed = 75;
+
+  let currentPos: number;
+  if (current <= lq) {
+    const belowRange = lq - lq * 0.8;
+    const pct = belowRange > 0 ? (current - lq * 0.8) / belowRange : 0;
+    currentPos = Math.max(2, pct * lqFixed);
+  } else if (current <= median) {
+    const pct = (current - lq) / (median - lq);
+    currentPos = lqFixed + pct * (medFixed - lqFixed);
+  } else if (current <= uq) {
+    const pct = (current - median) / (uq - median);
+    currentPos = medFixed + pct * (uqFixed - medFixed);
+  } else {
+    const aboveRange = uq * 1.2 - uq;
+    const pct = aboveRange > 0 ? (current - uq) / aboveRange : 1;
+    currentPos = Math.min(98, uqFixed + pct * (100 - uqFixed));
+  }
 
   return (
-    <div>
-      <div className="flex justify-between text-[10px] text-slate-400 uppercase tracking-wider mb-1.5 px-0.5">
-        <span>LQ</span>
-        <span style={{ position: 'absolute', left: `calc(${medianPos}% - 8px)` }}>Med</span>
-        <span>UQ</span>
+    <div className="space-y-1">
+      <div className="relative" style={{ height: '18px' }}>
+        <div className="absolute text-[10px] font-semibold text-slate-400 uppercase tracking-wider" style={{ left: `${lqFixed}%`, transform: 'translateX(-50%)' }}>LQ</div>
+        <div className="absolute text-[10px] font-semibold text-slate-500 uppercase tracking-wider" style={{ left: `${medFixed}%`, transform: 'translateX(-50%)' }}>Median</div>
+        <div className="absolute text-[10px] font-semibold text-slate-400 uppercase tracking-wider" style={{ left: `${uqFixed}%`, transform: 'translateX(-50%)' }}>UQ</div>
       </div>
-      <div className="relative h-7">
+
+      <div className="relative h-5">
+        <div className="absolute top-2 left-0 right-0 h-1.5 bg-slate-100 rounded-full" />
+
         <div 
-          className="absolute top-3 h-1.5 bg-red-200/60 rounded-l-full" 
-          style={{ left: 0, width: `${lqPos}%` }}
+          className="absolute top-2 h-1.5 rounded-l-full"
+          style={{ left: 0, width: `${lqFixed}%`, background: 'linear-gradient(90deg, #fecaca 0%, #fde68a 100%)' }}
         />
         <div 
-          className="absolute top-3 h-1.5 rounded-none" 
-          style={{ left: `${lqPos}%`, width: `${medianPos - lqPos}%`, background: 'linear-gradient(90deg, #fde68a, #a7f3d0)' }}
+          className="absolute top-2 h-1.5"
+          style={{ left: `${lqFixed}%`, width: `${medFixed - lqFixed}%`, background: 'linear-gradient(90deg, #fde68a 0%, #a7f3d0 100%)' }}
         />
         <div 
-          className="absolute top-3 h-1.5 rounded-none" 
-          style={{ left: `${medianPos}%`, width: `${uqPos - medianPos}%`, background: 'linear-gradient(90deg, #a7f3d0, #bae6fd)' }}
+          className="absolute top-2 h-1.5"
+          style={{ left: `${medFixed}%`, width: `${uqFixed - medFixed}%`, background: 'linear-gradient(90deg, #a7f3d0 0%, #bae6fd 100%)' }}
         />
         <div 
-          className="absolute top-3 h-1.5 bg-sky-200/60 rounded-r-full" 
-          style={{ left: `${uqPos}%`, right: 0 }}
-        />
-        
-        <div 
-          className="absolute top-2 w-px h-4 bg-slate-300"
-          style={{ left: `${lqPos}%` }}
-        />
-        <div 
-          className="absolute top-2 w-px h-4 bg-slate-500"
-          style={{ left: `${medianPos}%` }}
-        />
-        <div 
-          className="absolute top-2 w-px h-4 bg-slate-300"
-          style={{ left: `${uqPos}%` }}
+          className="absolute top-2 h-1.5 rounded-r-full"
+          style={{ left: `${uqFixed}%`, width: `${100 - uqFixed}%`, background: 'linear-gradient(90deg, #bae6fd 0%, #93c5fd 100%)' }}
         />
         
+        <div className="absolute top-0.5 w-px h-4 bg-slate-300" style={{ left: `${lqFixed}%` }} />
+        <div className="absolute top-0.5 w-px h-4 bg-slate-500" style={{ left: `${medFixed}%` }} />
+        <div className="absolute top-0.5 w-px h-4 bg-slate-300" style={{ left: `${uqFixed}%` }} />
+        
         <div 
-          className="absolute top-1 w-3.5 h-3.5 rounded-full border-2 border-white shadow-md"
+          className="absolute w-4 h-4 rounded-full border-2 border-white shadow-lg"
           style={{ 
-            left: `calc(${currentPos}% - 7px)`,
+            top: '-1px',
+            left: `calc(${currentPos}% - 8px)`,
             backgroundColor: '#6366f1'
           }}
         />
+      </div>
+
+      <div className="relative" style={{ height: '14px' }}>
+        <div className="absolute text-[9px] text-slate-400" style={{ left: `${lqFixed}%`, transform: 'translateX(-50%)' }}>£{lq.toLocaleString()}</div>
+        <div className="absolute text-[9px] text-slate-500 font-medium" style={{ left: `${medFixed}%`, transform: 'translateX(-50%)' }}>£{median.toLocaleString()}</div>
+        <div className="absolute text-[9px] text-slate-400" style={{ left: `${uqFixed}%`, transform: 'translateX(-50%)' }}>£{uq.toLocaleString()}</div>
       </div>
     </div>
   );
@@ -179,20 +192,6 @@ export function RoleDetails() {
                         />
                       </div>
 
-                      <div className="grid grid-cols-3 gap-2 pt-1">
-                        <div className="text-center p-2.5 rounded-lg bg-violet-50/60 border border-violet-100">
-                          <p className="text-[10px] text-violet-500 uppercase tracking-wider font-semibold mb-0.5">LQ</p>
-                          <p className="font-bold text-sm text-violet-700">£{role.lowerQuartile.toLocaleString()}</p>
-                        </div>
-                        <div className="text-center p-2.5 rounded-lg bg-emerald-50/60 border border-emerald-100">
-                          <p className="text-[10px] text-emerald-500 uppercase tracking-wider font-semibold mb-0.5">Median</p>
-                          <p className="font-bold text-sm text-emerald-700">£{role.median.toLocaleString()}</p>
-                        </div>
-                        <div className="text-center p-2.5 rounded-lg bg-sky-50/60 border border-sky-100">
-                          <p className="text-[10px] text-sky-500 uppercase tracking-wider font-semibold mb-0.5">UQ</p>
-                          <p className="font-bold text-sm text-sky-700">£{role.upperQuartile.toLocaleString()}</p>
-                        </div>
-                      </div>
                     </div>
                   </Card>
                 );
