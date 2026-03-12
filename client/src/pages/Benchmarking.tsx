@@ -49,11 +49,11 @@ function QuartilesExplained() {
             <div className="flex-1 bg-red-100 flex items-center justify-center border-r border-slate-200">
               <span className="text-xs font-medium text-red-700 text-center px-1">Below Lower Quartile</span>
             </div>
-            <div className="flex-1 bg-amber-100 flex items-center justify-center border-r border-slate-200">
-              <span className="text-xs font-medium text-amber-700 text-center px-1">LQ → Median</span>
+            <div className="flex-1 bg-purple-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-purple-700 text-center px-1">LQ → Median</span>
             </div>
-            <div className="flex-1 bg-emerald-100 flex items-center justify-center border-r border-slate-200">
-              <span className="text-xs font-medium text-emerald-700 text-center px-1">Median → UQ</span>
+            <div className="flex-1 bg-green-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-green-700 text-center px-1">Median → UQ</span>
             </div>
             <div className="flex-1 bg-blue-100 flex items-center justify-center">
               <span className="text-xs font-medium text-blue-700 text-center px-1">Above Upper Quartile</span>
@@ -89,12 +89,25 @@ function QuartilesExplained() {
   );
 }
 
+const careerLevels: Record<string, string> = {
+  "Managing Director": "Senior",
+  "Finance Director": "Senior",
+  "Commercial Director": "Senior",
+  "Data Manager": "Senior",
+  "Product Owner": "Practitioner",
+  "Management Accountant": "Practitioner",
+  "Data Systems Engineer": "Practitioner",
+  "Analyst": "Junior",
+  "Data Researcher": "Junior",
+  "Data Coordinator": "Junior",
+};
+
 export function Benchmarking() {
   const positionColors: Record<string, string> = {
-    below: "bg-slate-600",
-    lower: "bg-slate-600",
-    upper: "bg-slate-600",
-    above: "bg-slate-600",
+    below: "bg-red-500",
+    lower: "bg-purple-500",
+    upper: "bg-green-500",
+    above: "bg-blue-500",
   };
 
   const downloadCSV = () => {
@@ -126,11 +139,9 @@ export function Benchmarking() {
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
       <div className="page-header">
         <p className="page-badge">Salary Analysis</p>
-        <h1>Market Data Results</h1>
+        <h1>Pay Benchmarking Overview</h1>
         <p className="page-subtitle">Overview of all roles with market ranges.</p>
       </div>
-
-      <QuartilesExplained />
 
       <Card className="p-6 section-card">
         <div className="flex items-center justify-between mb-6">
@@ -147,8 +158,9 @@ export function Benchmarking() {
               <tr className="border-b bg-muted/30">
                 <th className="text-left py-4 px-3 font-semibold">Role</th>
                 <th className="text-left py-4 px-3 font-semibold">Function</th>
+                <th className="text-left py-4 px-3 font-semibold">Career Level</th>
                 <th className="text-right py-4 px-3 font-semibold">Current</th>
-                <th className="text-right py-4 px-3 font-semibold text-amber-600">LQ</th>
+                <th className="text-right py-4 px-3 font-semibold text-purple-600">LQ</th>
                 <th className="text-right py-4 px-3 font-semibold text-green-600">Median</th>
                 <th className="text-right py-4 px-3 font-semibold text-blue-600">UQ</th>
                 <th className="text-center py-4 px-3 font-semibold">Position</th>
@@ -167,10 +179,11 @@ export function Benchmarking() {
                   >
                     <td className="py-3 px-3 font-medium">{role.role}</td>
                     <td className="py-3 px-3 text-muted-foreground">{role.function}</td>
+                    <td className="py-3 px-3 text-muted-foreground">{careerLevels[role.role] || "—"}</td>
                     <td className="py-3 px-3 text-right font-semibold text-primary">£{role.currentSalary.toLocaleString()}</td>
-                    <td className="py-3 px-3 text-right text-muted-foreground">£{role.lowerQuartile.toLocaleString()}</td>
-                    <td className="py-3 px-3 text-right text-muted-foreground">£{role.median.toLocaleString()}</td>
-                    <td className="py-3 px-3 text-right text-muted-foreground">£{role.upperQuartile.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-purple-600">£{role.lowerQuartile.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-green-600">£{role.median.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-blue-600">£{role.upperQuartile.toLocaleString()}</td>
                     <td className="py-3 px-3">
                       <div className="flex justify-center">
                         <span
@@ -197,11 +210,11 @@ export function Benchmarking() {
           <span className="text-sm text-muted-foreground">Below LQ</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-amber-500" />
+          <div className="w-3 h-3 rounded-full bg-purple-500" />
           <span className="text-sm text-muted-foreground">LQ to Median</span>
         </div>
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-emerald-500" />
+          <div className="w-3 h-3 rounded-full bg-green-500" />
           <span className="text-sm text-muted-foreground">Median to UQ</span>
         </div>
         <div className="flex items-center gap-2">
@@ -209,6 +222,8 @@ export function Benchmarking() {
           <span className="text-sm text-muted-foreground">Above UQ</span>
         </div>
       </div>
+
+      <QuartilesExplained />
     </div>
   );
 }

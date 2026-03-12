@@ -23,8 +23,8 @@ import { useAuth } from "@/hooks/useAuth";
 const navItems = [
   { path: "/", label: "Dashboard", icon: Home },
   { path: "/market-comparison", label: "Your Market Position", icon: LineChart },
+  { path: "/market-data", label: "Pay Benchmarking Overview", icon: BarChart3 },
   { path: "/market-context", label: "Market Context", icon: TrendingUp },
-  { path: "/market-data", label: "Market Data Results", icon: BarChart3 },
   { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
   { path: "/bonus", label: "Bonus Potential", icon: Percent },
@@ -36,7 +36,7 @@ const navItems = [
 
 const topNavItems = [
   { path: "/market-comparison", label: "Your Position" },
-  { path: "/market-data", label: "Market Data" },
+  { path: "/market-data", label: "Pay Benchmarking" },
   { path: "/role-details", label: "Role Details" },
   { path: "/risks", label: "Strengths & Risks" },
   { path: "/market-context", label: "Market Context" },
