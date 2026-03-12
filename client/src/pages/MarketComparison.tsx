@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { marketData, companyInfo } from "@/lib/data";
-import { TrendingUp, TrendingDown, Target, AlertCircle, AlertTriangle, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, AlertCircle, AlertTriangle, Briefcase, ShieldCheck, BarChart3 } from "lucide-react";
 import {
   Radar,
   RadarChart,
