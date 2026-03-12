@@ -9,7 +9,7 @@ import {
   Eye,
   EyeOff,
 } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+import logoImage from "@/assets/zigbert-logo.png";
 import { login } from "@/lib/auth";
 
 interface LandingProps {
@@ -60,11 +60,11 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
             </div>
             <div>
               <p className="text-sm font-bold text-white tracking-tight leading-none">Pay & Benefits</p>
-              <p className="text-[10px] text-slate-400 mt-0.5">by TwentySix</p>
+              <p className="text-[10px] text-slate-400 mt-0.5">by Zigbert</p>
             </div>
           </div>
           <div className="bg-white rounded-lg px-4 py-2 shadow-md">
-            <img src={logoImage} alt="TwentySix" className="h-6" />
+            <img src={logoImage} alt="Zigbert" className="h-6" />
           </div>
         </nav>
 
@@ -200,7 +200,7 @@ export function Landing({ onLogin, onStartToday }: LandingProps) {
         </div>
 
         <footer className="px-8 py-5 border-t border-white/[0.04]">
-          <p className="text-[11px] text-slate-600">TwentySix</p>
+          <p className="text-[11px] text-slate-600">Zigbert</p>
         </footer>
       </div>
     </div>

@@ -116,7 +116,7 @@ export async function registerRoutes(
   app.get("/api/template/roles", (_req: Request, res: Response) => {
     const templatePath = path.join(process.cwd(), "server", "templates", "role-template.xlsx");
     res.setHeader("Content-Type", "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-    res.setHeader("Content-Disposition", "attachment; filename=TwentySix-Benchmarking-Template.xlsx");
+    res.setHeader("Content-Disposition", "attachment; filename=Zigbert-Benchmarking-Template.xlsx");
     res.sendFile(templatePath, (err) => {
       if (err) {
         res.status(500).json({ message: "Failed to send template" });

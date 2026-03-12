@@ -1,4 +1,4 @@
-# TwentySix Pay & Benefits Dashboard
+# Zigbert Pay & Benefits Dashboard
 
 ## Overview
 

@@ -7,7 +7,6 @@ import {
   Users,
   AlertTriangle,
   TrendingUp,
-  Building2,
   Percent,
   Gift,
   Lightbulb,
@@ -16,7 +15,6 @@ import {
   ChevronRight,
   MapPin,
   Calendar,
-  HelpCircle,
   Home,
   LineChart,
   LucideIcon,
@@ -148,21 +146,15 @@ export function ExecutiveSummary() {
         </p>
         <h1 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 mb-3" data-testid="dashboard-headline"
           style={{ background: 'linear-gradient(135deg, hsl(228 35% 11%) 0%, hsl(228 25% 25%) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          {pageMeta.headline || 'Use Your Dashboard'}
+          Brighton Demo Technologies' Dashboard
         </h1>
-        <Link href="#pay-ranges">
-          <span className="inline-flex items-center gap-2 text-blue-500 hover:text-blue-600 transition-colors cursor-pointer group" data-testid="dashboard-subheadline">
-            <HelpCircle className="w-4 h-4" />
-            <span className="text-sm font-medium group-hover:underline">{pageMeta.subheadline || 'How to interpret pay ranges'}</span>
-          </span>
-        </Link>
+        <p className="text-sm text-slate-400" data-testid="dashboard-subheadline">By Zigbert</p>
       </div>
 
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-        <StatCard icon={Building2} label="Organisation" value={companyInfo.name} gradient="from-slate-700 to-slate-900" delay={0.05} />
-        <StatCard icon={Briefcase} label="Sector" value={companyInfo.industry} gradient="from-blue-500 to-indigo-600" delay={0.1} />
-        <StatCard icon={MapPin} label="Location" value={companyInfo.location} gradient="from-violet-500 to-purple-600" delay={0.15} />
-        <StatCard icon={Calendar} label="Report Date" value={companyInfo.reportDate} gradient="from-emerald-500 to-teal-600" delay={0.2} />
+      <div className="grid grid-cols-3 gap-4">
+        <StatCard icon={Briefcase} label="Sector" value={companyInfo.industry} gradient="from-blue-500 to-indigo-600" delay={0.05} />
+        <StatCard icon={MapPin} label="Dataset" value={companyInfo.location} gradient="from-violet-500 to-purple-600" delay={0.1} />
+        <StatCard icon={Calendar} label="Date" value={companyInfo.reportDate} gradient="from-emerald-500 to-teal-600" delay={0.15} />
       </div>
 
       <div>
@@ -192,22 +184,6 @@ export function ExecutiveSummary() {
         )}
       </div>
 
-      <div id="pay-ranges" className="bg-white rounded-2xl p-6 opacity-0 animate-fade-in" style={{ animationDelay: '0.4s', boxShadow: '0 1px 3px rgba(0,0,0,0.04), 0 4px 24px rgba(0,0,0,0.04)' }}>
-        <h3 className="font-display font-bold text-lg text-slate-800 mb-5">How to Interpret Pay Ranges</h3>
-        <div className="grid grid-cols-1 md:grid-cols-4 gap-3">
-          {[
-            { label: 'Below LQ', desc: 'Below what 75% of the market pays', color: 'from-red-50 to-red-100/50', border: 'border-red-100', text: 'text-red-600' },
-            { label: 'LQ to Median', desc: 'Lower half of the typical market range', color: 'from-amber-50 to-amber-100/50', border: 'border-amber-100', text: 'text-amber-600' },
-            { label: 'Median to UQ', desc: 'Upper half of the typical market range', color: 'from-emerald-50 to-emerald-100/50', border: 'border-emerald-100', text: 'text-emerald-600' },
-            { label: 'Above UQ', desc: 'Above what 75% of the market pays', color: 'from-blue-50 to-blue-100/50', border: 'border-blue-100', text: 'text-blue-600' },
-          ].map((item) => (
-            <div key={item.label} className={`bg-gradient-to-br ${item.color} rounded-xl p-4 text-center border ${item.border}`}>
-              <p className={`font-display font-bold text-sm mb-1 ${item.text}`}>{item.label}</p>
-              <p className="text-xs text-slate-500">{item.desc}</p>
-            </div>
-          ))}
-        </div>
-      </div>
     </div>
   );
 }

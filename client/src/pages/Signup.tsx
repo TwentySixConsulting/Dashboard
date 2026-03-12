@@ -26,7 +26,7 @@ import {
   Upload,
   AlertCircle,
 } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+import logoImage from "@/assets/zigbert-logo.png";
 import { signup, submitRoles } from "@/lib/auth";
 
 interface SignupProps {
@@ -103,7 +103,7 @@ export function Signup({ onComplete, onBack }: SignupProps) {
   const downloadTemplate = () => {
     const link = document.createElement("a");
     link.href = "/api/template/roles";
-    link.download = "TwentySix-Benchmarking-Template.xlsx";
+    link.download = "Zigbert-Benchmarking-Template.xlsx";
     link.click();
   };
 

@@ -5,7 +5,7 @@ import { AddSectionButton, SectionType } from "@/components/AddSectionButton";
 import { SortableSectionList } from "@/components/SortableSectionList";
 import { usePageEditor, PageSection } from "@/contexts/PageEditorContext";
 import { useAuth } from "@/contexts/AuthContext";
-import logoImage from "@/assets/twentysix-logo.png";
+import logoImage from "@/assets/zigbert-logo.png";
 
 interface CustomPageProps {
   pageId: string;
@@ -118,7 +118,7 @@ export function CustomPage({ pageId, defaultTitle = "Custom Page" }: CustomPageP
             multiline
           />
         </div>
-        <img src={logoImage} alt="TwentySix" className="h-10 w-auto hidden lg:block" />
+        <img src={logoImage} alt="Zigbert" className="h-10 w-auto hidden lg:block" />
       </div>
 
       {sections.length === 0 && isEditMode && (

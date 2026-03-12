@@ -16,7 +16,7 @@ import {
   LineChart,
   LogOut,
 } from "lucide-react";
-import logoImage from "@/assets/twentysix-logo.png";
+import logoImage from "@/assets/zigbert-logo.png";
 import { logout } from "@/lib/auth";
 import { useAuth } from "@/hooks/useAuth";
 
@@ -148,7 +148,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
 
               <img
                 src={logoImage}
-                alt="TwentySix"
+                alt="Zigbert"
                 className="h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
               />
             </nav>

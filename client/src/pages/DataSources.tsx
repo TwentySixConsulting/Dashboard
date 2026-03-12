@@ -22,7 +22,7 @@ export function DataSources() {
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>TwentySix proprietary salary database</span>
+              <span>Zigbert proprietary salary database</span>
             </li>
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
@@ -103,7 +103,7 @@ export function DataSources() {
           <ul className="space-y-3 text-sm text-muted-foreground">
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
-              <span>TwentySix benefits surveys</span>
+              <span>Zigbert benefits surveys</span>
             </li>
             <li className="flex gap-3">
               <CheckCircle2 className="w-4 h-4 text-green-500 shrink-0 mt-0.5" />
@@ -149,7 +149,7 @@ export function DataSources() {
 
       <Card className="p-6 bg-muted/30 border-0">
         <p className="text-sm text-muted-foreground text-center">
-          Data in this report is valid as of February 2026 (Q1 2026). For the most current market data or custom analysis, please contact your TwentySix consultant.
+          Data in this report is valid as of February 2026 (Q1 2026). For the most current market data or custom analysis, please contact your Zigbert consultant.
         </p>
       </Card>
     </div>

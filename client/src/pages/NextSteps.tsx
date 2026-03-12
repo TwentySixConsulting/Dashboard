@@ -191,7 +191,7 @@ export function NextSteps() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Email</p>
-              <p className="font-medium">hello@twentysix.co.uk</p>
+              <p className="font-medium">hello@zigbert.co.uk</p>
             </div>
           </div>
           <div className="flex items-center gap-3">
@@ -209,7 +209,7 @@ export function NextSteps() {
             </div>
             <div>
               <p className="text-sm text-muted-foreground">Website</p>
-              <p className="font-medium">www.twentysix.co.uk</p>
+              <p className="font-medium">www.zigbert.co.uk</p>
             </div>
           </div>
         </div>
