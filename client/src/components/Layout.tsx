@@ -24,8 +24,8 @@ const navItems = [
   { path: "/", label: "Dashboard", icon: Home },
   { path: "/market-comparison", label: "Your Market Position", icon: LineChart },
   { path: "/market-data", label: "Pay Benchmarking Overview", icon: BarChart3 },
+  { path: "/role-details", label: "Role-by-Role Analysis", icon: Users },
   { path: "/market-context", label: "Market Context", icon: TrendingUp },
-  { path: "/role-details", label: "Role-by-Role Detail", icon: Users },
   { path: "/risks", label: "Strengths & Risks", icon: AlertTriangle },
   { path: "/bonus", label: "Bonus Potential", icon: Percent },
   { path: "/benefits", label: "Benefits", icon: Gift },
@@ -37,7 +37,7 @@ const navItems = [
 const topNavItems = [
   { path: "/market-comparison", label: "Your Position" },
   { path: "/market-data", label: "Pay Benchmarking" },
-  { path: "/role-details", label: "Role Details" },
+  { path: "/role-details", label: "Role Analysis" },
   { path: "/risks", label: "Strengths & Risks" },
   { path: "/market-context", label: "Market Context" },
   { path: "/benefits", label: "Benefits" },
