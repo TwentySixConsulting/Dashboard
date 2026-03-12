@@ -76,6 +76,8 @@ export function MarketComparison() {
   const overallDiffPct = ((overallDiff / overallAvgMedian) * 100).toFixed(1);
 
   const totalSalaryBill = marketData.reduce((s, r) => s + r.currentSalary, 0);
+  const totalMedianBill = marketData.reduce((s, r) => s + r.median, 0);
+  const billDifference = totalSalaryBill - totalMedianBill;
   const functions = Array.from(new Set(marketData.map(r => r.function))).sort();
   const highestPaid = [...marketData].sort((a, b) => b.currentSalary - a.currentSalary)[0];
   const lowestPaid = [...marketData].sort((a, b) => a.currentSalary - b.currentSalary)[0];
@@ -171,7 +173,7 @@ export function MarketComparison() {
           </div>
           <h3 className="font-display font-bold text-xl text-slate-800">{companyInfo.name}'s Headline Profile</h3>
         </div>
-        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
+        <div className="grid grid-cols-2 md:grid-cols-3 gap-4 mb-5">
           <div className="bg-slate-50 rounded-xl p-4">
             <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Roles Assessed</p>
             <p className="text-xl font-display font-bold text-slate-800">{marketData.length}</p>
@@ -181,6 +183,29 @@ export function MarketComparison() {
             <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Total Salary Bill</p>
             <p className="text-xl font-display font-bold text-slate-800">£{(totalSalaryBill / 1000).toFixed(0)}k</p>
             <p className="text-xs text-slate-400 mt-0.5">assessed roles</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Total at Median</p>
+            <p className="text-xl font-display font-bold text-slate-800">£{(totalMedianBill / 1000).toFixed(0)}k</p>
+            <p className="text-xs text-slate-400 mt-0.5">if all roles paid at median</p>
+          </div>
+          <div className={`rounded-xl p-4 ${billDifference > 0 ? 'bg-amber-50 border border-amber-100' : 'bg-emerald-50 border border-emerald-100'}`}>
+            <p className={`text-[10px] uppercase tracking-wider font-semibold mb-1 ${billDifference > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>
+              {billDifference > 0 ? 'Potential Saving' : 'Investment Needed'}
+            </p>
+            <div className="flex items-center gap-1.5">
+              {billDifference > 0 ? (
+                <TrendingDown className="w-4 h-4 text-amber-500" />
+              ) : (
+                <TrendingUp className="w-4 h-4 text-emerald-500" />
+              )}
+              <p className={`text-xl font-display font-bold ${billDifference > 0 ? 'text-amber-600' : 'text-emerald-600'}`}>
+                £{(Math.abs(billDifference) / 1000).toFixed(0)}k
+              </p>
+            </div>
+            <p className={`text-xs mt-0.5 ${billDifference > 0 ? 'text-amber-500' : 'text-emerald-500'}`}>
+              {billDifference > 0 ? 'could save if paid at median' : 'needed to reach median'}
+            </p>
           </div>
           <div className="bg-slate-50 rounded-xl p-4">
             <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Average Salary</p>
