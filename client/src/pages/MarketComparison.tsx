@@ -110,10 +110,24 @@ export function MarketComparison() {
     .filter((r) => r.band === "aboveUQ")
     .sort((a, b) => b.gapToUQ - a.gapToUQ);
 
-  const radarData = marketData.map((role) => {
+  const sortedByFunction = [...marketData].sort((a, b) => {
+    if (a.function !== b.function) return a.function.localeCompare(b.function);
+    return b.currentSalary - a.currentSalary;
+  });
+
+  const radarData = sortedByFunction.map((role, _i, arr) => {
     const m = role.median;
+    const fnRoles = arr.filter(r => r.function === role.function);
+    const fnIndex = fnRoles.indexOf(role);
+    const isFirst = fnIndex === 0;
+    const isSingle = fnRoles.length === 1;
     return {
       role: role.role,
+      label: isFirst || isSingle
+        ? `${role.function}: ${role.role}`
+        : `  ${role.role}`,
+      functionName: role.function,
+      isFirstInFunction: isFirst,
       "Lower Quartile": Math.round((role.lowerQuartile / m) * 100),
       "Median": 100,
       "Upper Quartile": Math.round((role.upperQuartile / m) * 100),
@@ -306,17 +320,47 @@ export function MarketComparison() {
             </div>
             <div>
               <h3 className="font-display font-bold text-lg text-slate-800">Market Position Map</h3>
-              <p className="text-xs text-slate-400">Each role normalised to its median (100%). Hover for actual salary values.</p>
+              <p className="text-xs text-slate-400">Roles grouped by function, normalised to median (100%). Hover for actual values.</p>
             </div>
           </div>
         </div>
         <div className="px-4 pb-6">
-          <ResponsiveContainer width="100%" height={500}>
-            <RadarChart data={radarData} outerRadius="72%">
+          <ResponsiveContainer width="100%" height={560}>
+            <RadarChart data={radarData} outerRadius="65%">
               <PolarGrid stroke="#e2e8f0" />
               <PolarAngleAxis
                 dataKey="role"
-                tick={{ fontSize: 11, fill: "#64748b" }}
+                tick={(props: any) => {
+                  const { x, y, payload, textAnchor } = props;
+                  const dataItem = radarData[payload.index];
+                  if (!dataItem) return <text />;
+                  const isFirst = dataItem.isFirstInFunction;
+                  return (
+                    <g>
+                      <text
+                        x={x}
+                        y={y}
+                        textAnchor={textAnchor}
+                        fontSize={isFirst ? 11 : 10}
+                        fontWeight={isFirst ? 700 : 400}
+                        fill={isFirst ? "#334155" : "#94a3b8"}
+                      >
+                        {isFirst ? `${dataItem.functionName}` : dataItem.role}
+                      </text>
+                      {isFirst && (
+                        <text
+                          x={x}
+                          y={y + 13}
+                          textAnchor={textAnchor}
+                          fontSize={9}
+                          fill="#94a3b8"
+                        >
+                          {dataItem.role}
+                        </text>
+                      )}
+                    </g>
+                  );
+                }}
               />
               <PolarRadiusAxis
                 angle={90}
