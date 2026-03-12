@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { marketData, companyInfo } from "@/lib/data";
-import { TrendingUp, TrendingDown, Target, AlertCircle, CheckCircle2, ShieldCheck, AlertTriangle } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, AlertCircle, CheckCircle2, ShieldCheck, AlertTriangle, Users, Briefcase, BarChart3 } from "lucide-react";
 import {
   Radar,
   RadarChart,
@@ -74,7 +74,41 @@ export function MarketComparison() {
   const overallAvgMedian = Math.round(marketData.reduce((s, r) => s + r.median, 0) / marketData.length);
   const overallDiff = overallAvgActual - overallAvgMedian;
   const overallDiffPct = ((overallDiff / overallAvgMedian) * 100).toFixed(1);
-  const aboveCount = marketData.filter(r => r.currentSalary >= r.median).length;
+
+  const totalSalaryBill = marketData.reduce((s, r) => s + r.currentSalary, 0);
+  const functions = Array.from(new Set(marketData.map(r => r.function))).sort();
+  const highestPaid = [...marketData].sort((a, b) => b.currentSalary - a.currentSalary)[0];
+  const lowestPaid = [...marketData].sort((a, b) => a.currentSalary - b.currentSalary)[0];
+
+  const rolesWithBands = marketData.map((role) => ({
+    ...role,
+    band: getPositionBand(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile),
+    gapToLQ: role.lowerQuartile - role.currentSalary,
+    gapToUQ: role.currentSalary - role.upperQuartile,
+    diffPct: ((role.currentSalary - role.median) / role.median) * 100,
+  }));
+
+  const belowMedianRoles = rolesWithBands.filter(r => r.currentSalary < r.median);
+  const atMedianRoles = rolesWithBands.filter(r => {
+    const pct = Math.abs(r.diffPct);
+    return pct <= 2.5;
+  });
+  const aboveMedianRoles = rolesWithBands.filter(r => r.currentSalary > r.median);
+
+  const strengths = rolesWithBands.filter(r =>
+    r.currentSalary >= r.median && r.diffPct <= 2.5
+  );
+  const risks = rolesWithBands.filter(r =>
+    r.currentSalary < r.median || r.diffPct > 2.5
+  );
+
+  const belowLQRoles = rolesWithBands
+    .filter((r) => r.band === "belowLQ")
+    .sort((a, b) => b.gapToLQ - a.gapToLQ);
+
+  const aboveUQRoles = rolesWithBands
+    .filter((r) => r.band === "aboveUQ")
+    .sort((a, b) => b.gapToUQ - a.gapToUQ);
 
   const radarData = marketData.map((role) => {
     const m = role.median;
@@ -96,23 +130,14 @@ export function MarketComparison() {
   );
   const domainMax = Math.ceil(maxPct / 10) * 10;
 
-  const rolesWithBands = marketData.map((role) => ({
-    ...role,
-    band: getPositionBand(role.currentSalary, role.lowerQuartile, role.median, role.upperQuartile),
-    gapToLQ: role.lowerQuartile - role.currentSalary,
-    gapToUQ: role.currentSalary - role.upperQuartile,
-  }));
-
-  const strengths = rolesWithBands.filter(r => r.band === "medianToUQ" || r.band === "aboveUQ");
-  const risks = rolesWithBands.filter(r => r.band === "belowLQ" || r.band === "lqToMedian");
-
-  const belowLQRoles = rolesWithBands
-    .filter((r) => r.band === "belowLQ")
-    .sort((a, b) => b.gapToLQ - a.gapToLQ);
-
-  const aboveUQRoles = rolesWithBands
-    .filter((r) => r.band === "aboveUQ")
-    .sort((a, b) => b.gapToUQ - a.gapToUQ);
+  const functionBreakdown = functions.map(fn => {
+    const fnRoles = marketData.filter(r => r.function === fn);
+    const avgActual = Math.round(fnRoles.reduce((s, r) => s + r.currentSalary, 0) / fnRoles.length);
+    const avgMedian = Math.round(fnRoles.reduce((s, r) => s + r.median, 0) / fnRoles.length);
+    const diff = avgActual - avgMedian;
+    const diffPct = ((diff / avgMedian) * 100).toFixed(1);
+    return { function: fn, roles: fnRoles.length, avgActual, avgMedian, diff, diffPct };
+  });
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -122,58 +147,154 @@ export function MarketComparison() {
         <p className="page-subtitle">How {companyInfo.name}'s pay compares to the market across all assessed roles.</p>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-        <Card className="p-5 section-card text-center" data-testid="stat-overall">
-          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Overall Position</p>
-          <p className={`text-2xl font-display font-bold ${overallDiff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
-            {overallDiff >= 0 ? '+' : ''}{overallDiffPct}%
-          </p>
-          <p className="text-xs text-slate-400 mt-1">vs market median (avg)</p>
-        </Card>
-        <Card className="p-5 section-card text-center" data-testid="stat-above">
-          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">At or Above Median</p>
-          <p className="text-2xl font-display font-bold text-emerald-600">{aboveCount} <span className="text-base font-normal text-slate-400">of {marketData.length}</span></p>
-          <p className="text-xs text-slate-400 mt-1">roles at or above market</p>
-        </Card>
-        <Card className="p-5 section-card text-center" data-testid="stat-below">
-          <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Below Median</p>
-          <p className="text-2xl font-display font-bold text-amber-600">{marketData.length - aboveCount} <span className="text-base font-normal text-slate-400">of {marketData.length}</span></p>
-          <p className="text-xs text-slate-400 mt-1">roles below market median</p>
-        </Card>
-      </div>
-
-      <Card className="p-6 section-card" data-testid="headline-profile">
-        <div className="flex items-center gap-2.5 mb-4">
+      <Card className="p-6 section-card" data-testid="company-stats">
+        <div className="flex items-center gap-2.5 mb-5">
           <div className="w-8 h-8 rounded-lg bg-indigo-50 flex items-center justify-center">
             <Target className="w-4 h-4 text-indigo-500" />
           </div>
           <h3 className="font-display font-bold text-xl text-slate-800">{companyInfo.name}'s Headline Profile</h3>
         </div>
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-5">
           <div className="bg-slate-50 rounded-xl p-4">
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Average Salary</p>
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Roles Assessed</p>
+            <p className="text-xl font-display font-bold text-slate-800">{marketData.length}</p>
+            <p className="text-xs text-slate-400 mt-0.5">across {functions.length} functions</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Total Salary Bill</p>
+            <p className="text-xl font-display font-bold text-slate-800">£{(totalSalaryBill / 1000).toFixed(0)}k</p>
+            <p className="text-xs text-slate-400 mt-0.5">assessed roles</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Average Salary</p>
             <p className="text-xl font-display font-bold text-slate-800">£{overallAvgActual.toLocaleString()}</p>
-            <p className="text-xs text-slate-400 mt-1">across {marketData.length} roles</p>
+            <p className="text-xs text-slate-400 mt-0.5">vs £{overallAvgMedian.toLocaleString()} market</p>
           </div>
           <div className="bg-slate-50 rounded-xl p-4">
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Market Median (avg)</p>
-            <p className="text-xl font-display font-bold text-slate-800">£{overallAvgMedian.toLocaleString()}</p>
-            <p className="text-xs text-slate-400 mt-1">benchmark comparison</p>
-          </div>
-          <div className="bg-slate-50 rounded-xl p-4">
-            <p className="text-xs text-slate-400 uppercase tracking-wider font-semibold mb-1">Market Alignment</p>
-            <div className="flex items-center gap-2">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Market Alignment</p>
+            <div className="flex items-center gap-1.5">
               {overallDiff >= 0 ? (
-                <TrendingUp className="w-5 h-5 text-emerald-500" />
+                <TrendingUp className="w-4 h-4 text-emerald-500" />
               ) : (
-                <TrendingDown className="w-5 h-5 text-amber-500" />
+                <TrendingDown className="w-4 h-4 text-amber-500" />
               )}
               <p className={`text-xl font-display font-bold ${overallDiff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
-                {overallDiff >= 0 ? '+' : ''}£{Math.abs(overallDiff).toLocaleString()}
+                {overallDiff >= 0 ? '+' : ''}{overallDiffPct}%
               </p>
             </div>
-            <p className="text-xs text-slate-400 mt-1">{overallDiff >= 0 ? 'above' : 'below'} market average</p>
+            <p className="text-xs text-slate-400 mt-0.5">{overallDiff >= 0 ? 'above' : 'below'} market median</p>
           </div>
+        </div>
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Sector</p>
+            <p className="text-sm font-display font-bold text-slate-800">{companyInfo.industry}</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Dataset</p>
+            <p className="text-sm font-display font-bold text-slate-800">{companyInfo.location}</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Highest Paid</p>
+            <p className="text-sm font-display font-bold text-slate-800">{highestPaid.role}</p>
+            <p className="text-xs text-slate-400">£{highestPaid.currentSalary.toLocaleString()}</p>
+          </div>
+          <div className="bg-slate-50 rounded-xl p-4">
+            <p className="text-[10px] text-slate-400 uppercase tracking-wider font-semibold mb-1">Lowest Paid</p>
+            <p className="text-sm font-display font-bold text-slate-800">{lowestPaid.role}</p>
+            <p className="text-xs text-slate-400">£{lowestPaid.currentSalary.toLocaleString()}</p>
+          </div>
+        </div>
+      </Card>
+
+      <Card className="p-5 section-card" data-testid="stat-overall">
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-slate-100 flex items-center justify-center">
+            <BarChart3 className="w-4 h-4 text-slate-600" />
+          </div>
+          <div>
+            <h3 className="font-display font-bold text-lg text-slate-800">Overall Position: <span className={overallDiff >= 0 ? 'text-emerald-600' : 'text-amber-600'}>{overallDiff >= 0 ? '+' : ''}{overallDiffPct}%</span> vs market median</h3>
+          </div>
+        </div>
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
+          <div className="rounded-xl p-4 bg-amber-50 border border-amber-100">
+            <p className="text-xs text-amber-600 uppercase tracking-wider font-semibold mb-1">Below Median</p>
+            <p className="text-2xl font-display font-bold text-amber-600">{belowMedianRoles.length} <span className="text-base font-normal text-amber-400">of {marketData.length}</span></p>
+            <p className="text-xs text-amber-500 mt-1">roles paying below market median</p>
+            {belowMedianRoles.length > 0 && (
+              <div className="mt-3 space-y-1">
+                {belowMedianRoles.map(r => (
+                  <p key={r.id} className="text-xs text-amber-700">{r.role} ({r.diffPct.toFixed(1)}%)</p>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="rounded-xl p-4 bg-blue-50 border border-blue-100">
+            <p className="text-xs text-blue-600 uppercase tracking-wider font-semibold mb-1">At Median</p>
+            <p className="text-2xl font-display font-bold text-blue-600">{atMedianRoles.length} <span className="text-base font-normal text-blue-400">of {marketData.length}</span></p>
+            <p className="text-xs text-blue-500 mt-1">roles within ±2.5% of median</p>
+            {atMedianRoles.length > 0 && (
+              <div className="mt-3 space-y-1">
+                {atMedianRoles.map(r => (
+                  <p key={r.id} className="text-xs text-blue-700">{r.role} ({r.diffPct >= 0 ? '+' : ''}{r.diffPct.toFixed(1)}%)</p>
+                ))}
+              </div>
+            )}
+          </div>
+          <div className="rounded-xl p-4 bg-emerald-50 border border-emerald-100">
+            <p className="text-xs text-emerald-600 uppercase tracking-wider font-semibold mb-1">Above Median</p>
+            <p className="text-2xl font-display font-bold text-emerald-600">{aboveMedianRoles.length} <span className="text-base font-normal text-emerald-400">of {marketData.length}</span></p>
+            <p className="text-xs text-emerald-500 mt-1">roles paying above market median</p>
+            {aboveMedianRoles.length > 0 && (
+              <div className="mt-3 space-y-1">
+                {aboveMedianRoles.map(r => (
+                  <p key={r.id} className="text-xs text-emerald-700">{r.role} (+{r.diffPct.toFixed(1)}%)</p>
+                ))}
+              </div>
+            )}
+          </div>
+        </div>
+      </Card>
+
+      <Card className="p-6 section-card" data-testid="function-breakdown">
+        <div className="flex items-center gap-2.5 mb-4">
+          <div className="w-8 h-8 rounded-lg bg-violet-50 flex items-center justify-center">
+            <Briefcase className="w-4 h-4 text-violet-500" />
+          </div>
+          <div>
+            <h3 className="font-display font-bold text-lg text-slate-800">Function Breakdown</h3>
+            <p className="text-xs text-slate-400">Average salary vs market median by department</p>
+          </div>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-200">
+                <th className="text-left py-2.5 font-semibold text-slate-700">Function</th>
+                <th className="text-center py-2.5 font-semibold text-slate-700">Roles</th>
+                <th className="text-right py-2.5 font-semibold text-slate-700">Avg Salary</th>
+                <th className="text-right py-2.5 font-semibold text-slate-700">Avg Median</th>
+                <th className="text-right py-2.5 font-semibold text-slate-700">Difference</th>
+              </tr>
+            </thead>
+            <tbody>
+              {functionBreakdown.map((fn) => (
+                <tr key={fn.function} className="border-b border-slate-100">
+                  <td className="py-3 font-medium text-slate-800">{fn.function}</td>
+                  <td className="py-3 text-center">
+                    <span className="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-100 text-xs font-semibold text-slate-600">{fn.roles}</span>
+                  </td>
+                  <td className="text-right py-3 font-medium">£{fn.avgActual.toLocaleString()}</td>
+                  <td className="text-right py-3 text-slate-500">£{fn.avgMedian.toLocaleString()}</td>
+                  <td className="text-right py-3">
+                    <span className={`font-bold ${fn.diff >= 0 ? 'text-emerald-600' : 'text-amber-600'}`}>
+                      {fn.diff >= 0 ? '+' : ''}{fn.diffPct}%
+                    </span>
+                  </td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
         </div>
       </Card>
 
@@ -255,28 +376,27 @@ export function MarketComparison() {
             <CheckCircle2 className="w-5 h-5 text-emerald-500" />
             <h3 className="font-display font-bold text-xl text-slate-800">Strengths</h3>
           </div>
-          <p className="text-sm text-slate-400 mb-4">Roles positioned at or above market median</p>
+          <p className="text-sm text-slate-400 mb-4">Roles competitively positioned within 2.5% above market median</p>
           {strengths.length > 0 ? (
             <div className="space-y-2">
-              {strengths.map((role) => {
-                const diffPct = ((role.currentSalary - role.median) / role.median * 100).toFixed(1);
-                return (
-                  <div key={role.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-emerald-50/50 border border-emerald-100">
-                    <div>
-                      <p className="font-medium text-sm text-slate-800">{role.role}</p>
-                      <p className="text-xs text-slate-400">{role.function}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className="font-bold text-sm text-emerald-600">+{diffPct}%</p>
-                      <p className="text-xs text-slate-400">vs median</p>
-                    </div>
+              {strengths.map((role) => (
+                <div key={role.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-emerald-50/50 border border-emerald-100">
+                  <div>
+                    <p className="font-medium text-sm text-slate-800">{role.role}</p>
+                    <p className="text-xs text-slate-400">{role.function}</p>
                   </div>
-                );
-              })}
+                  <div className="text-right">
+                    <p className="font-bold text-sm text-emerald-600">
+                      {role.diffPct === 0 ? 'At median' : `+${role.diffPct.toFixed(1)}%`}
+                    </p>
+                    <p className="text-xs text-slate-400">vs median</p>
+                  </div>
+                </div>
+              ))}
             </div>
           ) : (
             <div className="p-6 text-center bg-slate-50 rounded-lg">
-              <p className="text-slate-500">No roles above median</p>
+              <p className="text-slate-500">No roles in the competitive range</p>
             </div>
           )}
         </Card>
@@ -286,11 +406,11 @@ export function MarketComparison() {
             <AlertTriangle className="w-5 h-5 text-amber-500" />
             <h3 className="font-display font-bold text-xl text-slate-800">Risks</h3>
           </div>
-          <p className="text-sm text-slate-400 mb-4">Roles positioned below market median</p>
+          <p className="text-sm text-slate-400 mb-4">Roles below median or significantly above (+2.5%), indicating under or overpay</p>
           {risks.length > 0 ? (
             <div className="space-y-2">
               {risks.map((role) => {
-                const diffPct = ((role.currentSalary - role.median) / role.median * 100).toFixed(1);
+                const isOverpaying = role.diffPct > 2.5;
                 return (
                   <div key={role.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-amber-50/50 border border-amber-100">
                     <div>
@@ -298,8 +418,10 @@ export function MarketComparison() {
                       <p className="text-xs text-slate-400">{role.function}</p>
                     </div>
                     <div className="text-right">
-                      <p className="font-bold text-sm text-amber-600">{diffPct}%</p>
-                      <p className="text-xs text-slate-400">vs median</p>
+                      <p className={`font-bold text-sm ${isOverpaying ? 'text-orange-600' : 'text-amber-600'}`}>
+                        {role.diffPct >= 0 ? '+' : ''}{role.diffPct.toFixed(1)}%
+                      </p>
+                      <p className="text-xs text-slate-400">{isOverpaying ? 'overpaying' : 'underpaying'}</p>
                     </div>
                   </div>
                 );
@@ -307,7 +429,7 @@ export function MarketComparison() {
             </div>
           ) : (
             <div className="p-6 text-center bg-slate-50 rounded-lg">
-              <p className="text-slate-500">No roles below median</p>
+              <p className="text-slate-500">No roles at risk</p>
             </div>
           )}
         </Card>
