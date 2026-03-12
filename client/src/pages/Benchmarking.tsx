@@ -46,14 +46,14 @@ function QuartilesExplained() {
       <div ref={graphicRef} className="p-4 bg-white">
         <div className="mb-6">
           <div className="flex h-12 rounded-lg overflow-hidden border border-slate-200">
-            <div className="flex-1 bg-rose-100 flex items-center justify-center border-r border-slate-200">
-              <span className="text-xs font-medium text-rose-700 text-center px-1">Below Lower Quartile</span>
+            <div className="flex-1 bg-violet-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-violet-700 text-center px-1">Below Lower Quartile</span>
             </div>
-            <div className="flex-1 flex items-center justify-center border-r border-slate-200" style={{ backgroundColor: 'rgba(212, 160, 83, 0.15)' }}>
-              <span className="text-xs font-medium text-center px-1" style={{ color: '#9a7530' }}>LQ → Median</span>
+            <div className="flex-1 bg-amber-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-amber-700 text-center px-1">LQ → Median</span>
             </div>
-            <div className="flex-1 bg-teal-100 flex items-center justify-center border-r border-slate-200">
-              <span className="text-xs font-medium text-teal-700 text-center px-1">Median → UQ</span>
+            <div className="flex-1 bg-emerald-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-emerald-700 text-center px-1">Median → UQ</span>
             </div>
             <div className="flex-1 bg-sky-100 flex items-center justify-center">
               <span className="text-xs font-medium text-sky-700 text-center px-1">Above Upper Quartile</span>
@@ -104,10 +104,10 @@ const careerLevels: Record<string, string> = {
 
 export function Benchmarking() {
   const positionColors: Record<string, string> = {
-    below: "bg-rose-500/90",
-    lower: "bg-amber-500/90",
-    upper: "bg-teal-500/90",
-    above: "bg-sky-500/90",
+    below: "bg-violet-500",
+    lower: "bg-amber-500",
+    upper: "bg-emerald-500",
+    above: "bg-sky-500",
   };
 
   const downloadCSV = () => {
@@ -143,10 +143,10 @@ export function Benchmarking() {
         <p className="page-subtitle">Overview of all roles with market ranges.</p>
       </div>
 
-      <div className="rounded-2xl overflow-hidden shadow-lg border border-slate-700/50" style={{ background: 'linear-gradient(135deg, #1e293b 0%, #0f172a 100%)' }}>
-        <div className="flex items-center justify-between px-6 py-5">
-          <h3 className="font-display font-bold text-xl text-white">Summary of Market Data & Position</h3>
-          <Button onClick={downloadCSV} variant="outline" className="gap-2 border-slate-600 text-slate-300 hover:bg-slate-700 hover:text-white" data-testid="button-download">
+      <Card className="p-6 section-card">
+        <div className="flex items-center justify-between mb-6">
+          <h3 className="font-display font-bold text-xl">Summary of Market Data & Position</h3>
+          <Button onClick={downloadCSV} variant="outline" className="gap-2" data-testid="button-download">
             <Download className="w-4 h-4" />
             Download CSV
           </Button>
@@ -155,15 +155,15 @@ export function Benchmarking() {
         <div className="overflow-x-auto">
           <table className="w-full text-sm">
             <thead>
-              <tr className="border-b border-slate-600/50" style={{ background: 'rgba(15, 23, 42, 0.6)' }}>
-                <th className="text-left py-4 px-4 font-semibold text-slate-300 text-xs uppercase tracking-wider">Role</th>
-                <th className="text-left py-4 px-4 font-semibold text-slate-300 text-xs uppercase tracking-wider">Function</th>
-                <th className="text-left py-4 px-4 font-semibold text-slate-300 text-xs uppercase tracking-wider">Career Level</th>
-                <th className="text-right py-4 px-4 font-semibold text-slate-300 text-xs uppercase tracking-wider">Current</th>
-                <th className="text-right py-4 px-4 font-semibold text-xs uppercase tracking-wider" style={{ color: '#d4a053' }}>LQ</th>
-                <th className="text-right py-4 px-4 font-semibold text-xs uppercase tracking-wider" style={{ color: '#5eead4' }}>Median</th>
-                <th className="text-right py-4 px-4 font-semibold text-xs uppercase tracking-wider" style={{ color: '#7dd3fc' }}>UQ</th>
-                <th className="text-center py-4 px-4 font-semibold text-slate-300 text-xs uppercase tracking-wider">Position</th>
+              <tr className="border-b bg-muted/30">
+                <th className="text-left py-4 px-3 font-semibold">Role</th>
+                <th className="text-left py-4 px-3 font-semibold">Function</th>
+                <th className="text-left py-4 px-3 font-semibold">Career Level</th>
+                <th className="text-right py-4 px-3 font-semibold">Current</th>
+                <th className="text-right py-4 px-3 font-semibold text-violet-600">LQ</th>
+                <th className="text-right py-4 px-3 font-semibold text-emerald-600">Median</th>
+                <th className="text-right py-4 px-3 font-semibold text-sky-600">UQ</th>
+                <th className="text-center py-4 px-3 font-semibold">Position</th>
               </tr>
             </thead>
             <tbody>
@@ -173,22 +173,22 @@ export function Benchmarking() {
                   <tr 
                     key={role.id} 
                     className={cn(
-                      "border-b border-slate-700/40 transition-colors hover:bg-white/5",
-                      i % 2 === 0 ? "" : "bg-white/[0.02]"
+                      "border-b transition-colors hover:bg-muted/20",
+                      i % 2 === 0 ? "bg-white" : "bg-muted/10"
                     )}
                   >
-                    <td className="py-3.5 px-4 font-medium text-white">{role.role}</td>
-                    <td className="py-3.5 px-4 text-slate-400">{role.function}</td>
-                    <td className="py-3.5 px-4 text-slate-400">{careerLevels[role.role] || "—"}</td>
-                    <td className="py-3.5 px-4 text-right font-semibold text-white">£{role.currentSalary.toLocaleString()}</td>
-                    <td className="py-3.5 px-4 text-right font-medium" style={{ color: '#d4a053' }}>£{role.lowerQuartile.toLocaleString()}</td>
-                    <td className="py-3.5 px-4 text-right font-medium" style={{ color: '#5eead4' }}>£{role.median.toLocaleString()}</td>
-                    <td className="py-3.5 px-4 text-right font-medium" style={{ color: '#7dd3fc' }}>£{role.upperQuartile.toLocaleString()}</td>
-                    <td className="py-3.5 px-4">
+                    <td className="py-3 px-3 font-medium">{role.role}</td>
+                    <td className="py-3 px-3 text-muted-foreground">{role.function}</td>
+                    <td className="py-3 px-3 text-muted-foreground">{careerLevels[role.role] || "—"}</td>
+                    <td className="py-3 px-3 text-right font-semibold text-primary">£{role.currentSalary.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-violet-600">£{role.lowerQuartile.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-emerald-600">£{role.median.toLocaleString()}</td>
+                    <td className="py-3 px-3 text-right text-sky-600">£{role.upperQuartile.toLocaleString()}</td>
+                    <td className="py-3 px-3">
                       <div className="flex justify-center">
                         <span
                           className={cn(
-                            "px-2.5 py-1 rounded-full text-xs font-semibold text-white whitespace-nowrap",
+                            "px-2.5 py-1 rounded-full text-xs font-medium text-white whitespace-nowrap",
                             positionColors[pos.position]
                           )}
                         >
@@ -202,24 +202,24 @@ export function Benchmarking() {
             </tbody>
           </table>
         </div>
+      </Card>
 
-        <div className="flex flex-wrap gap-5 justify-center px-6 py-4 border-t border-slate-700/40">
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-rose-500/90" />
-            <span className="text-xs text-slate-400">Below LQ</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-amber-500/90" />
-            <span className="text-xs text-slate-400">LQ to Median</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-teal-500/90" />
-            <span className="text-xs text-slate-400">Median to UQ</span>
-          </div>
-          <div className="flex items-center gap-2">
-            <div className="w-2.5 h-2.5 rounded-full bg-sky-500/90" />
-            <span className="text-xs text-slate-400">Above UQ</span>
-          </div>
+      <div className="flex flex-wrap gap-3 justify-center p-4 bg-white rounded-xl shadow-sm">
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-violet-500" />
+          <span className="text-sm text-muted-foreground">Below LQ</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-amber-500" />
+          <span className="text-sm text-muted-foreground">LQ to Median</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-emerald-500" />
+          <span className="text-sm text-muted-foreground">Median to UQ</span>
+        </div>
+        <div className="flex items-center gap-2">
+          <div className="w-3 h-3 rounded-full bg-sky-500" />
+          <span className="text-sm text-muted-foreground">Above UQ</span>
         </div>
       </div>
 
