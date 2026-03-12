@@ -46,8 +46,8 @@ function QuartilesExplained() {
       <div ref={graphicRef} className="p-4 bg-white">
         <div className="mb-6">
           <div className="flex h-12 rounded-lg overflow-hidden border border-slate-200">
-            <div className="flex-1 bg-violet-100 flex items-center justify-center border-r border-slate-200">
-              <span className="text-xs font-medium text-violet-700 text-center px-1">Below Lower Quartile</span>
+            <div className="flex-1 bg-red-100 flex items-center justify-center border-r border-slate-200">
+              <span className="text-xs font-medium text-red-700 text-center px-1">Below Lower Quartile</span>
             </div>
             <div className="flex-1 bg-amber-100 flex items-center justify-center border-r border-slate-200">
               <span className="text-xs font-medium text-amber-700 text-center px-1">LQ → Median</span>
@@ -104,7 +104,7 @@ const careerLevels: Record<string, string> = {
 
 export function Benchmarking() {
   const positionColors: Record<string, string> = {
-    below: "bg-violet-500",
+    below: "bg-red-500",
     lower: "bg-amber-500",
     upper: "bg-emerald-500",
     above: "bg-sky-500",
@@ -206,7 +206,7 @@ export function Benchmarking() {
 
       <div className="flex flex-wrap gap-3 justify-center p-4 bg-white rounded-xl shadow-sm">
         <div className="flex items-center gap-2">
-          <div className="w-3 h-3 rounded-full bg-violet-500" />
+          <div className="w-3 h-3 rounded-full bg-red-500" />
           <span className="text-sm text-muted-foreground">Below LQ</span>
         </div>
         <div className="flex items-center gap-2">
