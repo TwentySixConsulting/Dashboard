@@ -107,8 +107,8 @@ export function Layout({ children }: { children: React.ReactNode }) {
         <div className="p-4 space-y-3 shrink-0 border-t border-sidebar-border/20">
           <div className="bg-gradient-to-br from-sidebar-accent/80 to-sidebar-accent/40 rounded-xl p-4 border border-sidebar-border/30">
             <p className="text-[9px] uppercase tracking-[0.2em] text-sidebar-foreground/30 mb-1.5 font-semibold">Prepared for</p>
-            <p className="font-bold text-[13px] text-sidebar-foreground/90">{user?.organisationName || "Brighton Demo Technologies"}</p>
-            <p className="text-[11px] text-sidebar-foreground/40 mt-1">2026: Quarter 1</p>
+            <p className="font-bold text-[13px] text-sidebar-foreground/90">{user?.organisationName || "Brighton Demo"}</p>
+            <p className="text-[11px] text-sidebar-foreground/40 mt-1">Q1: March 2026</p>
           </div>
           <button
             onClick={handleLogout}
@@ -149,7 +149,7 @@ export function Layout({ children }: { children: React.ReactNode }) {
               <img
                 src={logoImage}
                 alt="Zigbert"
-                className="h-7 w-auto opacity-70 hover:opacity-100 transition-opacity"
+                className="h-9 w-auto opacity-70 hover:opacity-100 transition-opacity"
               />
             </nav>
           </div>

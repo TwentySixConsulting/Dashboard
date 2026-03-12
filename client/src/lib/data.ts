@@ -14,7 +14,7 @@ export interface MarketDataRole {
 }
 
 export const companyInfo = {
-  name: "Brighton Demo Technologies",
+  name: "Brighton Demo",
   industry: "SaaS / Technology",
   location: "London/South East",
   reportDate: "Q1: March 2026",

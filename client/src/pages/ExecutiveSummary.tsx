@@ -146,7 +146,7 @@ export function ExecutiveSummary() {
         </p>
         <h1 className="text-4xl lg:text-5xl font-display font-bold text-slate-900 mb-3" data-testid="dashboard-headline"
           style={{ background: 'linear-gradient(135deg, hsl(228 35% 11%) 0%, hsl(228 25% 25%) 100%)', WebkitBackgroundClip: 'text', WebkitTextFillColor: 'transparent' }}>
-          Brighton Demo Technologies' Dashboard
+          Brighton Demo's Dashboard
         </h1>
         <p className="text-sm text-slate-400" data-testid="dashboard-subheadline">By Zigbert</p>
       </div>

@@ -7,7 +7,7 @@ This is a salary benchmarking and market insights dashboard built for HR profess
 The dashboard displays market data for job roles, comparing actual salaries against market quartiles (lower quartile, median, upper quartile), identifies pay positioning strengths and risks, and provides guidance on benefits trends and next steps for compensation planning.
 
 ## Current Client
-- **Organisation**: Brighton Demo Technologies
+- **Organisation**: Brighton Demo
 - **Industry**: SaaS / Technology
 - **Location**: Brighton
 - **Report Date**: February 2026 (Q1 2026)
