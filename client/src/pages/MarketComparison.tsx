@@ -1,6 +1,6 @@
 import { Card } from "@/components/ui/card";
 import { marketData, companyInfo } from "@/lib/data";
-import { TrendingUp, TrendingDown, Target, AlertCircle, CheckCircle2, ShieldCheck, AlertTriangle, Users, Briefcase, BarChart3 } from "lucide-react";
+import { TrendingUp, TrendingDown, Target, AlertCircle, AlertTriangle, BarChart3 } from "lucide-react";
 import {
   Radar,
   RadarChart,
@@ -455,70 +455,18 @@ export function MarketComparison() {
         </div>
       </Card>
 
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-        <Card className="p-6 section-card" data-testid="strengths-box">
-          <div className="flex items-center gap-2 mb-4">
-            <CheckCircle2 className="w-5 h-5 text-emerald-500" />
-            <h3 className="font-display font-bold text-xl text-slate-800">Strengths</h3>
-          </div>
-          <p className="text-sm text-slate-400 mb-4">Roles competitively positioned within 2.5% above market median</p>
-          {strengths.length > 0 ? (
-            <div className="space-y-2">
-              {strengths.map((role) => (
-                <div key={role.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-emerald-50/50 border border-emerald-100">
-                  <div>
-                    <p className="font-medium text-sm text-slate-800">{role.role}</p>
-                    <p className="text-xs text-slate-400">{role.function}</p>
-                  </div>
-                  <div className="text-right">
-                    <p className="font-bold text-sm text-emerald-600">
-                      {role.diffPct === 0 ? 'At median' : `+${role.diffPct.toFixed(1)}%`}
-                    </p>
-                    <p className="text-xs text-slate-400">vs median</p>
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="p-6 text-center bg-slate-50 rounded-lg">
-              <p className="text-slate-500">No roles in the competitive range</p>
-            </div>
-          )}
-        </Card>
-
-        <Card className="p-6 section-card" data-testid="risks-box">
-          <div className="flex items-center gap-2 mb-4">
-            <AlertTriangle className="w-5 h-5 text-amber-500" />
-            <h3 className="font-display font-bold text-xl text-slate-800">Risks</h3>
-          </div>
-          <p className="text-sm text-slate-400 mb-4">Roles below median or significantly above (+2.5%), indicating under or overpay</p>
-          {risks.length > 0 ? (
-            <div className="space-y-2">
-              {risks.map((role) => {
-                const isOverpaying = role.diffPct > 2.5;
-                return (
-                  <div key={role.id} className="flex items-center justify-between py-2.5 px-3 rounded-lg bg-amber-50/50 border border-amber-100">
-                    <div>
-                      <p className="font-medium text-sm text-slate-800">{role.role}</p>
-                      <p className="text-xs text-slate-400">{role.function}</p>
-                    </div>
-                    <div className="text-right">
-                      <p className={`font-bold text-sm ${isOverpaying ? 'text-orange-600' : 'text-amber-600'}`}>
-                        {role.diffPct >= 0 ? '+' : ''}{role.diffPct.toFixed(1)}%
-                      </p>
-                      <p className="text-xs text-slate-400">{isOverpaying ? 'overpaying' : 'underpaying'}</p>
-                    </div>
-                  </div>
-                );
-              })}
-            </div>
-          ) : (
-            <div className="p-6 text-center bg-slate-50 rounded-lg">
-              <p className="text-slate-500">No roles at risk</p>
-            </div>
-          )}
-        </Card>
-      </div>
+      <Card className="p-6 section-card" data-testid="strengths-risks-box">
+        <div className="flex items-center gap-2 mb-4">
+          <AlertTriangle className="w-5 h-5 text-indigo-500" />
+          <h3 className="font-display font-bold text-xl text-slate-800">Strengths and Risks</h3>
+        </div>
+        <div className="space-y-3 text-sm text-slate-600 leading-relaxed">
+          <p>Your market position is mixed, with some roles sitting towards the top of the market and others falling into the bottom half.</p>
+          <p>In base pay terms, you are strongest on the finance and commercial side of the business, with all roles sitting in the top half of the market.</p>
+          <p>All of your data roles are currently in the bottom half of the market, with the Analyst and Data Systems Engineer sitting below the lower quartile.</p>
+          <p className="text-slate-500 italic">Differing market positions are not necessarily a problem — see our help guide for more on this.</p>
+        </div>
+      </Card>
 
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
         <Card className="p-6 section-card" data-testid="watch-below-lq">
