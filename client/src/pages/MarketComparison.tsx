@@ -23,19 +23,47 @@ function getPositionBand(actual: number, lq: number, median: number, uq: number)
 
 function CustomRadarTooltip({ active, payload, label }: any) {
   if (!active || !payload?.length) return null;
+  const dataPoint = payload[0]?.payload;
+  if (!dataPoint) return null;
+
   return (
-    <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-4 text-sm min-w-[180px]">
-      <p className="font-display font-bold text-slate-800 mb-2">{label}</p>
+    <div className="bg-white rounded-xl shadow-lg border border-slate-100 p-4 text-sm min-w-[200px]">
+      <p className="font-display font-bold text-slate-800 mb-3">{label}</p>
       <div className="space-y-1.5">
-        {payload.map((entry: any, i: number) => (
-          <div key={i} className="flex justify-between gap-4">
-            <span className="text-slate-500 flex items-center gap-1.5">
-              <span className="w-2 h-2 rounded-full" style={{ backgroundColor: entry.color }} />
-              {entry.name}
-            </span>
-            <span className="font-semibold" style={{ color: entry.color }}>£{entry.value?.toLocaleString()}</span>
-          </div>
-        ))}
+        <div className="flex justify-between gap-4">
+          <span className="text-slate-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-slate-300" />
+            Lower Quartile
+          </span>
+          <span className="font-semibold text-slate-500">£{dataPoint._rawLQ?.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between gap-4">
+          <span className="text-slate-500 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-slate-600" />
+            Median
+          </span>
+          <span className="font-semibold text-slate-700">£{dataPoint._rawMedian?.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between gap-4">
+          <span className="text-slate-400 flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-slate-300" />
+            Upper Quartile
+          </span>
+          <span className="font-semibold text-slate-500">£{dataPoint._rawUQ?.toLocaleString()}</span>
+        </div>
+        <div className="border-t border-slate-100 pt-1.5 flex justify-between gap-4">
+          <span className="flex items-center gap-1.5">
+            <span className="w-2 h-2 rounded-full bg-indigo-500" />
+            <span className="font-medium text-indigo-600">{companyInfo.name}</span>
+          </span>
+          <span className="font-bold text-indigo-600">£{dataPoint._rawActual?.toLocaleString()}</span>
+        </div>
+        <div className="flex justify-between gap-4 text-xs">
+          <span className="text-slate-400">vs median</span>
+          <span className={`font-bold ${dataPoint._rawActual >= dataPoint._rawMedian ? 'text-emerald-600' : 'text-amber-600'}`}>
+            {dataPoint._rawActual >= dataPoint._rawMedian ? '+' : ''}{(((dataPoint._rawActual - dataPoint._rawMedian) / dataPoint._rawMedian) * 100).toFixed(1)}%
+          </span>
+        </div>
       </div>
     </div>
   );
@@ -48,13 +76,25 @@ export function MarketComparison() {
   const overallDiffPct = ((overallDiff / overallAvgMedian) * 100).toFixed(1);
   const aboveCount = marketData.filter(r => r.currentSalary >= r.median).length;
 
-  const radarData = marketData.map((role) => ({
-    role: role.role,
-    "Lower Quartile": role.lowerQuartile,
-    "Median": role.median,
-    "Upper Quartile": role.upperQuartile,
-    [companyInfo.name]: role.currentSalary,
-  }));
+  const radarData = marketData.map((role) => {
+    const m = role.median;
+    return {
+      role: role.role,
+      "Lower Quartile": Math.round((role.lowerQuartile / m) * 100),
+      "Median": 100,
+      "Upper Quartile": Math.round((role.upperQuartile / m) * 100),
+      "Actual": Math.round((role.currentSalary / m) * 100),
+      _rawLQ: role.lowerQuartile,
+      _rawMedian: role.median,
+      _rawUQ: role.upperQuartile,
+      _rawActual: role.currentSalary,
+    };
+  });
+
+  const maxPct = Math.max(
+    ...radarData.map(d => Math.max(d["Upper Quartile"], d["Actual"]))
+  );
+  const domainMax = Math.ceil(maxPct / 10) * 10;
 
   const rolesWithBands = marketData.map((role) => ({
     ...role,
@@ -73,9 +113,6 @@ export function MarketComparison() {
   const aboveUQRoles = rolesWithBands
     .filter((r) => r.band === "aboveUQ")
     .sort((a, b) => b.gapToUQ - a.gapToUQ);
-
-  const maxSalary = Math.max(...marketData.map(r => Math.max(r.upperQuartile, r.currentSalary)));
-  const tickMax = Math.ceil(maxSalary / 20000) * 20000;
 
   return (
     <div className="max-w-6xl mx-auto space-y-8 animate-fade-in">
@@ -148,60 +185,59 @@ export function MarketComparison() {
             </div>
             <div>
               <h3 className="font-display font-bold text-lg text-slate-800">Market Position Map</h3>
-              <p className="text-xs text-slate-400">Salary positioning across all roles vs market quartiles</p>
+              <p className="text-xs text-slate-400">Each role normalised to its median (100%). Hover for actual salary values.</p>
             </div>
           </div>
         </div>
         <div className="px-4 pb-6">
-          <ResponsiveContainer width="100%" height={480}>
-            <RadarChart data={radarData} outerRadius="75%">
+          <ResponsiveContainer width="100%" height={500}>
+            <RadarChart data={radarData} outerRadius="72%">
               <PolarGrid stroke="#e2e8f0" />
               <PolarAngleAxis
                 dataKey="role"
                 tick={{ fontSize: 11, fill: "#64748b" }}
-                className="text-xs"
               />
               <PolarRadiusAxis
                 angle={90}
-                domain={[0, tickMax]}
+                domain={[0, domainMax]}
                 tick={{ fontSize: 9, fill: "#94a3b8" }}
-                tickFormatter={(v) => `£${(v / 1000).toFixed(0)}k`}
+                tickFormatter={(v: number) => `${v}%`}
                 tickCount={5}
               />
               <Radar
                 name="Lower Quartile"
                 dataKey="Lower Quartile"
                 stroke="#94a3b8"
-                fill="#94a3b8"
-                fillOpacity={0.05}
-                strokeWidth={1}
-                strokeDasharray="4 4"
+                fill="#f1f5f9"
+                fillOpacity={0.6}
+                strokeWidth={1.5}
+                strokeDasharray="6 3"
               />
               <Radar
                 name="Median"
                 dataKey="Median"
-                stroke="#64748b"
-                fill="#64748b"
-                fillOpacity={0.08}
-                strokeWidth={1.5}
+                stroke="#475569"
+                fill="none"
+                fillOpacity={0}
+                strokeWidth={2}
               />
               <Radar
                 name="Upper Quartile"
                 dataKey="Upper Quartile"
-                stroke="#cbd5e1"
-                fill="#cbd5e1"
-                fillOpacity={0.05}
-                strokeWidth={1}
-                strokeDasharray="4 4"
+                stroke="#94a3b8"
+                fill="#e2e8f0"
+                fillOpacity={0.15}
+                strokeWidth={1.5}
+                strokeDasharray="6 3"
               />
               <Radar
                 name={companyInfo.name}
-                dataKey={companyInfo.name}
+                dataKey="Actual"
                 stroke="#6366f1"
                 fill="#6366f1"
-                fillOpacity={0.15}
+                fillOpacity={0.12}
                 strokeWidth={2.5}
-                dot={{ r: 4, fill: "#6366f1", stroke: "#fff", strokeWidth: 2 }}
+                dot={{ r: 5, fill: "#6366f1", stroke: "#fff", strokeWidth: 2 }}
               />
               <Tooltip content={<CustomRadarTooltip />} />
               <Legend
