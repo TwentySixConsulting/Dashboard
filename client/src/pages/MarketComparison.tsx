@@ -139,10 +139,12 @@ export function MarketComparison() {
     };
   });
 
-  const maxPct = Math.max(
-    ...radarData.map(d => Math.max(d["Upper Quartile"], d["Actual"]))
-  );
-  const domainMax = Math.ceil(maxPct / 10) * 10;
+  const avgLQ = Math.round(radarData.reduce((s, d) => s + d["Lower Quartile"], 0) / radarData.length);
+  const avgUQ = Math.round(radarData.reduce((s, d) => s + d["Upper Quartile"], 0) / radarData.length);
+  const belowBand = Math.max(60, 2 * avgLQ - 100);
+  const aboveBand = Math.min(140, 2 * avgUQ - 100);
+  const gridTicks = [belowBand, avgLQ, 100, avgUQ, aboveBand];
+  const domainMax = aboveBand;
 
   const functionBreakdown = functions.map(fn => {
     const fnRoles = marketData.filter(r => r.function === fn);
@@ -325,39 +327,52 @@ export function MarketComparison() {
           </div>
         </div>
         <div className="px-4 pb-6">
-          <ResponsiveContainer width="100%" height={560}>
-            <RadarChart data={radarData} outerRadius="65%">
-              <PolarGrid stroke="#e2e8f0" />
+          <ResponsiveContainer width="100%" height={600}>
+            <RadarChart data={radarData} outerRadius="58%" cx="50%" cy="50%">
+              <PolarGrid
+                stroke="#e2e8f0"
+                gridType="circle"
+              />
               <PolarAngleAxis
                 dataKey="role"
+                tickLine={false}
                 tick={(props: any) => {
-                  const { x, y, payload, textAnchor } = props;
+                  const { x, y, payload, textAnchor, cx, cy } = props;
                   const dataItem = radarData[payload.index];
                   if (!dataItem) return <text />;
                   const isFirst = dataItem.isFirstInFunction;
+                  const dx = x - cx;
+                  const dy = y - cy;
+                  const dist = Math.sqrt(dx * dx + dy * dy);
+                  const nudge = 8;
+                  const nx = x + (dx / dist) * nudge;
+                  const ny = y + (dy / dist) * nudge;
                   return (
                     <g>
-                      <text
-                        x={x}
-                        y={y}
-                        textAnchor={textAnchor}
-                        fontSize={isFirst ? 11 : 10}
-                        fontWeight={isFirst ? 700 : 400}
-                        fill={isFirst ? "#334155" : "#94a3b8"}
-                      >
-                        {isFirst ? `${dataItem.functionName}` : dataItem.role}
-                      </text>
                       {isFirst && (
                         <text
-                          x={x}
-                          y={y + 13}
+                          x={nx}
+                          y={ny - 2}
                           textAnchor={textAnchor}
-                          fontSize={9}
-                          fill="#94a3b8"
+                          fontSize={10}
+                          fontWeight={700}
+                          fill="#334155"
+                          dominantBaseline="auto"
                         >
-                          {dataItem.role}
+                          {dataItem.functionName}
                         </text>
                       )}
+                      <text
+                        x={nx}
+                        y={isFirst ? ny + 12 : ny + 2}
+                        textAnchor={textAnchor}
+                        fontSize={9}
+                        fontWeight={400}
+                        fill="#94a3b8"
+                        dominantBaseline="auto"
+                      >
+                        {dataItem.role}
+                      </text>
                     </g>
                   );
                 }}
@@ -367,7 +382,7 @@ export function MarketComparison() {
                 domain={[0, domainMax]}
                 tick={{ fontSize: 9, fill: "#94a3b8" }}
                 tickFormatter={(v: number) => `${v}%`}
-                tickCount={5}
+                ticks={gridTicks}
               />
               <Radar
                 name="Lower Quartile"
