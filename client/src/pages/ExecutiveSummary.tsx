@@ -39,7 +39,6 @@ const cardStyles: Record<string, { gradient: string; glow: string }> = {
   'market-context': { gradient: 'from-emerald-500 to-teal-600', glow: 'shadow-emerald-500/10' },
   'market-data': { gradient: 'from-blue-500 to-indigo-600', glow: 'shadow-blue-500/10' },
   'role-details': { gradient: 'from-violet-500 to-purple-600', glow: 'shadow-violet-500/10' },
-  'risks': { gradient: 'from-amber-400 to-orange-500', glow: 'shadow-amber-500/10' },
   'market-comparison': { gradient: 'from-indigo-500 to-blue-600', glow: 'shadow-indigo-500/10' },
   'bonus': { gradient: 'from-pink-500 to-rose-600', glow: 'shadow-pink-500/10' },
   'benefits': { gradient: 'from-teal-400 to-cyan-600', glow: 'shadow-teal-500/10' },

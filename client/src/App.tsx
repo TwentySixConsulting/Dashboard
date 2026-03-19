@@ -9,7 +9,6 @@ import { ExecutiveSummary } from "@/pages/ExecutiveSummary";
 import { MarketOverview } from "@/pages/MarketOverview";
 import { Benchmarking } from "@/pages/Benchmarking";
 import { RoleDetails } from "@/pages/RoleDetails";
-import { Risks } from "@/pages/Risks";
 import { MarketComparison } from "@/pages/MarketComparison";
 import { Benefits } from "@/pages/Benefits";
 import { BenefitsTrends } from "@/pages/BenefitsTrends";
@@ -28,7 +27,6 @@ function DashboardRouter() {
         <Route path="/" component={ExecutiveSummary} />
         <Route path="/market-data" component={Benchmarking} />
         <Route path="/role-details" component={RoleDetails} />
-        <Route path="/risks" component={Risks} />
         <Route path="/market-comparison" component={MarketComparison} />
         <Route path="/market-context" component={MarketOverview} />
         <Route path="/bonus" component={Bonus} />
