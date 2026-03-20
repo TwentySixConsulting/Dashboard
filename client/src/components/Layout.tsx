@@ -5,7 +5,6 @@ import {
   TrendingUp,
   Users,
   BarChart3,
-  Gift,
   ArrowRight,
   ChevronRight,
   Percent,
@@ -25,7 +24,6 @@ const navItems = [
   { path: "/role-details", label: "Pay Benchmarking – Role by Role", icon: Users },
   { path: "/bonus", label: "Bonuses", icon: Percent },
   { path: "/market-context", label: "Trends & Hotspots", icon: TrendingUp },
-  { path: "/benefits", label: "Benefits", icon: Gift },
   { path: "/next-steps", label: "Next Steps", icon: ArrowRight },
   { path: "/data-sources", label: "Data Sources", icon: Database },
 ];
@@ -35,7 +33,6 @@ const topNavItems = [
   { path: "/market-data", label: "Pay Benchmarking" },
   { path: "/role-details", label: "Role Analysis" },
   { path: "/market-context", label: "Trends & Hotspots" },
-  { path: "/benefits", label: "Benefits" },
   { path: "/next-steps", label: "Next Steps" },
 ];
 
