@@ -8,7 +8,6 @@ import {
   Gift,
   ArrowRight,
   ChevronRight,
-  Lightbulb,
   Percent,
   Database,
   Home,
@@ -27,7 +26,6 @@ const navItems = [
   { path: "/bonus", label: "Bonuses", icon: Percent },
   { path: "/market-context", label: "Trends & Hotspots", icon: TrendingUp },
   { path: "/benefits", label: "Benefits", icon: Gift },
-  { path: "/benefits-trends", label: "Benefits Trends & Ideas", icon: Lightbulb },
   { path: "/next-steps", label: "Next Steps", icon: ArrowRight },
   { path: "/data-sources", label: "Data Sources", icon: Database },
 ];
